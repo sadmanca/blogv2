@@ -11,6 +11,7 @@ import { formatDate, parseAuthors, readingTime } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import { type CollectionEntry, getCollection } from 'astro:content'
+import Giscus from "@/components/Giscus.astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog'))
@@ -158,6 +159,10 @@ const authors = await parseAuthors(post.data.authors ?? [])
     </article>
 
     <PostNavigation prevPost={prevPost} nextPost={nextPost} />
+    <div class="giscus col-start-2">
+      <Giscus />
+    </div>
+
   </section>
 
   <Button
