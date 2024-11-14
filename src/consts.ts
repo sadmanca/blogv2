@@ -17,16 +17,16 @@ export const SITE: Site = {
   DESCRIPTION:
     'Sometimes boring explorations into a world of software and beyond.',
   EMAIL: 'm.sadman.h@gmail.com',
-  NUM_POSTS_ON_HOMEPAGE: 5,
-  POSTS_PER_PAGE: 10,
-  SITEURL: 'https://astro-erudite.vercel.app',
+  NUM_POSTS_ON_HOMEPAGE: 25,
+  POSTS_PER_PAGE: 50,
+  SITEURL: process.env.NODE_ENV === 'development' ? 'http://localhost:1234' : 'https://blogv2-brs.pages.dev',
 }
 
 export const NAV_LINKS: Link[] = [
   { href: '/blog', label: 'blog' },
-  { href: '/authors', label: 'authors' },
-  { href: '/about', label: 'about' },
   { href: '/tags', label: 'tags' },
+  { href: '/projects', label: 'projects' },
+  { href: '/about', label: 'about' },
 ]
 
 export const SOCIAL_LINKS: Link[] = [

@@ -1,0 +1,51 @@
+---
+// ImageGalleryCaption.astro
+import { Image } from 'astro:assets';
+
+export interface ImageData {
+  src: string;
+  caption?: string; // Make caption optional
+  width?: number; // Optional width for remote images
+  height?: number; // Optional height for remote images
+}
+
+export interface Props {
+  images: ImageData[];
+  columns: number;
+}
+
+const { images, columns } = Astro.props;
+---
+
+<style>
+  .gallery {
+    display: grid;
+    gap: 10px;
+  }
+  .gallery figure {
+    margin: 0;
+  }
+  .gallery img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  .gallery figcaption {
+    text-align: center;
+    font-size: 0.875em;
+    color: #666;
+  }
+</style>
+
+<div class="gallery" style={`grid-template-columns: repeat(${columns}, 1fr);`}>
+  {images.map((image) => (
+    <figure>
+      {typeof image.src === 'string' && image.src.startsWith('http') ? (
+        <img class="rounded-xl" src={image.src} alt={image.caption || 'Gallery Image'} width={image.width} height={image.height} />
+      ) : (
+        <Image class="rounded-xl" src={image.src} alt={image.caption || 'Gallery Image'} />
+      )}
+      {image.caption ? <figcaption>{image.caption}</figcaption> : null}
+    </figure>
+  ))}
+</div>

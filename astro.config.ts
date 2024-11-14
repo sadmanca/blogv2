@@ -21,7 +21,7 @@ import icon from 'astro-icon'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://astro-erudite.vercel.app',
+  site: 'https://sadman.ca',
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -31,6 +31,10 @@ export default defineConfig({
     react(),
     icon(),
   ],
+  redirects: {
+    '/uoft-pey-coop-jobs-2023': '/uoft-pey-coop-jobs-2023.html',
+    '/uoft-work-study-2024': '/uoft-work-study-2024.html'
+  },
   markdown: {
     syntaxHighlight: false,
     rehypePlugins: [

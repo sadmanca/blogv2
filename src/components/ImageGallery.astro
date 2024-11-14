@@ -1,0 +1,27 @@
+---
+// ImageGallery.astro
+export interface Props {
+  images: string[];
+  columns: number;
+}
+
+const { images, columns } = Astro.props;
+---
+
+<style>
+  .gallery {
+    display: grid;
+    gap: 10px;
+  }
+  .gallery img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+</style>
+
+<div class="gallery" style={`grid-template-columns: repeat(${columns}, 1fr);`}>
+  {images.map((image) => (
+    <img class="rounded-xl" src={image} alt="Gallery Image" />
+  ))}
+</div>

@@ -11,7 +11,6 @@ import { formatDate, parseAuthors, readingTime } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import { type CollectionEntry, getCollection } from 'astro:content'
-import Giscus from "@/components/Giscus.astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog'))
@@ -76,7 +75,8 @@ const authors = await parseAuthors(post.data.authors ?? [])
           alt={post.data.title}
           width={1200}
           height={630}
-          class="col-span-full mx-auto w-full max-w-[1000px] object-cover"
+          class="col-span-full mx-auto w-full max-w-[300px] object-cover rounded-xl"
+          style="padding-left: 0; padding-right: 0;"
         />
       )
     }
@@ -104,7 +104,7 @@ const authors = await parseAuthors(post.data.authors ?? [])
                       />
                       {author.isRegistered ? (
                         <Link
-                          href={`/authors/${author.slug}`}
+                          href={`/about/${author.slug}`}
                           underline
                           class="text-foreground"
                         >
@@ -159,9 +159,6 @@ const authors = await parseAuthors(post.data.authors ?? [])
     </article>
 
     <PostNavigation prevPost={prevPost} nextPost={nextPost} />
-    <div class="giscus col-start-2">
-      <Giscus />
-    </div>
 
   </section>
 

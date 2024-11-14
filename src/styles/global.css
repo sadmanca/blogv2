@@ -176,3 +176,59 @@
     }
   }
 }
+
+/* styles.css */
+blockquote::before,
+q::before {
+  content: none;
+}
+
+blockquote::after,
+q::after {
+  content: none;
+}
+
+.prose :where(table):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  width: 100%;
+  table-layout: auto;
+  text-align: start;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  font-size: 0.875em;
+  overflow-x: auto; /* Add horizontal scroll */
+}
+
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+  width: 100%; /* Ensure table takes full width of container */
+}
+
+.table-container {
+  overflow-x: auto; /* Add horizontal scroll to container */
+  overflow-y: auto; /* Add vertical scroll to container */
+  max-height: 500px;
+  margin: 0 -1em; /* Adjust margins to prevent overflow */
+  padding-top: 0em; /* Add padding for better appearance */
+  padding-bottom: 0em; /* Add padding for better appearance */
+  padding-left: 1em; /* Add padding for better appearance */
+  padding-right: 1em; /* Add padding for better appearance */
+}
+
+table thead {
+  position: sticky;
+  top: 0;
+  background-color: hsl(var(--background)); /* Use the background variable */
+  z-index: 1; /* Ensure the header is above the table rows */
+}
+
+.dark table thead {
+  background-color: hsl(var(--background)); /* Use the background variable for dark mode */
+}
+
+table td, table th {
+  line-height: 1.05; /* Reduce line spacing */
+  max-width: 200px; /* Set maximum width for columns */
+  word-wrap: break-word; /* Ensure content wraps within the max width */
+}
