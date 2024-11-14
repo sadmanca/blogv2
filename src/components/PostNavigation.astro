@@ -43,7 +43,7 @@ const { prevPost, nextPost } = Astro.props
       <span class="text-right text-xs text-muted-foreground">Previous Post</span
       >
       <span class="w-full truncate text-right text-sm"
-        >{prevPost?.data.title || 'Last post!'}</span
+        >{prevPost?.data.title || '-'}</span
       >
     </div>
     <div class="ml-2 flex-shrink-0">
