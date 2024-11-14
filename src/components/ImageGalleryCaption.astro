@@ -43,7 +43,12 @@ const { images, columns } = Astro.props;
       {typeof image.src === 'string' && image.src.startsWith('http') ? (
         <img class="rounded-xl" src={image.src} alt={image.caption || 'Gallery Image'} width={image.width} height={image.height} />
       ) : (
-        <Image class="rounded-xl" src={image.src} alt={image.caption || 'Gallery Image'} />
+      <Image
+        {...(image as any)}
+        src={image.src}
+        alt={image.caption || 'Gallery Image'}
+        class="rounded-xl"
+      />
       )}
       {image.caption ? <figcaption>{image.caption}</figcaption> : null}
     </figure>
