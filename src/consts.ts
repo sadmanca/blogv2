@@ -16,7 +16,7 @@ export const SITE: Site = {
   TITLE: "Sadman's Blog",
   DESCRIPTION:
     'Sometimes boring explorations into a world of software and beyond.',
-  EMAIL: 'm.sadman.h@gmail.com',
+  EMAIL: 'sadman.hossain@mail.utoronto.ca',
   NUM_POSTS_ON_HOMEPAGE: 25,
   POSTS_PER_PAGE: 50,
   SITEURL: process.env.NODE_ENV === 'development' ? 'http://localhost:1234' : 'https://blogv2-brs.pages.dev',
@@ -32,6 +32,6 @@ export const NAV_LINKS: Link[] = [
 export const SOCIAL_LINKS: Link[] = [
   { href: 'https://github.com/sadmanca', label: 'GitHub' },
   { href: 'https://twitter.com/sadmanca', label: 'Twitter' },
-  { href: 'm.sadman.h@gmail.com', label: 'Email' },
+  { href: 'sadman.hossain@mail.utoronto.ca', label: 'Email' },
   { href: '/rss.xml', label: 'RSS' },
 ]

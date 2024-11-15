@@ -6,5 +6,5 @@ bio: '4th year Computer Engineering student at the University of Toronto. Likes 
 website: 'https://sadman.ca'
 twitter: 'https://twitter.com/sadmanca'
 github: 'https://github.com/sadmanca'
-mail: 'm.sadman.h@gmail.com'
+mail: 'sadman.hossain@mail.utoronto.ca'
 ---
