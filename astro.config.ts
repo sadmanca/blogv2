@@ -41,6 +41,7 @@ export default defineConfig({
   redirects: {
     '/uoft-pey-coop-jobs-2023': '/uoft-pey-coop-jobs-2023.html',
     '/uoft-work-study-2024': '/uoft-work-study-2024.html',
+    '/uoft-work-study-jobs-2024': '/uoft-work-study-2024.html',
 
     '/posts/on-keeping-a-journal': '/blog/on-keeping-a-journal',
     '/posts/coming-up-with-good-ideas': '/blog/coming-up-with-good-ideas',
