@@ -10,6 +10,7 @@ authors: ['sadman']
 
 import ImageGallery from '@/components/ImageGallery.astro';
 import PdfViewer from '@/components/PdfViewer.astro';
+import Callout from '@/components/mdx/Callout.astro';
 
 # Setting the stage
 
@@ -19,16 +20,15 @@ Except... when the opportunity does arise, it's usually for a course where the l
 
 The answer is surprisingly simple. But to get there, there's 3 things we need to consider: the medium (*how* to write your cheatsheet), the message (*what* to write on it), and the machine (*how* to print it such that everything remains readable).
 
----
 
-Oh, and if you're looking to take a peek at what exactly we're going to learn how to make, well, here's an example in it's full glory:
+<Callout type="info">
+  Oh, and if you're looking to take a peek at what exactly we're going to learn how to make, well, **here's an example in it's full glory:**
+</Callout>
 
 <ImageGallery images={[
   '/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/01-fullpage.png',
   '/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/01-zoomed.png',
 ]} columns={2} />
-
----
 
 Alas, putting together a behemoth of a cheatsheet like this one takes a while. It's an intricate process that involves making a number of decisions, the first of which is selecting the best tool for the job.
 

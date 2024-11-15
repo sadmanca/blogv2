@@ -1,5 +1,5 @@
 ---
-title: "Analyzing UofT PEY Co-op Job Postings — Part 2: Building a Better Job Postings Dashboard"
+title: "Analyzing UofT PEY Co-op Job Postings Part 2: Building a Better Job Postings Dashboard"
 description: "Taking 10 MB of UofT PEY Co-op job posting data (2000+ jobs) & displaying postings on a redesigned modern dashboard (for future students to have a better idea of what to expect)"
 date: 2024-09-11
 slug: "pey-coop-jobs-at-uoft"
@@ -8,10 +8,13 @@ image: './00-thumbnail.png'
 authors: ['sadman']
 ---
 
+import Callout from '@/components/mdx/Callout.astro';
 import ImageGalleryCaption from '@/components/ImageGalleryCaption.astro';
 import { SITE } from '@/consts';
 
-## A dashboard with every co-op/internship job posting on the UofT PEY Portal (for the 2023-2024 academic year)
+<Callout type="info" classes="bg-blue-950">
+  Check out **<a href={`${SITE.SITEURL}/uoft-pey-coop-jobs-2023`}>sadman.ca/uoft-pey-coop-jobs-2023</a>** to view all jobs posted for the 12-16 month University of Toronto PEY Co-op program from September 2023 to June 2024.
+</Callout>
 
 The job portal for current PEY Co-op students **opens this September 16**, so if you're...
 - a 3rd year student looking to get a head start on preparing your applications for specific positions/companies, or
@@ -28,17 +31,15 @@ It has all the co-op/internship jobs posted for the 12-16 month University of To
   </video>
 </div>
 
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/73t1R9CqOaued8QPEmEGgE?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-
-<br></br>
-
 ## The UofT PEY Co-op program & why I built this dashboard
 
 The Professional Experience Year (PEY) Co-op program at the University of Toronto (UofT) is a 12-16 month internship program that undergraduate students can take part in after their third year of studies (there's also now a 4-month co-op term in the summer after second year, but I'll leave that topic for future post). The program is a great way to gain work experience, build connections with industry professionals, and get a taste of what it's like to work in a professional setting.
 
 There's a decent amount of information about the PEY Co-op program available online (just check out [the program info page on discover.engineering.utoronto.ca](https://discover.engineering.utoronto.ca/experiential-learning/professional-experience-year-pey/)), along with [countless Reddit threads](https://www.google.com/search?q=uoft+pey+reddit) about the program, but **one thing that's always been unavailable is a full, comprehensive overview of the co-op positions posted on the job portal for students enrolled in the PEY program.**
 
-That's why I built a dashboard of all the jobs that were posted while I had access to the PEY portal at **h<a href={`${SITE.SITEURL}/uoft-pey-coop-jobs-2023`}>sadman.ca/uoft-pey-coop-jobs-2023</a>**.
+<Callout type="info" classes="bg-blue-950">
+  That's why I built a dashboard of all the jobs that were posted while I had access to the PEY portal at **<a href={`${SITE.SITEURL}/uoft-pey-coop-jobs-2023`}>sadman.ca/uoft-pey-coop-jobs-2023</a>**.
+</Callout>
 
 As a UofT engineering student who started their 3rd year last fall (and went through the whole job viewing/application process on the PEY portal), this was probably the part of the program that I was the most curious about going into it, so this is my way of making sure that future students have a better idea of what to expect when they go through the PEY Co-op program.
 

@@ -1,12 +1,14 @@
 ---
 title: "Recording terminal sessions using asciinema and its derivatives (Software Showcase #1)"
 description: "CLI tools for recording terminal sessions locally (and to the web) as asciicast files (.cast), GIFs, and animated SVGs."
-date: 2024-06-24
+date: 2024-05-27
 slug: "software-showcase-01-asciinema"
 image: './00-thumbnail.png'
 tags: ['software-showcase', 'tools', 'cli', 'code', 'terminal']
 authors: ['sadman']
 ---
+
+import Callout from '@/components/mdx/Callout.astro';
 
 ## I like collecting (digital) things
 
@@ -14,9 +16,11 @@ authors: ['sadman']
 
 I'm always coming across new tools, libraries, and frameworks for automating tasks or creating cool new things, and I always forget to take note of whatever I come across, so this post is the start of (hopefully) many in a series of me doing double-duty to show off all the interesting bits of software I come across[^includinghowto] (from things as small as bash scripts to things as large as full-blown software toolkits like `ffmpeg`) and make a formal record of all of them for my own notekeeping (because I have starred so many repositories on GitHub and I can hardly remember what a fraction of them are even about).
 
-*What the average terminal session looks like for me whenever I'm trying to run some old CLI tool or executable that I haven't used for a while:*
+<Callout type="info" icon="lucide:meh">
+  *What the average terminal session looks like for me whenever I'm trying to run some old CLI tool or executable that I haven't used for a while:*
+</Callout>
 
-<script id="asciicast-QmYHMiHpK8i7J0CZJoOxgUeDw" src="https://asciinema.org/a/QmYHMiHpK8i7J0CZJoOxgUeDw.js" data-speed="1.75" data-autoplay="true" data-loop="true" data-preload="false" data-cols="80" data-rows="8" data-size="small" async></script>
+<script id="asciicast-QmYHMiHpK8i7J0CZJoOxgUeDw" src="https://asciinema.org/a/QmYHMiHpK8i7J0CZJoOxgUeDw.js" data-speed="1.75" data-autoplay="false" data-loop="true" data-preload="false" data-cols="80" data-rows="8" data-size="small" async></script>
 
 [^includinghowto]: Including how to set things up and use them, which is something that I have to learn from scratch every time I go to set up my software workflows on yet another device and so it's something that I want to make note (and while I'm doing that, I might as well share it with everybody else)
 
@@ -43,7 +47,7 @@ Terminal session recorders, like [`asciinema`](https://github.com/asciinema/asci
 3. You can actually customize how terminal sessions look during playback by editing the recorded files or just by changing your playback settings (which means you don't have to re-record sessions for small modifications like changing font styles)
 
 *What an `asciinema` recording embedded on the web looks like:*
-<script id="asciicast-9593" src="https://asciinema.org/a/9593.js" data-speed="2.8" data-autoplay="true" data-loop="true" data-preload="false" async></script>
+<script id="asciicast-9593" src="https://asciinema.org/a/9593.js" data-speed="2.8" data-autoplay="false" data-loop="true" data-preload="false" async></script>
 **Shown:** _"Iterative git rebase with vim"_. **Source:** https://asciinema.org/a/9593.
 
 [^mentally]: Despite being constantly reminded my eyes that it's spelled "as-ciinema", I just can't pronouncing it in my head as "ascii-cinema" 😅
@@ -62,7 +66,9 @@ That's all very promising, but there's two very specific reasons as to why _I'm_
 
 ### Why asciinema is not enough
 
-More on that second point above, **converting recordings from `asciicast` to GIF/SVG is one area where `asciinema` is lacking** (it only supports its proprietary file format), which is where middleware like `agg` and `svg-term-cli` come in (and I'll be talking about both at length later on).
+<Callout type="warning">
+   More on that second point above, **converting recordings from `asciicast` to GIF/SVG is one area where `asciinema` is lacking** (it only supports its proprietary file format), which is where middleware like `agg` and `svg-term-cli` come in (and I'll be talking about both at length later on).
+</Callout>
 
 But before we dive into those `asciinema`-derivatives, let's take a quick look at what exactly `asciinema` has to offer (as well as how we can use it to record and playback terminal sessions).
 
@@ -87,7 +93,10 @@ Once you've got asciinema installed, there are 3 main commands:
 | `asciinema play` | **Play** a recording (local file or web URL) in the current terminal |
 | `asciinema upload` | **Upload** a recording to [asciinema.org](https://asciinema.org/) or a [self-hosted asciinema server](https://docs.asciinema.org/manual/server/self-hosting/) |
 
-For uploading, there's also `asciinema auth` for connecting `asciinema` on your local CLI to your [asciinema.org](https://asciinema.org/) account so you can upload recordings to your account (you can also upload anonymously without having to use the `auth` command, but anonymous uploads that aren't linked to an account within 7 days of their upload date are automatically deleted).
+
+<Callout type="info">
+   For uploading, there's also `asciinema auth` for connecting `asciinema` on your local CLI to your [asciinema.org](https://asciinema.org/) account so you can upload recordings to your account (you can also upload anonymously without having to use the `auth` command, but anonymous uploads that aren't linked to an account within 7 days of their upload date are automatically deleted).
+</Callout>
 
 #### `asciinema rec [filename]`
 
@@ -118,29 +127,27 @@ Replay a terminal session recorded using `asciinema rec` (at a local file or url
 | `-l, --loop` | Loop playback |
 | `-m, --pause-on-markers` | Automatically pause playback on markers |
 
-> Aside: **_What are asciinema markers_?**
-
-- Markers are like breakpoints or video chapters in YouTube that allow to mark specific timestamps in recordings for navigation; you can configure the `asciinema` recorder to have a [keyboard shortcut for adding markers during recording](https://docs.asciinema.org/manual/cli/configuration/) or edit an existing recording and insert marker lines as specified in the [documentation for asciinema markers](https://docs.asciinema.org/manual/player/markers/). On the web, markers are shown in the video timeline (similar to video chapters in YouTube), and can make jumping to points of interest in a terminal session a lot easier.
+<Callout type="info">
+  **`asciinema` Markers** are like breakpoints or video chapters in YouTube that allow to mark specific timestamps in recordings for navigation; you can configure the `asciinema` recorder to have a [keyboard shortcut for adding markers during recording](https://docs.asciinema.org/manual/cli/configuration/) or edit an existing recording and insert marker lines as specified in the [documentation for asciinema markers](https://docs.asciinema.org/manual/player/markers/). On the web, markers are shown in the video timeline (similar to video chapters in YouTube), and can make jumping to points of interest in a terminal session a lot easier.
+</Callout>
 
 #### `asciinema upload <filename>`
 
 This command uploads a local recording to whatever URL is specified in the `ASCIINEMA_API_URL` environment variable ([asciinema.org](https://asciinema.org/) by default, under whatever account has been authenticated via ` asciinema auth`, or anonymously if you haven't run that yet).
 
----
-
-> *Try jumping to different markers by clicking on the player timeline below:*
+<Callout type="info">
+  *Try jumping to different markers by clicking on the player timeline below:*
+</Callout>
 
 <script
     id="asciicast-e5jWLa6Ey0IIyHuSLAc4Saak8"
     src="https://asciinema.org/a/e5jWLa6Ey0IIyHuSLAc4Saak8"
-    data-speed="3.8" data-autoplay="true"
+    data-speed="3.8" data-autoplay="false"
     data-loop="true"
     data-preload="false"
     data-cols="120"
     data-rows="25"
 async></script>
-
----
 
 ### `asciinema` on the web
 
@@ -161,7 +168,7 @@ While the look and feel of the embedded player defaults to the original uploader
   src="https://asciinema.org/a/646222.js"
   id="..."
   data-start-at="00:40"
-  data-autoplay="true"
+  data-autoplay="false"
   data-loop="true"
   data-speed="2.75"
   data-idle-time-limit="2"
@@ -169,25 +176,32 @@ While the look and feel of the embedded player defaults to the original uploader
   data-poster="npt:1:23"  <!-- player preview frame timestamp -->
   data-cols="130"         <!-- terminal width -->
   data-rows="10"          <!-- terminal height -->
-  data-preload="true"
+  data-preload="false"
   async>
 </script>
 ```
 
-> The resulting embedded `asciinema` recording *with additional configuration & zoomed in* (notice how the autocompletion results in 'ghost' text in the terminal due to fewer rows/columns set in the replay options than in the original terminal recording):
-<script src="https://asciinema.org/a/646222.js" id="asciicast-646222-two" data-start-at="00:40" data-autoplay="true" data-loop="true" data-speed="2.75" data-idle-time-limit="2" data-theme="solarized-dark" data-cols="130" data-rows="10" data-preload="true" async></script>
+<Callout type="flag">
+  **Below**: The resulting embedded `asciinema` recording *with additional configuration and a zoomed out view.*
+</Callout>
+
+<script src="https://asciinema.org/a/646222.js" id="asciicast-646222-two" data-start-at="00:40" data-autoplay="false" data-loop="true" data-speed="2.75" data-idle-time-limit="2" data-theme="solarized-dark" data-cols="130" data-rows="10" data-preload="true" async></script>
 
 ### Where `asciinema` falls flat
 
 #### Problem 1: **Windows**
 
-The `asciinema` website and GitHub repository do an exceedingly poor job of telling you this from the get-go, but ***`asciinema` does not work on Windows!***
+<Callout type="destructive">
+  The `asciinema` website and GitHub repository do an exceedingly poor job of telling you this from the get-go, but ***`asciinema` does not work on Windows!***
+</Callout>
 
 I actually installed `asciinema` on my Windows-based laptop via `pip` with no issues, only to run into errors when trying to record via `asciinema rec`, and *then* when I googled the errors I came across the [GitHub issues](https://github.com/asciinema/asciinema/issues/47) mentioning that the program isn't even designed to run on Windows (which is a bit of a bummer).
 
 **Thankfully**, a port of `asciinema` for Windows exists in the form of [**`PowerSession-rs`**](https://github.com/Watfaq/PowerSession-rs), and it has the *most*[^aththemomentpowersession] of the same commands so it can be used as a drop-in replacement for `asciinema` on Windows (which is an absolute blessing for people chained to Windows like myself).
 
-> One slight however: it only supports PowerShell.
+<Callout type="warning">
+  One slight however: **`PowerSession-rs` only supports PowerShell.**
+</Callout>
 
 [^aththemomentpowersession]: At the time of writing `PowerSession-rs` does not yet support (playing recordings from a URL)[https://github.com/Watfaq/PowerSession-rs/issues/22] or the [idle time limit option](https://github.com/Watfaq/PowerSession-rs/issues/42) from `asciinema play`, among other small features.
 
@@ -197,7 +211,9 @@ GitHub READMEs don't render `<script>` tags, which means that while you can tech
 
 [^youcangetansvg]: You can get an SVG of the default preview frame for the `asciinema` recording by appending `.svg` to the recording's URL (e.g. `https://asciinema.org/a/bJMOlPe5F4mFLY0Rl6fiJSOp3.svg` for `https://asciinema.org/a/bJMOlPe5F4mFLY0Rl6fiJSOp3`)
 
-**GitHub does, however, allow for embedding GIFs and animated SVGs, which is where `agg` comes in.**
+<Callout type="flag">
+  **GitHub does, however, allow for embedding GIFs and animated SVGs, which is where `agg` comes in.**
+</Callout>
 
 ---
 
@@ -236,7 +252,9 @@ There are also a large number of additional options available to customize the l
 
 ### Where `agg` falls flat
 
-The trouble with `agg` however is that the GIF encoder[^gifencoderused] it uses generates *very* high quality files at the cost of also *very* high file sizes (which is fine for a handful of GIFs on a GitHub README but can potentially be a strain on resources if displayed on, say, a webpage).
+<Callout type="warning">
+  The trouble with `agg` however is that the GIF encoder[^gifencoderused] it uses generates *very* high quality files at the cost of also *very* high file sizes (which is fine for a handful of GIFs on a GitHub README but can potentially be a strain on resources if displayed on, say, a webpage).
+</Callout>
 
 [^gifencoderused]: [github.com/ImageOptim/gifski](https://github.com/ImageOptim/gifski)
 
@@ -250,8 +268,9 @@ To remedy that, we can use [**`svg-term-cli`**](https://github.com/marionebl/svg
 
 For one, animated SVGs are able to look a *lot* more crisp at larger resolutions than GIFs by using vector images instead of pixel based animation. Adding on to that (and why you should be using animated SVGs instead of GIFs when embedding recordings on websites), this also allows animated SVGs to have a *much* smaller file size, which is a very nice combination of features, making `svg-term-cli` almost[^wewillgettothis] the ideal tool for rendering your `asciinema` recordings (notable exception: you can't rewind or copy text from recordings, making this more of a cosmetic option.).
 
-
-> To find out why it's *almost* ideal (instead of just being ideal), continue reading to the **"Where `svg-term-cli` falls flat"** section.
+<Callout type="flag">
+  To find out why it's *almost* ideal (instead of just being ideal), continue reading to the **"Where `svg-term-cli` falls flat"** section.
+</Callout>
 
 *An animated SVG generated from an `asciinema` recording using `svg-term-cli`:*
 ![An animated SVG generated from an `asciinema` recording using `svg-term-cli`.](./02-svg-term-cli.svg)
@@ -284,7 +303,9 @@ Unfortunately, at the time you're reading this, it's been over 5 years since the
 
 If you're looking for a more up-to-date alternative, then there's the Go-based [**`termsvg`**](https://github.com/MrMarble/termsvg), which is a functional but still early-stage CLI tool that's able to record terminal sessions (just like `asciinema`) and export them to SVG[^maybeonedayinthefuture].
 
-> Unlike `PowerSession-rs` however, `termsvg` does **not** support uploading recordings to [asciinema.org](https://asciinema.org)
+<Callout type="warning">
+  Unlike `PowerSession-rs` however, `termsvg` does **not** support uploading recordings to [asciinema.org](https://asciinema.org)
+</Callout>
 
 [^maybeonedayinthefuture]: Might be worth doing a comparison of SVG generations (wrt file size, speed, etc.) between `termsvg` and `svg-term-cli` for a future blog post.
 

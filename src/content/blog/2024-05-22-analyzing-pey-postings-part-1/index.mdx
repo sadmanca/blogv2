@@ -8,6 +8,7 @@ image: './00-thumbnail.png'
 authors: ['sadman']
 ---
 
+import Callout from '@/components/mdx/Callout.astro';
 import ImageGalleryCaption from '@/components/ImageGalleryCaption.astro';
 import { Image } from 'astro:assets';
 import peyLoginImage from './01-01-pey-login.png';
@@ -72,7 +73,9 @@ import viewedjobs from './01-pey-viewed.jpg';
 
 Your average PEY job postings look like the below.
 
-Note: The design on the left was used for a couple years, until the most recent redesign in late 2023 (which took place halfway through my fall semester of third year). **If you're an upcoming PEY Co-op student, job postings should look like the right for you.**
+<Callout type="info">
+  **Note**: The design on the left was used for a couple years, until the most recent redesign in late 2023 (which took place halfway through my fall semester of third year). **If you're an upcoming PEY Co-op student, job postings should look like the image on the right for you** (Edit 2024-11-14: the job board has been redesigned again, and now looks unlike either image; check out my post on 2024-2025 UofT Co-op job postings to see what they look like now).
+</Callout>
 
 <ImageGalleryCaption images={[
   { src: a4, caption: "Old design for PEY job postings. One of the earliest jobs to be posted on the job board for my cohort (2T5) in 2023. Shown: ML Developer - Software Automation & Developer Infrastructure @ Cerebras" },
@@ -85,7 +88,9 @@ Nothing much to look at, just some basic tables with information about the job a
 
 One thing that's been important to me since the very start of this project is making sure that the timestamps of job postings are available to view. As someone who took a few months before I landed a position that I was really satisfied with, there were times where I felt a bit apprehensive at turning down offers for roles that I thought were fine but didn't feel excited about. I had no data beyond anecdotes from upper years about what's posted over the course of the fall and winter semesters, and so I couldn't really predict whether that dream role I had in mind was just a couple days from being posted (or whether jobs would start drying up so I should stick with whatever I had at that point in time), which is why I hope that at least one of the things this project of mine can provide is some reassurance to future PEY students about what jobs are posted and when.
 
-**One thing to keep in mind:** every year is different, and just because some company posted some number of jobs at some point in time doesn't mean that they'll do it again next year. Of course, it also doesn't mean that they won't do it again, so make sure your takeaways from the data are taken with a grain of salt.
+<Callout type="flag">
+   **One thing to keep in mind:** every year is different, and just because some company posted some number of jobs at some point in time doesn't mean that they'll do it again next year. Of course, it also doesn't mean that they won't do it again, so make sure your takeaways from the data are taken with a grain of salt.
+</Callout>
 
 There's just one problem: *there's absolutely no data indicating when a job was posted.*
 
