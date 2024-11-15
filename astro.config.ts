@@ -19,6 +19,8 @@ import sectionize from '@hbsnow/rehype-sectionize'
 
 import icon from 'astro-icon'
 
+import partytown from '@astrojs/partytown'
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://sadman.ca',
@@ -30,6 +32,11 @@ export default defineConfig({
     mdx(),
     react(),
     icon(),
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+    }),
   ],
   redirects: {
     '/uoft-pey-coop-jobs-2023': '/uoft-pey-coop-jobs-2023.html',
