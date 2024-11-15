@@ -26,7 +26,7 @@ export async function getStaticPaths() {
     params: { slug: tag },
     props: {
       tag,
-      posts: posts.filter((post) => post.data.tags?.includes(tag)),
+      posts: posts.filter((post) => post.data.tags?.includes(tag)).reverse(),
     },
   }))
 }
