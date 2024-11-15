@@ -33,7 +33,23 @@ export default defineConfig({
   ],
   redirects: {
     '/uoft-pey-coop-jobs-2023': '/uoft-pey-coop-jobs-2023.html',
-    '/uoft-work-study-2024': '/uoft-work-study-2024.html'
+    '/uoft-work-study-2024': '/uoft-work-study-2024.html',
+
+    '/posts/on-keeping-a-journal': '/blog/on-keeping-a-journal',
+    '/posts/coming-up-with-good-ideas': '/blog/coming-up-with-good-ideas',
+    '/posts/how-i-deal-with-email': '/blog/how-i-deal-with-email',
+    '/posts/why-i-use-trello': '/blog/why-i-use-trello',
+    '/posts/a-guide-to-learning/': '/blog/a-guide-to-learning',
+    '/posts/my-old-vs-code-setup/': '/blog/my-old-vs-code-setup',
+    '/posts/advice-for-high-school-freshmen/': '/blog/advice-for-high-school-freshmen',
+    '/posts/analyzing-pey-postings-part-1/': '/blog/analyzing-pey-postings-part-1',
+    '/posts/software-showcase-01-asciinema/': '/blog/software-showcase-01-asciinema',
+    '/posts/how-to-put-20k+-words-on-a-cheatsheet/': '/blog/how-to-put-20k+-words-on-a-cheatsheet',
+    '/posts/work-study-at-uoft/': '/blog/work-study-at-uoft',
+    '/posts/pey-coop-jobs-at-uoft/': '/blog/pey-coop-jobs-at-uoft',
+
+    '/categories': '/tags',
+    '/archives': '/blog',
   },
   markdown: {
     syntaxHighlight: false,
