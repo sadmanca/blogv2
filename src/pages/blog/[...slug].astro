@@ -73,10 +73,10 @@ const authors = await parseAuthors(post.data.authors ?? [])
         <Image
           src={post.data.image}
           alt={post.data.title}
-          width={1200}
-          height={630}
-          class="col-span-full mx-auto w-full max-w-[300px] object-cover rounded-xl"
-          style="padding-left: 0; padding-right: 0;"
+          width={300}
+          height={157.5}
+          class="col-span-full mx-auto w-full max-w-[300px] object-cover rounded-xl post-thumbnail"
+          style="padding-left: 0 !important; padding-right: 0!important; border-radius: 0.75rem !important;"
         />
       )
     }
