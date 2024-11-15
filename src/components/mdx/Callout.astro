@@ -21,7 +21,7 @@ const typeMapping = {
   warning: {
     icon: 'lucide:alert-triangle',
     classes:
-      'border-yellow-200/50 bg-yellow-100/50 dark:border-yellow-800/50 dark:bg-yellow-900/50',
+      'border-yellow-900/100 bg-yellow-100/50 dark:border-yellow-100/100 dark:bg-yellow-900/50',
   },
   flag: {
     icon: 'lucide:flag',
@@ -29,7 +29,7 @@ const typeMapping = {
   },
   destructive: {
     icon: 'lucide:alert-octagon',
-    classes: 'border-destructive bg-destructive/25',
+    classes: 'border-red-900/100 bg-red-200/50 dark:border-red-200/100 dark:bg-red-900/50',
   },
 }
 
@@ -38,7 +38,7 @@ const finalIcon = customIcon || icon
 const finalClasses = customClasses || classes
 ---
 
-<div class={`relative my-6 flex gap-4 rounded-xl border p-4 ${finalClasses}`}>
+<div class={`relative my-6 flex gap-4 rounded-xl border-2 p-4 ${finalClasses}`}>
   <span class="text-md pointer-events-none select-none">
     <Icon name={finalIcon} size={23} class="translate-y-1.5" />
   </span>
