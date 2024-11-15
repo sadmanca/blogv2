@@ -232,3 +232,9 @@ table td, table th {
   max-width: 200px; /* Set maximum width for columns */
   word-wrap: break-word; /* Ensure content wraps within the max width */
 }
+
+.post-thumbnail {
+  padding-left: 0 !important;
+  padding-right: 0!important;
+  border-radius: 0.75rem !important;
+}

@@ -22,26 +22,22 @@ import icon from 'astro-icon'
 import partytown from '@astrojs/partytown'
 import { imageService } from "@unpic/astro/service";
 
+import playformInline from '@playform/inline';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://sadman.ca',
-  integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    sitemap(),
-    mdx(),
-    react(),
-    icon(),
-    partytown({
-      config: {
-        forward: ["dataLayer.push"],
-      },
-    }),
-  ],
+  integrations: [tailwind({
+    applyBaseStyles: false,
+  }), sitemap(), mdx(), react(), icon(), partytown({
+    config: {
+      forward: ["dataLayer.push"],
+    },
+  }), playformInline()],
   image: {
     service: imageService({
       placeholder: "blurhash",
+      layout: "fixed",
     }),
   },
   redirects: {
