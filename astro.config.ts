@@ -20,26 +20,24 @@ import sectionize from '@hbsnow/rehype-sectionize'
 import icon from 'astro-icon'
 
 import partytown from '@astrojs/partytown'
-import { imageService } from "@unpic/astro/service";
-
-import playformInline from '@playform/inline';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://sadman.ca',
-  integrations: [tailwind({
-    applyBaseStyles: false,
-  }), sitemap(), mdx(), react(), icon(), partytown({
-    config: {
-      forward: ["dataLayer.push"],
-    },
-  }), playformInline()],
-  image: {
-    service: imageService({
-      placeholder: "blurhash",
-      layout: "fixed",
+  integrations: [
+    tailwind({
+      applyBaseStyles: false,
     }),
-  },
+    sitemap(),
+    mdx(),
+    react(),
+    icon(),
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+    }),
+  ],
   redirects: {
     '/uoft-pey-coop-jobs-2023': '/uoft-pey-coop-jobs-2023.html',
     '/uoft-work-study-2024': '/uoft-work-study-2024.html',
