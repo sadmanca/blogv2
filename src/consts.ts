@@ -19,7 +19,7 @@ export const SITE: Site = {
   EMAIL: 'sadman.hossain@mail.utoronto.ca',
   NUM_POSTS_ON_HOMEPAGE: 25,
   POSTS_PER_PAGE: 50,
-  SITEURL: process.env.NODE_ENV === 'development' ? 'http://localhost:1234' : 'https://blogv2-brs.pages.dev',
+  SITEURL: process.env.NODE_ENV === 'development' ? 'http://localhost:1234' : 'https://sadman.ca',
 }
 
 export const NAV_LINKS: Link[] = [
