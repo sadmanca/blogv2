@@ -3,9 +3,11 @@ import { Icon } from 'astro-icon/components'
 
 interface Props {
   type?: 'default' | 'info' | 'warning' | 'flag' | 'destructive'
+  icon?: string
+  classes?: string
 }
 
-const { type = 'default' } = Astro.props
+const { type = 'default', icon: customIcon, classes: customClasses } = Astro.props
 
 const typeMapping = {
   default: {
@@ -32,11 +34,13 @@ const typeMapping = {
 }
 
 const { icon, classes } = typeMapping[type]
+const finalIcon = customIcon || icon
+const finalClasses = customClasses || classes
 ---
 
-<div class={`relative my-6 flex gap-4 rounded-xl border p-4 ${classes}`}>
+<div class={`relative my-6 flex gap-4 rounded-xl border p-4 ${finalClasses}`}>
   <span class="text-md pointer-events-none select-none">
-    <Icon name={icon} size={23} class="translate-y-1.5" />
+    <Icon name={finalIcon} size={23} class="translate-y-1.5" />
   </span>
   <div class="-my-4 prose-code:break-all">
     <slot />
