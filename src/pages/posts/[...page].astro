@@ -13,7 +13,7 @@ export async function getStaticPaths({
 }: {
   paginate: PaginateFunction
 }) {
-  const allPosts = await getCollection('blog', ({ data }) => !data.draft)
+  const allPosts = await getCollection('posts', ({ data }) => !data.draft)
   return paginate(
     allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
     { pageSize: SITE.POSTS_PER_PAGE },
@@ -23,7 +23,7 @@ export async function getStaticPaths({
 const { page } = Astro.props
 
 const postsByYear = page.data.reduce(
-  (acc: Record<string, CollectionEntry<'blog'>[]>, post) => {
+  (acc: Record<string, CollectionEntry<'posts'>[]>, post) => {
     const year = post.data.date.getFullYear().toString()
     ;(acc[year] ??= []).push(post)
     return acc
@@ -38,7 +38,7 @@ const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a))
   <Container class="flex grow flex-col gap-y-6">
     <Breadcrumbs
       items={[
-        { label: 'Blog', href: '/blog', icon: 'lucide:archive' },
+        { label: 'Posts', href: '/posts', icon: 'lucide:archive' },
         { label: `Page ${page.currentPage}`, icon: 'lucide:folder-open' },
       ]}
     />
@@ -63,7 +63,7 @@ const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a))
     <PaginationComponent
       currentPage={page.currentPage}
       totalPages={page.lastPage}
-      baseUrl="/blog/"
+      baseUrl="/posts/"
       client:load
     />
   </Container>

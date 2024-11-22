@@ -4,7 +4,7 @@ description: "The art of maximizing content on a cheatsheet while maintaining re
 date: 2024-04-24
 slug: "how-to-put-20k+-words-on-a-cheatsheet"
 tags: ['university', 'code', 'python', 'typst']
-image: 'public/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/00-thumbnail.png'
+image: 'public/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/00-thumbnail.png'
 authors: ['sadman']
 ---
 
@@ -26,8 +26,8 @@ The answer is surprisingly simple. But to get there, there's 3 things we need to
 </Callout>
 
 <ImageGallery images={[
-  '/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/01-fullpage.png',
-  '/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/01-zoomed.png',
+  '/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/01-fullpage.png',
+  '/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/01-zoomed.png',
 ]} columns={2} />
 
 Alas, putting together a behemoth of a cheatsheet like this one takes a while. It's an intricate process that involves making a number of decisions, the first of which is selecting the best tool for the job.
@@ -159,8 +159,8 @@ Another key characteristic of Typst is that you don't need any complicated templ
 And what's brilliant about all of this, is that the Typst team have been generous enough to build a fully functional web application ([typst.app](https://typst.app)) to only store your Typst project files, but also edit them with dynamically updating previews and all sorts of bits and bobs to make your Typst writing experience oh-so-sweet (probably my favourite feature is the ability to not only click on some text or box in the output PDF preview and be immediately directed to the line of Typst markup that's generating that specific output but also, with a line of code selected, jump and zoom in directly to the specific page and portion of the generated PDF that the markup is creating; remember this for later, because it comes in incredibly handy when you're writing text at a size that's on par with some smaller species of ants). [typst.app](https://typst.app) is to Typst as [overleaf.com](https://overleaf.com) is to LaTeX (except the Typst web app is so much better than Overleaf that the folks over at Overleaf actually copied their "new" landing page design to mimic Typst's, which I'm not too surprised about given just how much better Typst is to use).
 
 <ImageGallery images={[
-  '/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/02-typst.jpg',
-  '/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/02-overleaf.jpg',
+  '/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/02-typst.jpg',
+  '/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/02-overleaf.jpg',
 ]} columns={2} />
 
 It's awe-inspiring to think of just how powerful Typst is given how easy it is to use as well, making it a fantastic option not just for writing cheatsheets but for replacing LaTeX for a ridiculous number of purposes (as for myself, I now exclusively use Typst to typeset pretty much any PDF requiring math notation, which at the time of writing is pretty much just relegated to homework assignments for calculus/algorithms/data structures/database design courses). But we're here to figure out how to write a kickass cheatsheet, so let's get to it.
@@ -185,7 +185,7 @@ As someone who's been writing cheatsheets over half a decade now, I've made this
 
 For a good example at what not to do, consider my cheatsheet (below) for an [introductory digital logics course](https://engineering.calendar.utoronto.ca/course/ece241h1) from my second year of university. I can hardly distinguish the different groups of concepts amongst all the differently sized blocks of diagrams mixed in with text, and I was the one who wrote the entire darn thing, I can only imagine how you, dear reader, must feel looking at this spagetthi gobble of a cheatsheet.
 
-![A cheatsheet for an introductory digital logics course, which is a complete mess of different sized blocks of diagrams mixed in with text.](/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/03-ece241.jpg)
+![A cheatsheet for an introductory digital logics course, which is a complete mess of different sized blocks of diagrams mixed in with text.](/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/03-ece241.jpg)
 
 How do we maintain uniformity with incredibly tiny text? Well, for starters, stick with a consistent method of structuring your content. The best way of doing this, regardless of whether you're using some typesetting engine or a text editor, is with a table. Ideally, a single table that fills up the entire page (so you don't have to deal with all the spacing headaches trying to properly sandwich together multiple tables of different sizes onto the same 8.5x11 inch sheet of paper) with consistently sized rows and columns. In addition, go with justified or centre-aligned text instead of left/right-aligned (having straight edges for text boxes is a lot easier to read than text boxes with jagged edges that have no easily parseable pattern)
 
@@ -201,7 +201,7 @@ Which means you should have small widths for columns, such that all you need to 
 
 - Highlight terms while leaving their definitions as plain text so that you can look into a sea of text and quickly see whether the term you're looking for is even present at all first.
 - Break up multi-layered content by using multiple levels of formatting for your headings, subheadings, definitions, sub-definitions, and so on.
-  - Also have separate fonts for important terms, plaintext, and special text (e.g. code, math); ensure that all work well at small scales (adjustments to character and word spacing can luckily be made by Typst, which means all you need to do is focus on readability; you can fit more characters of a thin font in the same space of whitespace compared to a wider font, so keep that in mind and maybe don't select something as wide as [Stint Ultra Expanded](https://fonts.google.com/specimen/Stint+Ultra+Expanded): ![A cheatsheet for an introductory digital logics course, which is a complete mess of different sized blocks of diagrams mixed in with text.](/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/04-stint.jpg)
+  - Also have separate fonts for important terms, plaintext, and special text (e.g. code, math); ensure that all work well at small scales (adjustments to character and word spacing can luckily be made by Typst, which means all you need to do is focus on readability; you can fit more characters of a thin font in the same space of whitespace compared to a wider font, so keep that in mind and maybe don't select something as wide as [Stint Ultra Expanded](https://fonts.google.com/specimen/Stint+Ultra+Expanded): ![A cheatsheet for an introductory digital logics course, which is a complete mess of different sized blocks of diagrams mixed in with text.](/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/04-stint.jpg)
 - Have some method of clearly separating unrelated content (that minimizes use of whitespace, like a dotted line).
 
 ### Other things to keep in mind
@@ -269,10 +269,10 @@ I've also found that a DPI of 1200 is the sweet spot for getting really high qua
 
 *What it looks like all put together.*
 
-[Final-Aid-Sheet](/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/05-ECE568-Final-Aid-Sheet.pdf)
+[Final-Aid-Sheet](/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/05-ECE568-Final-Aid-Sheet.pdf)
 
 
-<PdfViewer src="/blog/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/05-ECE568-Final-Aid-Sheet.pdf" />
+<PdfViewer src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/05-ECE568-Final-Aid-Sheet.pdf" />
 
 **Is it readable in real life?** Quite so.
 

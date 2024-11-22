@@ -7,9 +7,9 @@ import Layout from '@/layouts/Layout.astro'
 import { Icon } from 'astro-icon/components'
 import { getCollection } from 'astro:content'
 
-const blog = (await getCollection('blog')).filter((post) => !post.data.draft)
+const posts = (await getCollection('posts')).filter((post) => !post.data.draft)
 
-const tags = blog
+const tags = posts
   .flatMap((post) => post.data.tags)
   .filter((tag, index, self) => self.indexOf(tag) === index)
 ---

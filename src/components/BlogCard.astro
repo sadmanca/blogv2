@@ -8,11 +8,11 @@ import type { CollectionEntry } from 'astro:content'
 import Link from './Link.astro'
 
 type Props = {
-  entry: CollectionEntry<'blog'>
+  entry: CollectionEntry<'posts'>
 }
 
 const { entry } = Astro.props as {
-  entry: CollectionEntry<'blog'>
+  entry: CollectionEntry<'posts'>
 }
 
 const formattedDate = formatDate(entry.data.date)

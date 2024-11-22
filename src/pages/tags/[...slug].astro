@@ -6,7 +6,7 @@ import Layout from '@/layouts/Layout.astro'
 import { Icon } from 'astro-icon/components'
 import { type CollectionEntry, getCollection } from 'astro:content'
 
-type BlogPost = CollectionEntry<'blog'>
+type BlogPost = CollectionEntry<'posts'>
 
 type Props = {
   tag: string
@@ -16,7 +16,7 @@ type Props = {
 const { tag, posts } = Astro.props
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog')
+  const posts = await getCollection('posts')
   const tags = posts.flatMap((post) => post.data.tags || [])
   const uniqueTags = Array.from(
     new Set(tags.filter((tag): tag is string => typeof tag === 'string')),
