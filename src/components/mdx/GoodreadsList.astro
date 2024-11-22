@@ -1,6 +1,4 @@
 ---
-import { SEO } from "astro-seo";
-
 import xml2js from "xml2js";
 
 const GOODREADS_URL =
@@ -22,8 +20,11 @@ const books = result.rss.channel[0].item.map((item: any) => {
   };
 });
 
-// Sort books by date_read (earliest first)
-books.sort((a: any, b: any) => new Date(b.date_read) - new Date(a.date_read));
+books.sort((a: any, b: any) => {
+  const dateA = new Date(a.date_read);
+  const dateB = new Date(b.date_read);
+  return dateB.getTime() - dateA.getTime();
+})
 
 function formatDate(dateString: any) {
   const monthNames = [
