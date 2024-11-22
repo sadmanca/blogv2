@@ -65,7 +65,7 @@ function formatDate(dateString: any) {
 </style>
 
 <div class="goodreads">
-  <div class="grid grid-cols-7 gap-0">
+  <div class="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7 gap-2">
     {books.map((book: any) => (
       <div class="flex flex-col items-center">
         <a
@@ -78,10 +78,12 @@ function formatDate(dateString: any) {
             class="h-full w-full rounded-md object-cover"
           />
         </a>
-        <div class="mt-9 text-center">
+        <div class="mt-1 text-center">
           <a
             href={`https://www.goodreads.com/book/show/${book.book_id}`}
-            class="block w-20 text-xs font-semibold line-clamp-2"
+            class="block w-20 text-xs font-semibold line-clamp-2 underline"
+            style="text-underline-offset: 3px;"
+            target="_blank"
           >
             {book.title}
           </a>
@@ -93,7 +95,7 @@ function formatDate(dateString: any) {
               {formatDate(book.date_read)}
             </span>
           )}
-          <div class="flex items-center justify-center mt-1">
+          <div class="flex items-center justify-center mb-5">
             {Array.from({ length: 5 }, (_, i) => (
               <svg
                 key={i}

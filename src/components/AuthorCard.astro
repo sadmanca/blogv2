@@ -13,21 +13,30 @@ type Props = {
 const { author, linkDisabled = false } = Astro.props
 const {
   name,
+  full_name,
   avatar,
   bio,
   pronouns,
+  linkedin,
   github,
   twitter,
-  linkedin,
+  bluesky,
+  threads,
+  mastodon,
+  instagram,
   website,
   mail,
 } = author.data
 
 const socialLinks: SocialLink[] = [
   website && { href: website, label: 'Website' },
+  linkedin && { href: linkedin, label: 'LinkedIn' },
   github && { href: github, label: 'GitHub' },
   twitter && { href: twitter, label: 'Twitter' },
-  linkedin && { href: linkedin, label: 'LinkedIn' },
+  bluesky && { href: bluesky, label: 'Bluesky' },
+  threads && { href: threads, label: 'Threads' },
+  mastodon && { href: mastodon, label: 'Mastodon' },
+  instagram && { href: instagram, label: 'Instagram' },
   mail && { href: mail, label: 'Email' },
 ].filter(Boolean) as SocialLink[]
 ---
@@ -43,7 +52,7 @@ const socialLinks: SocialLink[] = [
       <AvatarComponent
         client:load
         src={avatar}
-        alt={`Avatar of ${name}`}
+        alt={`Avatar of ${full_name}`}
         fallback={name[0]}
         className={cn(
           'size-32 rounded-md',
@@ -55,7 +64,7 @@ const socialLinks: SocialLink[] = [
     <div class="flex flex-grow flex-col justify-between gap-y-4">
       <div>
         <div class="flex flex-wrap items-center gap-x-2">
-          <h3 class="text-lg font-semibold">{name}</h3>
+          <h3 class="text-lg font-semibold">{full_name}</h3>
           {
             pronouns && (
               <span class="text-sm text-muted-foreground">({pronouns})</span>

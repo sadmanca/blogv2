@@ -13,10 +13,14 @@ interface Props {
 const { links, className } = Astro.props
 
 const iconMap = {
-  Website: 'lucide:globe',
-  GitHub: 'lucide:github',
-  LinkedIn: 'lucide:linkedin',
+  Website: 'tabler:circle-filled',
+  LinkedIn: 'tabler:brand-linkedin-filled',
+  GitHub: 'tabler:brand-github',
   Twitter: 'lucide:twitter',
+  Bluesky: 'tabler:brand-bluesky',
+  Threads: 'tabler:brand-threads',
+  Mastodon: 'tabler:brand-mastodon',
+  Instagram: 'lucide:instagram',
   Email: 'lucide:mail',
   RSS: 'lucide:rss',
 }
@@ -39,10 +43,10 @@ const getSocialLink = ({ href, label }: SocialLink) => ({
             href={href}
             aria-label={ariaLabel}
             title={ariaLabel}
-            class={buttonVariants({ variant: 'outline', size: 'icon' })}
+            class={buttonVariants({ variant: 'default', size: 'icon' })}
             external
           >
-            <Icon name={iconName} class="size-4" />
+            <Icon name={iconName} class="size-6" />
           </Link>
         </li>
       )

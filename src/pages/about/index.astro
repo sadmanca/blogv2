@@ -2,6 +2,7 @@
 import AuthorCard from '@/components/AuthorCard.astro'
 import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import Container from '@/components/Container.astro'
+import GoodreadsGridAuthor from '@/components/mdx/GoodreadsGridAuthor.astro'
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 
@@ -24,5 +25,16 @@ const authors = await getCollection('authors')
         <p class="text-center text-muted-foreground">No authors found.</p>
       )
     }
+    <h2 class="text-2xl font-bold">
+      <a
+        href="https://www.goodreads.com/review/list/152185079-sadman-hossain?utf8=%E2%9C%93&shelf=read&title=sadman-hossain&per_page=infinite"
+        target="_blank"
+        class="underline"
+        style="text-underline-offset: 5px;">
+          Latest Reads</a
+      >
+      <span class="text-muted-foreground">(Goodreads)</span>
+    </h2>
+    <GoodreadsGridAuthor />
   </Container>
 </Layout>
