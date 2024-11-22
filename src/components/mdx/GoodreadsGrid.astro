@@ -1,0 +1,89 @@
+---
+import xml2js from 'xml2js'
+
+const GOODREADS_URL =
+  'https://www.goodreads.com/review/list_rss/152185079?key=_0elm4i3w7r24rhlGCl4tPmj0V9u5Jla71mdKQ_MBPUwhSys&shelf=read'
+
+const response = await fetch(GOODREADS_URL)
+const data = await response.text()
+const result = await xml2js.parseStringPromise(data)
+const books = result.rss.channel[0].item.map((item: any) => {
+  const highResImageUrl = item.book_image_url[0]
+    .replace(/(\._SX\d+_|\._SY\d+_)+/g, '._SX200_SY200_')
+    .replace(/(\._SY\d+_)+/g, '._SY200_')
+
+  return {
+    title: item.title[0],
+    shelves: item.user_shelves,
+    date_read: item.user_read_at,
+    rating: item.user_rating[0],
+    author_name: item.author_name,
+    book_image_url: highResImageUrl,
+    book_id: item.book_id[0],
+  }
+})
+
+// Sort books by date_read (latest first)
+books.sort((a: any, b: any) => new Date(b.date_read) - new Date(a.date_read))
+
+function formatDate(dateString: any) {
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+
+  const date = new Date(dateString)
+  const day = date.getUTCDate()
+  const month = monthNames[date.getUTCMonth()]
+  const year = date.getUTCFullYear()
+
+  return `${day} ${month} ${year}`
+}
+---
+
+<div class="goodreads">
+  <div class="grid grid-cols-7 gap-0">
+    {
+      books.map((book: any) => (
+        <div class="flex flex-col items-center">
+          <a
+            href={`https://www.goodreads.com/book/show/${book.book_id}`}
+            class="h-36 w-24"
+          >
+            <img
+              src={book.book_image_url}
+              alt={book.title}
+              class="h-full w-full rounded-md object-cover"
+            />
+          </a>
+          <div class="mt-9 text-center">
+            <a
+              href={`https://www.goodreads.com/book/show/${book.book_id}`}
+              class="block w-20 truncate text-xs font-semibold"
+            >
+              {book.title}
+            </a>
+            <span class="block w-20 truncate text-center text-xs text-gray-700 mt-1">
+              {book.author_name}
+            </span>
+            {book.date_read[0] !== '' && (
+              <span class="block text-xs text-gray-700">
+                {formatDate(book.date_read)}
+              </span>
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
