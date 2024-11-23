@@ -12,5 +12,6 @@ bluesky: 'https://bsky.app/profile/sadman.ca'
 threads: 'https://www.threads.net/@sadman.ca'
 mastodon: 'https://mastodon.social/@sadmanca'
 instagram: 'https://www.instagram.com/sadman.ca'
+goodreads: 'https://www.goodreads.com/sadmanca'
 mail: 'sadman.hossain@mail.utoronto.ca'
 ---
