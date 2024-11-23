@@ -36,6 +36,7 @@
     "@types/react-dom": "^18.3.0",
     "@unpic/astro": "^0.0.47",
     "astro": "^4.16.14",
+    "astro-hover-prefetch": "^1.0.7",
     "astro-seo": "^0.8.4",
     "bootstrap-icons": "^1.11.3",
     "class-variance-authority": "^0.7.0",

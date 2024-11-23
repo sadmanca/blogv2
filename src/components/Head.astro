@@ -4,6 +4,7 @@ import '../styles/katex.css'
 
 import { SITE } from '@/consts'
 import { ViewTransitions } from 'astro:transitions'
+import { HoverPrefetch } from 'astro-hover-prefetch';
 
 interface Props {
   title: string
@@ -49,6 +50,7 @@ const { title, description, image = '/static/twitter-card.png' } = Astro.props
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <ViewTransitions />
+<HoverPrefetch max={8} />
 
 <script is:inline>
   function setDarkMode(document) {
