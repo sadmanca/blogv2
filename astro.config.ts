@@ -20,7 +20,6 @@ import sectionize from '@hbsnow/rehype-sectionize'
 import icon from 'astro-icon'
 
 import partytown from '@astrojs/partytown'
-import { imageService } from "@unpic/astro/service";
 import swup from '@swup/astro';
 
 // https://astro.build/config
@@ -62,12 +61,6 @@ export default defineConfig({
       globalInstance: false,
     })
   ],
-  image: {
-    service: imageService({
-      placeholder: "blurhash",
-      layout: "constrained",
-    }),
-  },
   redirects: {
     '/uoft-pey-coop-jobs-2023': '/uoft-pey-coop-jobs-2023.html',
     '/uoft-work-study-2024': '/uoft-work-study-2024.html',
