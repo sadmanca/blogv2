@@ -52,7 +52,7 @@ export default defineConfig({
       parallel: false,
       progress: true,
       routes: false,
-      smoothScrolling: true,
+      smoothScrolling: false,
       updateBodyClass: false,
       updateHead: true,
       reloadScripts: true,
@@ -124,4 +124,5 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
+  output: 'static',
 })
