@@ -12,11 +12,6 @@ import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import { type CollectionEntry, getCollection } from 'astro:content'
 
-import FeelbackPulse from 'astro-feelback/components/FeelbackPulse.astro'
-import FeelbackReaction from 'astro-feelback/components/FeelbackReaction.astro'
-import FeelbackYesNo from 'astro-feelback/components/FeelbackYesNo.astro'
-import 'astro-feelback/styles/feelback.css'
-
 export async function getStaticPaths() {
   const posts = (await getCollection('posts'))
     .filter((post) => !post.data.draft)
@@ -149,26 +144,6 @@ const authors = await parseAuthors(post.data.authors ?? [])
               </span>
             )
           }
-        </div>
-        <div class="container flex flex-wrap justify-center">
-          <FeelbackPulse
-            contentSetId="3574bcc4-bcec-4cca-8849-f94e570edf04"
-            preset="heart"
-            showCount
-          />
-          <FeelbackReaction
-            contentSetId="a66e6ef9-9ba4-4ad9-9710-3a2607462258"
-            preset="github"
-            layout="picker"
-            textQuestion=""
-            showCount
-          />
-          <FeelbackYesNo
-            contentSetId="c2a26718-b0da-4fd7-a4a6-b773fe00ba9d"
-            preset="arrows"
-            textQuestion=""
-            showCount
-          />
         </div>
       </div>
 

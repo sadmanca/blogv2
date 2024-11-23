@@ -244,7 +244,7 @@ table td, table th {
 }
 
 .swup-progress-bar {
-  height: 8px;
+  height: 5px;
 
   &.dark {
     background-color: white;
