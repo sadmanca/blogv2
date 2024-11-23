@@ -59,31 +59,33 @@ const { title, description, image = '/static/twitter-card.png' } = Astro.props
         typeof localStorage !== 'undefined' &&
         localStorage.getItem('theme')
       ) {
-        return localStorage.getItem('theme')
+        return localStorage.getItem('theme');
       }
       return window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
-        : 'theme-light'
-    }
-    const isDark = getThemePreference() === 'dark'
-    document.documentElement.classList[isDark ? 'add' : 'remove']('dark')
+        : 'theme-light';
+    };
+
+    const isDark = getThemePreference() === 'dark';
+    document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
 
     if (typeof localStorage !== 'undefined') {
       const observer = new MutationObserver(() => {
-        const isDark = document.documentElement.classList.contains('dark')
-        localStorage.setItem('theme', isDark ? 'dark' : 'theme-light')
-      })
+        const isDark = document.documentElement.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'theme-light');
+      });
       observer.observe(document.documentElement, {
         attributes: true,
         attributeFilter: ['class'],
-      })
+      });
     }
   }
 
-  setDarkMode(document)
+  setDarkMode(document);
 
   document.addEventListener('astro:before-swap', (ev) => {
-    // Pass the incoming document to set the theme on it
-    setDarkMode(ev.newDocument)
-  })
+    if (ev.newDocument) { // Ensure newDocument is defined
+      setDarkMode(ev.newDocument);
+    }
+  });
 </script>
