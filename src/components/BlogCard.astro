@@ -58,11 +58,11 @@ const authors = await parseAuthors(entry.data.authors ?? [])
                   <AvatarComponent
                     client:load
                     src={author.avatar}
-                    alt={author.name}
+                    alt={author.full_name}
                     fallback={author.name[0]}
                     className="size-5 rounded-full"
                   />
-                  <span>{author.name}</span>
+                  <span>{author.full_name}</span>
                 </div>
               ))}
               <Separator orientation="vertical" className="h-4" />

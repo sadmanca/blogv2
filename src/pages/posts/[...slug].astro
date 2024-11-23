@@ -108,10 +108,10 @@ const authors = await parseAuthors(post.data.authors ?? [])
                           underline
                           class="text-foreground"
                         >
-                          <span>{author.name}</span>
+                          <span>{author.full_name}</span>
                         </Link>
                       ) : (
-                        <span>{author.name}</span>
+                        <span>{author.full_name}</span>
                       )}
                     </div>
                   ))}
