@@ -28,10 +28,12 @@ const books = result.rss.channel[0].item.map((item: any) => {
 
 // Sort books by date_read (latest first)
 books.sort((a: any, b: any) => {
-  const dateA = new Date(a.date_read)
-  const dateB = new Date(b.date_read)
-  return dateB.getTime() - dateA.getTime()
-})
+  if (!a.date_read || a.date_read[0] === '') return -1; // Place a at the top if date_read is missing
+  if (!b.date_read || b.date_read[0] === '') return 1; // Place b at the top if date_read is missing
+  const dateA = new Date(a.date_read);
+  const dateB = new Date(b.date_read);
+  return dateB.getTime() - dateA.getTime();
+});
 
 function formatDate(dateString: any) {
   const monthNames = [
