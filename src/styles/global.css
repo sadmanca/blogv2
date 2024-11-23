@@ -250,3 +250,7 @@ table td, table th {
     background-color: white;
   }
 }
+
+.feelback-btn {
+  background-color: hsl(var(--background)) !important;
+}
