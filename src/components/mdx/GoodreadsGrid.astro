@@ -1,5 +1,9 @@
 ---
 import xml2js from 'xml2js'
+import { Image } from 'astro:assets'
+
+const { titleMarginTop = 1 } = Astro.props;
+const { ratingMarginBottom = 4 } = Astro.props;
 
 const GOODREADS_URL =
   'https://www.goodreads.com/review/list_rss/152185079?key=_0elm4i3w7r24rhlGCl4tPmj0V9u5Jla71mdKQ_MBPUwhSys&shelf=read'
@@ -25,9 +29,9 @@ const books = result.rss.channel[0].item.map((item: any) => {
 
 // Sort books by date_read (latest first)
 books.sort((a: any, b: any) => {
-  const dateA = new Date(a.date_read);
-  const dateB = new Date(b.date_read);
-  return dateB.getTime() - dateA.getTime();
+  const dateA = new Date(a.date_read)
+  const dateB = new Date(b.date_read)
+  return dateB.getTime() - dateA.getTime()
 })
 
 function formatDate(dateString: any) {
@@ -65,47 +69,61 @@ function formatDate(dateString: any) {
 </style>
 
 <div class="goodreads">
-  <div class="grid grid-cols-7 gap-0">
-    {books.map((book: any) => (
-      <div class="flex flex-col items-center">
-        <a
-          href={`https://www.goodreads.com/book/show/${book.book_id}`}
-          class="h-36 w-24"
-        >
-          <img
-            src={book.book_image_url}
-            alt={book.title}
-            class="h-full w-full rounded-md object-cover"
-          />
-        </a>
-        <div class="mt-9 text-center">
+  <div
+    class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7"
+  >
+    {
+      books.map((book: any) => (
+        <div class="flex flex-col items-center">
           <a
             href={`https://www.goodreads.com/book/show/${book.book_id}`}
-            class="block w-20 text-xs font-semibold line-clamp-2"
+            class="h-36 w-24"
+            target="_blank"
           >
-            {book.title}
+            <Image
+              src={book.book_image_url}
+              alt={book.title}
+              class="h-full w-full rounded-md object-cover"
+              title={`${book.title}`}
+              width={101}
+              height={150}
+            />
           </a>
-          <span class="block w-20 mt-1 text-xs text-gray-700 truncate">
-            {book.author_name}
-          </span>
-          {book.date_read[0] !== '' && (
-            <span class="block text-xs text-gray-700" title="Date read">
-              {formatDate(book.date_read)}
+          <div class={`mt-${titleMarginTop} text-center`}>
+            <a
+              href={`https://www.goodreads.com/book/show/${book.book_id}`}
+              class="line-clamp-2 block w-20 text-xs font-semibold underline"
+              style="text-underline-offset: 3px;"
+              target="_blank"
+              title={`${book.title}`}}
+            >
+              {book.title}
+            </a>
+            <span
+              class="mt-1 block w-20 truncate text-xs text-muted-foreground"
+              title={`${book.author_name}`}
+            >
+              {book.author_name}
             </span>
-          )}
-          <div class="flex items-center justify-center mt-1">
-            {Array.from({ length: 5 }, (_, i) => (
-              <svg
-                class={`h-4 w-4 ${i < book.rating ? 'text-black-500' : 'text-gray-300'}`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
-              </svg>
-            ))}
+            {book.date_read[0] !== '' && (
+              <span class="block text-xs text-muted-foreground" title="Date read">
+                {formatDate(book.date_read)}
+              </span>
+            )}
+            <div class={`mb-${ratingMarginBottom} flex items-center justify-center`} title={`Rating given: ${book.rating}/5 stars`}>
+              {Array.from({ length: 5 }, (_, i) => (
+                <svg
+                  class={`h-4 w-4 ${i < book.rating ? 'text-black-500 dark:text-white' : 'text-gray-300 dark:text-gray-600'}`}
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
+                </svg>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    ))}
+      ))
+    }
   </div>
 </div>
