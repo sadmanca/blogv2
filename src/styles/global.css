@@ -242,3 +242,11 @@ table td, table th {
   padding-right: 0!important;
   border-radius: 0.75rem !important;
 }
+
+.swup-progress-bar {
+  height: 8px;
+
+  &.dark {
+    background-color: white;
+  }
+}
