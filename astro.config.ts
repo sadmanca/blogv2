@@ -21,6 +21,7 @@ import icon from 'astro-icon'
 
 import partytown from '@astrojs/partytown'
 import { imageService } from "@unpic/astro/service";
+import swup from '@swup/astro';
 
 // https://astro.build/config
 export default defineConfig({
@@ -38,6 +39,7 @@ export default defineConfig({
         forward: ["dataLayer.push"],
       },
     }),
+    swup(),
   ],
   image: {
     service: imageService({
