@@ -39,7 +39,28 @@ export default defineConfig({
         forward: ["dataLayer.push"],
       },
     }),
-    swup(),
+    swup({
+      animationClass: 'transition-',
+      containers: ['main'],
+      cache: true,
+      preload: {
+        hover: true,
+        visible: true
+      },
+      accessibility: true,
+      forms: false,
+      morph: false,
+      parallel: false,
+      progress: true,
+      routes: false,
+      smoothScrolling: true,
+      updateBodyClass: false,
+      updateHead: true,
+      reloadScripts: true,
+      debug: false,
+      loadOnIdle: true,
+      globalInstance: false,
+    })
   ],
   image: {
     service: imageService({
