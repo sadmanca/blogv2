@@ -245,10 +245,10 @@ table td, table th {
 
 .swup-progress-bar {
   height: 5px;
+}
 
-  &.dark {
-    background-color: white;
-  }
+html.dark .swup-progress-bar {
+  background-color: white;
 }
 
 .feelback-btn {

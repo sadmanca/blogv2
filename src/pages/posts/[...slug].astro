@@ -6,6 +6,8 @@ import TableOfContents from '@/components/TableOfContents.astro'
 import { badgeVariants } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import Feelback from "@/components/ui/feelback"
+import "@feelback/react/styles/feelback.css";
 import Layout from '@/layouts/Layout.astro'
 import { formatDate, parseAuthors, readingTime } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
@@ -145,6 +147,7 @@ const authors = await parseAuthors(post.data.authors ?? [])
             )
           }
         </div>
+        <Feelback client:visible/>
       </div>
 
       <PostNavigation prevPost={prevPost} nextPost={nextPost} />
