@@ -147,7 +147,7 @@ const authors = await parseAuthors(post.data.authors ?? [])
             )
           }
         </div>
-        <Feelback client:visible/>
+        <Feelback client:load/>
       </div>
 
       <PostNavigation prevPost={prevPost} nextPost={nextPost} />
