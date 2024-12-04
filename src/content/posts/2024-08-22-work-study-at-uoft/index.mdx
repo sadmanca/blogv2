@@ -19,12 +19,12 @@ import d2 from './04-zoom-in.png';
 ## A better way to view work study job postings at UofT
 
 <Callout type="info" classes="border-blue-950/100 bg-blue-100 dark:border-blue-100/100 dark:bg-blue-950">
-  **There’s an easier to view work study jobs for this year** and you can check it out at <br></br>**<a href={`${SITE.SITEURL}/uoft-work-study-2024`}>sadman.ca/uoft-work-study-2024</a>** (preview below).
+  **There’s an easier to view work study jobs for this year** and you can check it out at <br></br>**<a href={`${SITE.SITEURL}/uoft-work-study-2024.html`}>sadman.ca/uoft-work-study-2024</a>** (preview below).
 </Callout>
 
 <figure>
   <Image src={d1} alt="Redesigned UofT work study job postings dashboard" class="rounded-xl"/>
-  <figcaption>Redesigned UofT work study job postings dashboard at <a href="{`${SITE.SITEURL}/uoft-work-study-2024}">sadman.ca/uoft-work-study-2024</a>.</figcaption>
+  <figcaption>Redesigned UofT work study job postings dashboard at <a href="{`${SITE.SITEURL}/uoft-work-study-2024.html}">sadman.ca/uoft-work-study-2024</a>.</figcaption>
 </figure>
 
 <Callout type="flag">
@@ -193,17 +193,17 @@ So with all of those considerations at hand, it's safe to say it would be nice i
 I've been procrastinating on doing anything about it for the longest time though, so this summer I decided to make the most of those thoughts and design a brand-new easier-to-navigate dashboard to display the work study job postings that are visible on the official CLNx job portal right now (that is, for the 2024-2025 fall/winter semester).
 
 <Callout type="info" classes="border-blue-950/100 bg-blue-100 dark:border-blue-100/100 dark:bg-blue-950">
-  **The dashboard is live and you can view it at <a href={`${SITE.SITEURL}/uoft-work-study-2024`}>sadman.ca/uoft-work-study-2024</a>**.
+  **The dashboard is live and you can view it at <a href={`${SITE.SITEURL}/uoft-work-study-2024.html`}>sadman.ca/uoft-work-study-2024</a>**.
 </Callout>
 
 <figure>
   <Image src={d1} alt="Redesigned UofT work study job postings dashboard" class="rounded-xl"/>
-  <figcaption>Redesigned UofT work study job postings dashboard at <a href={`${SITE.SITEURL}/uoft-work-study-2024`}>sadman.ca/uoft-work-study-2024</a>.</figcaption>
+  <figcaption>Redesigned UofT work study job postings dashboard at <a href={`${SITE.SITEURL}/uoft-work-study-2024.html`}>sadman.ca/uoft-work-study-2024</a>.</figcaption>
 </figure>
 
 <figure>
   <Image src={d2} alt="Zoomed-in view of redesigned UofT work study job postings dashboard" class="rounded-xl"/>
-  <figcaption>**Zoomed-in view.** Redesigned UofT work study job postings dashboard at <a href={`${SITE.SITEURL}/uoft-work-study-2024`}>sadman.ca/uoft-work-study-2024</a>.</figcaption>
+  <figcaption>**Zoomed-in view.** Redesigned UofT work study job postings dashboard at <a href={`${SITE.SITEURL}/uoft-work-study-2024.html`}>sadman.ca/uoft-work-study-2024</a>.</figcaption>
 </figure>
 
 I'll save the technical details for a future post; the gist of backend behind it is that *the raw data was scraped from the CLNx job board* and is displayed on using the incredibly performant [AG Grid library](https://www.ag-grid.com/) (with some additional customization by myself). And in many ways, **it's a lot easier to use for browsing job postings than CLNx.**
