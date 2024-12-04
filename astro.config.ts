@@ -128,4 +128,11 @@ export default defineConfig({
   legacy: {
     collections: true
   },
+  image: {
+    // Used for all `<Image />` and `<Picture />` components unless overridden
+    experimentalLayout: 'responsive',
+  },
+  experimental: {
+    responsiveImages: true,
+  },
 })
