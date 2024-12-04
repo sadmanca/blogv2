@@ -1,0 +1,26 @@
+---
+import Link from '@/components/Link.astro';
+import { badgeVariants } from '@/components/ui/badge';
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+<div class="flex flex-col gap-4">
+  <h1 class="text-3xl font-semibold">Tags</h1>
+  <div class="flex flex-wrap gap-2">
+    {tags.map((tag) => (
+      <Link
+        href={`/tags/${tag}`}
+        class={badgeVariants({ variant: 'secondary' })}
+      >
+        <Icon name="lucide:hash" class="size-3 -translate-x-0.5" />
+        {tag}
+      </Link>
+    ))}
+  </div>
+</div>

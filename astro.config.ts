@@ -125,4 +125,7 @@ export default defineConfig({
     enabled: false,
   },
   output: 'static',
+  legacy: {
+    collections: true
+  },
 })

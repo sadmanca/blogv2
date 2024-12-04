@@ -1,58 +1,72 @@
 ---
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
-import Link from '@/components/Link.astro'
-import PostNavigation from '@/components/PostNavigation.astro'
-import TableOfContents from '@/components/TableOfContents.astro'
-import { badgeVariants } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import Feelback from "@/components/ui/feelback"
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Link from '@/components/Link.astro';
+import PostNavigation from '@/components/PostNavigation.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+import { badgeVariants } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import Feelback from "@/components/ui/feelback";
 import "@feelback/react/styles/feelback.css";
-import Layout from '@/layouts/Layout.astro'
-import { formatDate, parseAuthors, readingTime } from '@/lib/utils'
-import { Icon } from 'astro-icon/components'
-import { Image } from 'astro:assets'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import Layout from '@/layouts/Layout.astro';
+import { formatDate, readingTime } from '@/lib/utils';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import { type CollectionEntry, getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('posts'))
     .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return posts.map((post) => ({
     params: { slug: post.slug },
-    props: post,
-  }))
+    props: {
+      post,
+      authors: post.data.authors,
+    },
+  }));
 }
-type Props = CollectionEntry<'posts'>
+
+type Props = {
+  post: CollectionEntry<'posts'>;
+  authors: string[];
+};
+
+const { post, authors } = Astro.props;
+
+const { Content, headings } = await post.render();
+
+const authorData = authors.map((author) => ({
+  slug: author,
+  name: author,
+  full_name: author,
+  avatar: '/static/logo.png',
+  isRegistered: false,
+}));
 
 const posts = (await getCollection('posts'))
   .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 function getPostIndex(slug: string): number {
-  return posts.findIndex((post) => post.slug === slug)
+  return posts.findIndex((post) => post.slug === slug);
 }
 
-function getPrevPost(slug: string): Props | null {
-  const postIndex = getPostIndex(slug)
+function getPrevPost(slug: string): CollectionEntry<'posts'> | null {
+  const postIndex = getPostIndex(slug);
   return postIndex !== -1 && postIndex < posts.length - 1
     ? posts[postIndex + 1]
-    : null
+    : null;
 }
 
-function getNextPost(slug: string): Props | null {
-  const postIndex = getPostIndex(slug)
-  return postIndex > 0 ? posts[postIndex - 1] : null
+function getNextPost(slug: string): CollectionEntry<'posts'> | null {
+  const postIndex = getPostIndex(slug);
+  return postIndex > 0 ? posts[postIndex - 1] : null;
 }
 
-const currentPostSlug = Astro.params.slug
-const nextPost = getNextPost(currentPostSlug)
-const prevPost = getPrevPost(currentPostSlug)
-
-const post = Astro.props
-const { Content, headings } = await post.render()
-
-const authors = await parseAuthors(post.data.authors ?? [])
+const currentPostSlug = Astro.params.slug;
+const nextPost = getNextPost(currentPostSlug);
+const prevPost = getPrevPost(currentPostSlug);
 ---
 
 <Layout
@@ -92,10 +106,10 @@ const authors = await parseAuthors(post.data.authors ?? [])
           class="flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground"
         >
           {
-            authors.length > 0 && (
+            authorData.length > 0 && (
               <>
                 <div class="flex items-center gap-x-2">
-                  {authors.map((author) => (
+                  {authorData.map((author) => (
                     <div class="flex items-center gap-x-1.5">
                       <Image
                         src={author.avatar}
@@ -104,17 +118,13 @@ const authors = await parseAuthors(post.data.authors ?? [])
                         height={24}
                         class="rounded-full"
                       />
-                      {author.isRegistered ? (
-                        <Link
-                          href={`/about/${author.slug}`}
-                          underline
-                          class="text-foreground"
-                        >
-                          <span>{author.full_name}</span>
-                        </Link>
-                      ) : (
+                      <Link
+                        href={`/about/${author.slug}`}
+                        underline
+                        class="text-foreground"
+                      >
                         <span>{author.full_name}</span>
-                      )}
+                      </Link>
                     </div>
                   ))}
                 </div>
@@ -147,7 +157,7 @@ const authors = await parseAuthors(post.data.authors ?? [])
             )
           }
         </div>
-        <Feelback client:load/>
+        <Feelback client:only="react" />
       </div>
 
       <PostNavigation prevPost={prevPost} nextPost={nextPost} />

@@ -1,23 +1,52 @@
 ---
-import BlogCard from '@/components/BlogCard.astro'
-import Container from '@/components/Container.astro'
-import Link from '@/components/Link.astro'
-import { buttonVariants } from '@/components/ui/button'
+import BlogCard from '@/components/BlogCard.astro';
+import Container from '@/components/Container.astro';
+import Link from '@/components/Link.astro';
+import { buttonVariants } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { SITE } from '@/consts'
-import Layout from '@/layouts/Layout.astro'
-import { getCollection } from 'astro:content'
+} from '@/components/ui/card';
+import { SITE } from '@/consts';
+import Layout from '@/layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+type Author = {
+  slug: string;
+  name: string;
+  full_name: string;
+  avatar: string;
+  isRegistered: boolean;
+};
 
 const posts = (await getCollection('posts'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE)
+  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
+
+const authors = await getCollection('authors');
+const authorsData: Author[] = authors.map(author => ({
+  slug: author.slug,
+  name: author.data.name,
+  full_name: author.data.full_name,
+  avatar: author.data.avatar,
+  isRegistered: true,
+}));
+
+const getAuthorsForPost = (post: CollectionEntry<'posts'>): Author[] => {
+  return (post.data.authors || []).map((authorSlug: string) => {
+    return authorsData.find((author) => author.slug === authorSlug) || {
+      slug: authorSlug,
+      name: authorSlug,
+      full_name: authorSlug,
+      avatar: '/static/logo.png',
+      isRegistered: false,
+    };
+  });
+};
 ---
 
 <Layout title="Home" description={SITE.DESCRIPTION}>
@@ -40,13 +69,11 @@ const posts = (await getCollection('posts'))
     <section class="flex flex-col gap-y-4">
       <h2 class="text-2xl font-bold">Latest posts</h2>
       <ul class="not-prose flex flex-col gap-y-4">
-        {
-          posts.map((post) => (
-            <li>
-              <BlogCard entry={post} />
-            </li>
-          ))
-        }
+        {posts.map((post) => (
+          <li>
+            <BlogCard entry={post} authors={getAuthorsForPost(post)} />
+          </li>
+        ))}
       </ul>
       <div class="flex justify-center">
         <Link

@@ -1,26 +1,26 @@
 ---
-import BlogCard from '@/components/BlogCard.astro'
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
-import Container from '@/components/Container.astro'
-import Layout from '@/layouts/Layout.astro'
-import { Icon } from 'astro-icon/components'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import BlogCard from '@/components/BlogCard.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Container from '@/components/Container.astro';
+import Layout from '@/layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+import { type CollectionEntry, getCollection } from 'astro:content';
 
-type BlogPost = CollectionEntry<'posts'>
+type BlogPost = CollectionEntry<'posts'>;
 
 type Props = {
-  tag: string
-  posts: BlogPost[]
-}
+  tag: string;
+  posts: BlogPost[];
+};
 
-const { tag, posts } = Astro.props
+const { tag, posts } = Astro.props;
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts')
-  const tags = posts.flatMap((post) => post.data.tags || [])
+  const posts = await getCollection('posts');
+  const tags = posts.flatMap((post) => post.data.tags || []);
   const uniqueTags = Array.from(
-    new Set(tags.filter((tag): tag is string => typeof tag === 'string')),
-  )
+    new Set(tags.filter((tag): tag is string => typeof tag === 'string'))
+  );
 
   return uniqueTags.map((tag) => ({
     params: { slug: tag },
@@ -28,8 +28,37 @@ export async function getStaticPaths() {
       tag,
       posts: posts.filter((post) => post.data.tags?.includes(tag)).reverse(),
     },
-  }))
+  }));
 }
+
+type Author = {
+  slug: string;
+  name: string;
+  full_name: string;
+  avatar: string;
+  isRegistered: boolean;
+};
+
+const authors = await getCollection('authors');
+const authorsData: Author[] = authors.map(author => ({
+  slug: author.slug,
+  name: author.data.name,
+  full_name: author.data.full_name,
+  avatar: author.data.avatar,
+  isRegistered: true,
+}));
+
+const getAuthorsForPost = (post: CollectionEntry<'posts'>): Author[] => {
+  return (post.data.authors || []).map((authorSlug: string) => {
+    return authorsData.find((author) => author.slug === authorSlug) || {
+      slug: authorSlug,
+      name: authorSlug,
+      full_name: authorSlug,
+      avatar: '/static/logo.png',
+      isRegistered: false,
+    };
+  });
+};
 ---
 
 <Layout
@@ -52,19 +81,17 @@ export async function getStaticPaths() {
       </span>
     </div>
     <div class="flex flex-col gap-y-4">
-      {
-        posts.map((post) => (
-          <section class="flex flex-col gap-y-4">
-            <div>
-              <ul class="not-prose flex flex-col gap-4">
-                <li>
-                  <BlogCard entry={post} />
-                </li>
-              </ul>
-            </div>
-          </section>
-        ))
-      }
+      {posts.map((post) => (
+        <section class="flex flex-col gap-y-4">
+          <div>
+            <ul class="not-prose flex flex-col gap-4">
+              <li>
+                <BlogCard entry={post} authors={getAuthorsForPost(post)} />
+              </li>
+            </ul>
+          </div>
+        </section>
+      ))}
     </div>
   </Container>
 </Layout>

@@ -1,21 +1,26 @@
 ---
-import AuthorCard from '@/components/AuthorCard.astro'
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
-import Container from '@/components/Container.astro'
-import GoodreadsGrid from '@/components/mdx/GoodreadsGrid.astro'
-import Layout from '@/layouts/Layout.astro'
-import { getCollection } from 'astro:content'
+import AuthorCard from '@/components/AuthorCard.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Container from '@/components/Container.astro';
+import GoodreadsGrid from '@/components/mdx/GoodreadsGrid.astro';
+import Layout from '@/layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 
-const authors = await getCollection('authors')
+const authors = await getCollection('authors');
+const authorsData = authors.map(author => ({
+  ...author.data,
+  slug: author.slug,
+  bio: author.data.bio || '',
+}));
 ---
 
 <Layout title="About" description="A list of authors on this site.">
   <Container class="flex flex-col gap-y-6">
     <Breadcrumbs items={[{ label: 'About', icon: 'lucide:users' }]} />
     {
-      authors.length > 0 ? (
+      authorsData.length > 0 ? (
         <ul class="not-prose flex flex-col gap-4">
-          {authors.map((author) => (
+          {authorsData.map((author) => (
             <li>
               <AuthorCard author={author} />
             </li>

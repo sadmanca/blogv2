@@ -1,42 +1,88 @@
 ---
-import AuthorCard from '@/components/AuthorCard.astro'
-import BlogCard from '@/components/BlogCard.astro'
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
-import Container from '@/components/Container.astro'
-import Layout from '@/layouts/Layout.astro'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import AuthorCard from '@/components/AuthorCard.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Container from '@/components/Container.astro';
+import Layout from '@/layouts/Layout.astro';
+import { type CollectionEntry, getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const authors = await getCollection('authors')
+  const authors = await getCollection('authors');
   return authors.map((author) => ({
     params: { slug: author.slug },
     props: { author },
-  }))
+  }));
 }
+
+type Author = {
+  slug: string;
+  name: string;
+  full_name: string;
+  avatar: string;
+  isRegistered: boolean;
+};
 
 type Props = {
-  author: CollectionEntry<'authors'>
-}
+  author: {
+    name: string;
+    full_name: string;
+    avatar: string;
+    bio: string;
+    pronouns?: string;
+    linkedin?: string;
+    github?: string;
+    twitter?: string;
+    bluesky?: string;
+    threads?: string;
+    mastodon?: string;
+    instagram?: string;
+    website?: string;
+    goodreads?: string;
+    mail?: string;
+    slug: string;
+  };
+};
 
-const { author } = Astro.props
+const { author } = Astro.props as Props;
 
-const allPosts = await getCollection('posts')
+const allPosts = await getCollection('posts');
 const authorPosts = allPosts
   .filter((post) => {
-    return post.data.authors && post.data.authors.includes(author.slug)
+    return post.data.authors && post.data.authors.includes(author.slug);
   })
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const authors = await getCollection('authors');
+const authorsData: Author[] = authors.map(author => ({
+  slug: author.slug,
+  name: author.data.name,
+  full_name: author.data.full_name,
+  avatar: author.data.avatar,
+  isRegistered: true,
+}));
+
+const getAuthorsForPost = (post: CollectionEntry<'posts'>): Author[] => {
+  return (post.data.authors || []).map((authorSlug: string) => {
+    return authorsData.find((author) => author.slug === authorSlug) || {
+      slug: authorSlug,
+      name: authorSlug,
+      full_name: authorSlug,
+      avatar: '/static/logo.png',
+      isRegistered: false,
+    };
+  });
+};
 ---
 
 <Layout
-  title={`${author.data.name} (Author)`}
-  description={author.data.bio || `Profile of ${author.data.name}.`}
+  title={`${author.name} (Author)`}
+  description={author.bio || `Profile of ${author.name}.`}
 >
   <Container class="flex flex-col gap-y-6">
     <Breadcrumbs
       items={[
         { href: '/about', label: 'Authors', icon: 'lucide:users' },
-        { label: author.data.name, icon: 'lucide:user' },
+        { label: author.name, icon: 'lucide:user' },
       ]}
     />
 
@@ -44,13 +90,13 @@ const authorPosts = allPosts
       <AuthorCard author={author} linkDisabled />
     </section>
     <section class="flex flex-col gap-y-4">
-      <h2 class="text-2xl font-semibold">Posts by {author.data.full_name}</h2>
+      <h2 class="text-2xl font-semibold">Posts by {author.full_name}</h2>
       {
         authorPosts.length > 0 ? (
           <ul class="not-prose flex flex-col gap-4">
             {authorPosts.map((post) => (
               <li>
-                <BlogCard entry={post} />
+                <BlogCard entry={post} authors={getAuthorsForPost(post)} />
               </li>
             ))}
           </ul>
