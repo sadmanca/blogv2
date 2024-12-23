@@ -53,8 +53,10 @@ let { src, alt } = Astro.props;
         isZoomed = !isZoomed;
         if (isZoomed) {
           img.setAttribute('data-zoomed', 'true');
+          img.classList.add('zoomed');
         } else {
           img.removeAttribute('data-zoomed');
+          img.classList.remove('zoomed');
         }
       }
 
@@ -63,6 +65,7 @@ let { src, alt } = Astro.props;
         if (img && isZoomed) {
           isZoomed = false;
           img.removeAttribute('data-zoomed');
+          img.classList.remove('zoomed');
         }
       }
 
@@ -73,6 +76,7 @@ let { src, alt } = Astro.props;
           let img = container.querySelector('img');
           if (img) {
             img.removeAttribute('data-zoomed');
+            img.classList.remove('zoomed');
           }
         } else {
           unzoom();
@@ -88,3 +92,10 @@ let { src, alt } = Astro.props;
     });
   });
 </script>
+
+<style>
+  .zoomed {
+    z-index: 1000; /* Ensure it is on top of other elements */
+    position: relative; /* Ensure z-index works */
+  }
+</style>
