@@ -1,15 +1,36 @@
 ---
+import { Image } from 'astro:assets';
+
 export interface Props {
   src: string;
   alt: string;
+  class?: string;
 }
 
 const { src, alt } = Astro.props;
 ---
 
 <div class="image-zoom-container">
-  <img src={src} alt={alt} class="zoomable-image" />
+  <Image src={src} alt={alt} class="zoomable-image"/>
 </div>
+
+<script>
+  let isZoomed = false;
+
+  function toggleZoom(event: MouseEvent) {
+    const currentTarget = event.currentTarget as HTMLElement | null;
+    if (!currentTarget) return;
+    const img = currentTarget.querySelector('img') as HTMLImageElement;
+    isZoomed = !isZoomed;
+    img.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
+    img.style.cursor = isZoomed ? 'zoom-out' : 'zoom-in';
+  }
+
+  const container = document.querySelector('.image-zoom-container');
+  if (container) {
+    container.addEventListener('click', toggleZoom);
+  }
+</script>
 
 <style>
   .image-zoom-container {
@@ -20,10 +41,6 @@ const { src, alt } = Astro.props;
 
   .zoomable-image {
     width: 100%;
-    transition: transform 0.3s ease;
-  }
-
-  .image-zoom-container:hover .zoomable-image {
-    transform: scale(1.5); /* Adjust the scale as needed */
-  }
+    transition: transform 0.25s ease;
+  }  
 </style>
