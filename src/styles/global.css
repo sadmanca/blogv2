@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Geist';
-  src: url('/fonts/GeistVF.woff2') format('woff2');
+  font-family: 'InterVariable';
+  src: url('/fonts/InterVariable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -253,4 +253,8 @@ html.dark .swup-progress-bar {
 
 .feelback-btn {
   background-color: hsl(var(--background)) !important;
+}
+
+.prose article :where(h1):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  font-size: 3em; /* Increase the font size */
 }
