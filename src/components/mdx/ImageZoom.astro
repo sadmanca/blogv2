@@ -20,47 +20,49 @@ const { src, alt } = Astro.props;
     position: relative;
     display: inline-block;
     cursor: zoom-in;
+    margin: 0;
+    padding: 0;
   }
 
   .zoomable-image {
     width: 100%;
     transition: transform 0.25s ease;
-  }  
+  }
 </style>
 
 <script>
-  let isZoomed = false;
-
-  function toggleZoom(event) {
-    const currentTarget = event.currentTarget;
-    const img = currentTarget.querySelector('img');
-    isZoomed = !isZoomed;
-    img.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
-    img.style.cursor = isZoomed ? 'zoom-out' : 'zoom-in';
-  }
-  
-  function unzoom() {
-    const img = document.querySelector('.zoomable-image');
-    if (img && isZoomed) {
-      isZoomed = false;
-      img.style.transform = 'scale(1)';
-      img.style.cursor = 'zoom-in';
-    }
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.image-zoom-container');
-    if (container) {
+    const containers = document.querySelectorAll('.image-zoom-container');
+    containers.forEach(container => {
+      let isZoomed = false;
+
+      function toggleZoom(event) {
+        const currentTarget = event.currentTarget;
+        const img = currentTarget.querySelector('img');
+
+        isZoomed = !isZoomed;
+        img.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
+        img.style.cursor = isZoomed ? 'zoom-out' : 'zoom-in';
+      }
+
+      function unzoom() {
+        const img = container.querySelector('img');
+        if (img && isZoomed) {
+          isZoomed = false;
+          img.style.transform = 'scale(1)';
+          img.style.cursor = 'zoom-in';
+        }
+      }
+
       container.addEventListener('click', toggleZoom);
       container.addEventListener('mouseleave', unzoom);
-    }
 
-    window.addEventListener('resize', unzoom);
-    document.addEventListener('click', (event) => {
-      const container = document.querySelector('.image-zoom-container');
-      if (container && !container.contains(event.target)) {
-        unzoom();
-      }
+      window.addEventListener('resize', unzoom);
+      document.addEventListener('click', (event) => {
+        if (!container.contains(event.target)) {
+          unzoom();
+        }
+      });
     });
   });
 </script>
