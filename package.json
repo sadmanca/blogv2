@@ -36,6 +36,7 @@
     "@swup/astro": "^1.5.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "@unpic/astro": "^0.1.0",
     "astro": "^5.1.1",
     "astro-feelback": "^0.3.4",
     "astro-hover-prefetch": "^1.0.7",
