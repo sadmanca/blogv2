@@ -1,4 +1,5 @@
 ---
+// filepath: /workspaces/blogv2/src/components/mdx/ImageZoom.astro
 import { Image } from 'astro:assets';
 
 export interface Props {
@@ -14,24 +15,6 @@ const { src, alt } = Astro.props;
   <Image src={src} alt={alt} class="zoomable-image"/>
 </div>
 
-<script>
-  let isZoomed = false;
-
-  function toggleZoom(event: MouseEvent) {
-    const currentTarget = event.currentTarget as HTMLElement | null;
-    if (!currentTarget) return;
-    const img = currentTarget.querySelector('img') as HTMLImageElement;
-    isZoomed = !isZoomed;
-    img.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
-    img.style.cursor = isZoomed ? 'zoom-out' : 'zoom-in';
-  }
-
-  const container = document.querySelector('.image-zoom-container');
-  if (container) {
-    container.addEventListener('click', toggleZoom);
-  }
-</script>
-
 <style>
   .image-zoom-container {
     position: relative;
@@ -44,3 +27,40 @@ const { src, alt } = Astro.props;
     transition: transform 0.25s ease;
   }  
 </style>
+
+<script>
+  let isZoomed = false;
+
+  function toggleZoom(event) {
+    const currentTarget = event.currentTarget;
+    const img = currentTarget.querySelector('img');
+    isZoomed = !isZoomed;
+    img.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
+    img.style.cursor = isZoomed ? 'zoom-out' : 'zoom-in';
+  }
+  
+  function unzoom() {
+    const img = document.querySelector('.zoomable-image');
+    if (img && isZoomed) {
+      isZoomed = false;
+      img.style.transform = 'scale(1)';
+      img.style.cursor = 'zoom-in';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.image-zoom-container');
+    if (container) {
+      container.addEventListener('click', toggleZoom);
+      container.addEventListener('mouseleave', unzoom);
+    }
+
+    window.addEventListener('resize', unzoom);
+    document.addEventListener('click', (event) => {
+      const container = document.querySelector('.image-zoom-container');
+      if (container && !container.contains(event.target)) {
+        unzoom();
+      }
+    });
+  });
+</script>
