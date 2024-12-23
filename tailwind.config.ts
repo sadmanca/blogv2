@@ -40,6 +40,9 @@ const config: Config = {
         border: 'hsl(var(--border))',
         ring: 'hsl(var(--ring))',
       },
+      lineHeight: {
+        'extra-tight': '1.1',
+      },
     },
   },
   plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate')],
