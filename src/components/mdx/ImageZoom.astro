@@ -8,7 +8,7 @@ export interface Props {
   class?: string;
 }
 
-const { src, alt } = Astro.props;
+let { src, alt } = Astro.props;
 ---
 
 <div class="image-zoom-container">
@@ -29,8 +29,8 @@ const { src, alt } = Astro.props;
     transition: transform 0.25s ease;
   }
 
-  /* Add hover scaling behavior */
-  .image-zoom-container:hover .zoomable-image {
+  /* Add hover scaling behavior, only when not zoomed */
+  .image-zoom-container:hover .zoomable-image:not([data-zoomed="true"]) {
     transform: scale(1.05);
   }
 
@@ -42,13 +42,13 @@ const { src, alt } = Astro.props;
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const containers = document.querySelectorAll('.image-zoom-container');
+    let containers = document.querySelectorAll('.image-zoom-container');
     containers.forEach(container => {
       let isZoomed = false;
 
       function toggleZoom(event) {
-        const currentTarget = event.currentTarget;
-        const img = currentTarget.querySelector('img');
+        let currentTarget = event.currentTarget;
+        let img = currentTarget.querySelector('img');
 
         isZoomed = !isZoomed;
         if (isZoomed) {
@@ -59,7 +59,7 @@ const { src, alt } = Astro.props;
       }
 
       function unzoom() {
-        const img = container.querySelector('img');
+        let img = container.querySelector('img');
         if (img && isZoomed) {
           isZoomed = false;
           img.removeAttribute('data-zoomed');
@@ -70,10 +70,12 @@ const { src, alt } = Astro.props;
 
       container.addEventListener('mouseleave', () => {
         if (!isZoomed) {
-          const img = container.querySelector('img');
+          let img = container.querySelector('img');
           if (img) {
             img.removeAttribute('data-zoomed');
           }
+        } else {
+          unzoom();
         }
       });
 
