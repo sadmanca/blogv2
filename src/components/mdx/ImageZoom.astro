@@ -28,6 +28,16 @@ const { src, alt } = Astro.props;
     width: 100%;
     transition: transform 0.25s ease;
   }
+
+  /* Add hover scaling behavior */
+  .image-zoom-container:hover .zoomable-image {
+    transform: scale(1.05);
+  }
+
+  .zoomable-image[data-zoomed="true"] {
+    transform: scale(1.5) !important;
+    cursor: zoom-out;
+  }
 </style>
 
 <script>
@@ -41,25 +51,35 @@ const { src, alt } = Astro.props;
         const img = currentTarget.querySelector('img');
 
         isZoomed = !isZoomed;
-        img.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
-        img.style.cursor = isZoomed ? 'zoom-out' : 'zoom-in';
+        if (isZoomed) {
+          img.setAttribute('data-zoomed', 'true');
+        } else {
+          img.removeAttribute('data-zoomed');
+        }
       }
 
       function unzoom() {
         const img = container.querySelector('img');
         if (img && isZoomed) {
           isZoomed = false;
-          img.style.transform = 'scale(1)';
-          img.style.cursor = 'zoom-in';
+          img.removeAttribute('data-zoomed');
         }
       }
 
       container.addEventListener('click', toggleZoom);
-      container.addEventListener('mouseleave', unzoom);
+
+      container.addEventListener('mouseleave', () => {
+        if (!isZoomed) {
+          const img = container.querySelector('img');
+          if (img) {
+            img.removeAttribute('data-zoomed');
+          }
+        }
+      });
 
       window.addEventListener('resize', unzoom);
       document.addEventListener('click', (event) => {
-        if (!container.contains(event.target)) {
+        if (!container.contains(event.target) && isZoomed) {
           unzoom();
         }
       });
