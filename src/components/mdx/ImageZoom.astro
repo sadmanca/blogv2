@@ -1,18 +1,25 @@
 ---
-// filepath: /workspaces/blogv2/src/components/mdx/ImageZoom.astro
 import { Image } from 'astro:assets';
 
 export interface Props {
-  src: string;
+  src: string | ImageMetadata; // Allow both string and ImageMetadata
   alt: string;
   class?: string;
+  isAstroImage?: boolean;
 }
 
-let { src, alt } = Astro.props;
+let { src, alt, class: className, isAstroImage } = Astro.props;
+
+// Ensure `isAstroImage` only applies to valid Astro Image metadata
+const isValidAstroImage = typeof src === 'object' && src.src;
 ---
 
 <div class="image-zoom-container">
-  <Image src={src} alt={alt} class="zoomable-image"/>
+  {isValidAstroImage ? (
+    <Image {...src} alt={alt} class={`zoomable-image ${className}`} />
+  ) : (
+    <img src={typeof src === 'string' ? src : ''} alt={alt} class={`zoomable-image ${className}`} />
+  )}
 </div>
 
 <style>
@@ -38,51 +45,49 @@ let { src, alt } = Astro.props;
     transform: scale(1.5) !important;
     cursor: zoom-out;
   }
-</style>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    let containers = document.querySelectorAll('.image-zoom-container');
-    containers.forEach(container => {
+  .zoomed {
+    z-index: 1000; /* Ensure it is on top of other elements */
+    position: relative; /* Ensure z-index works */
+  }
+</style><script>
+  function initializeImageZoom() {
+    const containers = document.querySelectorAll('.image-zoom-container');
+
+    containers.forEach((container) => {
+      if (container.dataset.zoomInitialized) return;
+
+      container.dataset.zoomInitialized = true;
       let isZoomed = false;
 
-      function toggleZoom(event) {
-        let currentTarget = event.currentTarget;
-        let img = currentTarget.querySelector('img');
+      const img = container.querySelector('.zoomable-image');
+      if (!img) return;
 
+      const toggleZoom = () => {
         isZoomed = !isZoomed;
+
         if (isZoomed) {
           img.setAttribute('data-zoomed', 'true');
           img.classList.add('zoomed');
+          container.style.cursor = 'zoom-out';
         } else {
           img.removeAttribute('data-zoomed');
           img.classList.remove('zoomed');
+          container.style.cursor = 'zoom-in';
         }
-      }
+      };
 
-      function unzoom() {
-        let img = container.querySelector('img');
-        if (img && isZoomed) {
+      const unzoom = () => {
+        if (isZoomed) {
           isZoomed = false;
           img.removeAttribute('data-zoomed');
           img.classList.remove('zoomed');
+          container.style.cursor = 'zoom-in';
         }
-      }
+      };
 
       container.addEventListener('click', toggleZoom);
-
-      container.addEventListener('mouseleave', () => {
-        if (!isZoomed) {
-          let img = container.querySelector('img');
-          if (img) {
-            img.removeAttribute('data-zoomed');
-            img.classList.remove('zoomed');
-          }
-        } else {
-          unzoom();
-        }
-      });
-
+      container.addEventListener('mouseleave', unzoom);
       window.addEventListener('resize', unzoom);
       document.addEventListener('click', (event) => {
         if (!container.contains(event.target) && isZoomed) {
@@ -90,12 +95,15 @@ let { src, alt } = Astro.props;
         }
       });
     });
-  });
-</script>
-
-<style>
-  .zoomed {
-    z-index: 1000; /* Ensure it is on top of other elements */
-    position: relative; /* Ensure z-index works */
   }
-</style>
+
+  // Re-initialize on page navigation
+  document.addEventListener('astro:page-load', initializeImageZoom);
+
+  // Initialize on first load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeImageZoom);
+  } else {
+    initializeImageZoom();
+  }
+</script>
