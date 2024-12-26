@@ -18,10 +18,24 @@ export interface BreadcrumbItem {
 interface Props {
   items: BreadcrumbItem[]
   class?: string
+  truncationLength?: number
 }
 
-const { items, class: className } = Astro.props
+const { items, class: className, truncationLength = 35 } = Astro.props
+
+function truncateLabel(label?: string, length: number) {
+  if (!label) return ''
+  return label.length > length ? `${label.slice(0, length)}...` : label
+}
 ---
+
+<style>
+  .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
 
 <Breadcrumb className={className}>
   <BreadcrumbList>
@@ -37,16 +51,16 @@ const { items, class: className } = Astro.props
           <BreadcrumbItem>
             {index === items.length - 1 ? (
               <BreadcrumbPage>
-                <span class="flex items-center gap-x-2">
+                <span class="flex items-center gap-x-2 truncate">
                   {item.icon && <Icon name={item.icon} class="size-4" />}
-                  {item.label}
+                  {truncateLabel(item.label, truncationLength)}
                 </span>
               </BreadcrumbPage>
             ) : (
               <BreadcrumbLink href={item.href}>
-                <span class="flex items-center gap-x-2">
+                <span class="flex items-center gap-x-2 truncate">
                   {item.icon && <Icon name={item.icon} class="size-4" />}
-                  {item.label}
+                  {truncateLabel(item.label, truncationLength)}
                 </span>
               </BreadcrumbLink>
             )}
