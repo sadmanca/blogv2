@@ -23,8 +23,9 @@ interface Props {
 
 const { items, class: className, truncationLength = 35 } = Astro.props
 
-function truncateLabel(label?: string, length: number) {
+function truncateLabel(label?: string, length?: number) {
   if (!label) return ''
+  if (!length) length = 35
   return label.length > length ? `${label.slice(0, length)}...` : label
 }
 ---

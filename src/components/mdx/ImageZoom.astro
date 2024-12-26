@@ -59,12 +59,12 @@ const isValidAstroImage = typeof src === 'object' && src.src;
     const containers = document.querySelectorAll('.image-zoom-container');
 
     containers.forEach((container) => {
-      if (container.dataset.zoomInitialized) return;
+      if ((container as HTMLElement).dataset.zoomInitialized) return;
 
-      container.dataset.zoomInitialized = true;
+      (container as HTMLElement).dataset.zoomInitialized = 'true';
       let isZoomed = false;
 
-      const img = container.querySelector('.zoomable-image');
+      const img = container.querySelector('.zoomable-image') as HTMLElement;
       if (!img) return;
 
       const toggleZoom = () => {
@@ -73,11 +73,11 @@ const isValidAstroImage = typeof src === 'object' && src.src;
         if (isZoomed) {
           img.setAttribute('data-zoomed', 'true');
           img.classList.add('zoomed');
-          container.style.cursor = 'zoom-out';
+          (container as HTMLElement).style.cursor = 'zoom-out';
         } else {
           img.removeAttribute('data-zoomed');
           img.classList.remove('zoomed');
-          container.style.cursor = 'zoom-in';
+          (container as HTMLElement).style.cursor = 'zoom-in';
         }
       };
 
@@ -86,7 +86,7 @@ const isValidAstroImage = typeof src === 'object' && src.src;
           isZoomed = false;
           img.removeAttribute('data-zoomed');
           img.classList.remove('zoomed');
-          container.style.cursor = 'zoom-in';
+          (container as HTMLElement).style.cursor = 'zoom-in';
         }
       };
 
@@ -94,7 +94,7 @@ const isValidAstroImage = typeof src === 'object' && src.src;
       container.addEventListener('mouseleave', unzoom);
       window.addEventListener('resize', unzoom);
       document.addEventListener('click', (event) => {
-        if (!container.contains(event.target) && isZoomed) {
+        if (!container.contains(event.target as Node) && isZoomed) {
           unzoom();
         }
       });
