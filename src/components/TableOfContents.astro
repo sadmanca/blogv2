@@ -51,7 +51,7 @@ function buildToc(headings: Heading[]): Heading[] {
     />
   </summary>
   <ScrollArea
-    client:load
+    client:idle
     className="flex max-h-64 flex-col overflow-y-auto"
     type="always"
   >
@@ -67,7 +67,7 @@ function buildToc(headings: Heading[]): Heading[] {
   class="sticky top-[5.5rem] col-start-1 hidden h-[calc(100vh-5.5rem)] text-xs leading-4 xl:block"
 >
   <div class="flex justify-end">
-    <ScrollArea client:load className="max-h-[calc(100vh-8rem)]" type="always">
+    <ScrollArea client:idle className="max-h-[calc(100vh-8rem)]" type="always">
       <ul
         class="flex flex-col justify-end gap-y-2 overflow-y-auto px-8"
         id="toc-container"
