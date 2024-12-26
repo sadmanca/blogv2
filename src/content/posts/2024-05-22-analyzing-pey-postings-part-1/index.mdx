@@ -11,6 +11,7 @@ authors: ['sadman']
 import Callout from '@/components/mdx/Callout.astro';
 import ImageGalleryCaption from '@/components/ImageGalleryCaption.astro';
 import { Image } from 'astro:assets';
+import ImageZoom from '@/components/mdx/ImageZoom.astro';
 import peyLoginImage from './01-01-pey-login.png';
 import a1 from './01-pey-advanced-search.jpg';
 import a2 from './01-pey-landing-page.jpg';
@@ -49,7 +50,7 @@ The UofT PEY Co-op job board itself is located behind a login portal at [https:/
 All of which means that unless you're a keen student in your second year who's opted in to get access and do your PEY early, you're either in your third year or you don't have access to the job portal. As an engineering student who's just finished their third year (at the time of writing), I've had privileged access for 8 months and counting, and I've been able to save data on every single job posted on the portal since the very first day I've had access (I came prepared).
 
 <figure>
-  <Image class="rounded-xl" src={peyLoginImage} alt="PEY job board login portal" />
+  <ImageZoom class="rounded-xl" src={peyLoginImage} alt="PEY job board login portal" />
   <figcaption>The PEY job board login portal at <a href="https://www.uoftengcareerportal.ca/notLoggedIn">https://www.uoftengcareerportal.ca/notLoggedIn</a></figcaption>
 </figure>
 
@@ -65,7 +66,7 @@ The [landing page](https://uoftengcareerportal.ca/myAccount/internship/postings.
 import viewedjobs from './01-pey-viewed.jpg';
 
 <figure>
-  <Image class="rounded-xl" src={viewedjobs} alt="PEY Co-op job board viewed jobs" />
+  <ImageZoom class="rounded-xl" src={viewedjobs} alt="PEY Co-op job board viewed jobs" />
   <figcaption>Viewed jobs (Viewed)</figcaption>
 </figure>
 

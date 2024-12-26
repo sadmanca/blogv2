@@ -1,20 +1,19 @@
 ---
-// ImageGalleryCaption.astro
-import { Image } from 'astro:assets'
+import ImageZoom from '@/components/mdx/ImageZoom.astro';
 
 export interface ImageData {
-  src: string
-  caption?: string // Make caption optional
-  width?: number // Optional width for remote images
-  height?: number // Optional height for remote images
+  src: string;
+  caption?: string; // Make caption optional
+  width?: number; // Optional width for remote images
+  height?: number; // Optional height for remote images
 }
 
 export interface Props {
-  images: ImageData[]
-  columns: number
+  images: ImageData[];
+  columns: number;
 }
 
-const { images, columns } = Astro.props
+const { images, columns } = Astro.props;
 ---
 
 <style>
@@ -34,6 +33,7 @@ const { images, columns } = Astro.props
     text-align: center;
     font-size: 0.875em;
     color: #666;
+    margin-top: -3px;    
   }
 </style>
 
@@ -41,11 +41,14 @@ const { images, columns } = Astro.props
   {
     images.map((image) => (
       <figure>
-      {typeof image.src === 'string' && image.src.startsWith('http') ? (
-        <img class="rounded-xl" src={image.src} alt={image.caption || 'Gallery Image'} width={image.width} height={image.height} />
-      ) : (
-          <Image
-            {...(image as any)}
+        {typeof image.src === 'string' && image.src.startsWith('http') ? (
+          <ImageZoom
+            src={image.src}
+            alt={image.caption || 'Gallery Image'}
+            class="rounded-xl"
+          />
+        ) : (
+          <ImageZoom
             src={image.src}
             alt={image.caption || 'Gallery Image'}
             class="rounded-xl"

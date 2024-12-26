@@ -1,5 +1,6 @@
 ---
-// ImageGallery.astro
+import ImageZoom from '@/components/mdx/ImageZoom.astro';
+
 export interface Props {
   images: string[];
   columns: number;
@@ -22,6 +23,10 @@ const { images, columns } = Astro.props;
 
 <div class="gallery" style={`grid-template-columns: repeat(${columns}, 1fr);`}>
   {images.map((image) => (
-    <img class="rounded-xl" src={image} alt="Gallery Image" />
+    <ImageZoom
+      src={image}
+      alt={'Gallery Image'}
+      class="rounded-xl"
+    />    
   ))}
 </div>

@@ -134,6 +134,8 @@
 
     img {
       border-radius: 0.75rem;
+      margin-top: 0.1em !important;
+      margin-bottom: 0.1em !important;      
     }
 
     .katex-display {
