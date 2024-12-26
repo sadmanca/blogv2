@@ -74,10 +74,23 @@ function formatDate(dateString: any) {
     background-color: #c3c3c3;
     width: 100%;
     height: 100%;
-    opacity: 0.25;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
   }
   .hidden {
-    display: none;
+    opacity: 0;
+  }
+  .zoomable-image {
+    opacity: 0;
+    transition: opacity 6.5s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .zoomable-image.loaded {
+    opacity: 1;
   }
 </style>
 
@@ -100,11 +113,11 @@ function formatDate(dateString: any) {
               <img
                 src={book.book_image_url}
                 alt={book.title}
-                class="h-full w-full rounded-md object-cover hidden"
+                class="h-full w-full rounded-md object-cover zoomable-image"
                 title={`${book.title}`}
                 width={101}
                 height={150}
-                onload={`document.getElementById('placeholder-${book.book_id}').classList.add('hidden'); this.classList.remove('hidden');`}
+                onload={`document.getElementById('placeholder-${book.book_id}').classList.add('hidden'); this.classList.add('loaded');`}
               />
             </div>
           </a>
