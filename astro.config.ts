@@ -91,6 +91,8 @@ export default defineConfig({
         {
           target: '_blank',
           rel: ['nofollow', 'noreferrer', 'noopener'],
+          content: { type: "text", value: " ↗" }, // ⤴
+          contentProperties: { "aria-hidden": true, class: "no-select" },
         },
       ],
       rehypeHeadingIds,

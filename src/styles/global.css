@@ -307,3 +307,7 @@ html.dark .swup-progress-bar {
 .prose article :where(h1):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-size: 3em; /* Increase the font size */
 }
+
+.no-select {
+  user-select: none;
+}
