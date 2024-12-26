@@ -21,7 +21,6 @@ import icon from 'astro-icon'
 
 import partytown from '@astrojs/partytown'
 import swup from '@swup/astro';
-import { imageService } from "@unpic/astro/service";
 
 // https://astro.build/config
 export default defineConfig({
@@ -131,8 +130,7 @@ export default defineConfig({
   },
   image: {
     // Used for all `<Image />` and `<Picture />` components unless overridden
-    // experimentalLayout: 'responsive',
-    service: imageService(),
+    experimentalLayout: 'responsive',
   },
   experimental: {
     responsiveImages: true,
