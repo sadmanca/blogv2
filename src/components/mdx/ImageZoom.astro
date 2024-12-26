@@ -33,24 +33,28 @@ const isValidAstroImage = typeof src === 'object' && src.src;
 
   .zoomable-image {
     width: 100%;
-    transition: transform 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.5s ease;
   }
 
   /* Add hover scaling behavior, only when not zoomed */
   .image-zoom-container:hover .zoomable-image:not([data-zoomed="true"]) {
     transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Add drop shadow */
   }
 
   .zoomable-image[data-zoomed="true"] {
     transform: scale(1.5) !important;
     cursor: zoom-out;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Add drop shadow */
   }
 
   .zoomed {
     z-index: 1000; /* Ensure it is on top of other elements */
     position: relative; /* Ensure z-index works */
   }
-</style><script>
+</style>
+
+<script>
   function initializeImageZoom() {
     const containers = document.querySelectorAll('.image-zoom-container');
 

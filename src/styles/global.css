@@ -86,54 +86,54 @@
     @apply prose-headings:scroll-mt-20 prose-headings:break-words first:prose-headings:mt-0 prose-p:break-words prose-a:!break-words prose-a:!decoration-muted-foreground prose-a:underline-offset-[3px] prose-a:transition-colors hover:prose-a:!decoration-foreground prose-pre:!px-0 prose-img:mx-auto;
 
     h1 {
-      font-size: 3rem !important;
+      font-size: 3em !important;
       font-weight: 900 !important; 
-      margin-bottom: 1rem !important;
+      margin-bottom: 1em !important;
       line-height: 1.0 !important;
     }
 
     h2 {
-      font-size: 2.65rem !important;
+      font-size: 2.65em !important;
       font-weight: 825 !important;
-      margin-bottom: 1rem !important;
+      margin-bottom: 1em !important;
       line-height: 1.0 !important;
     }
 
     h3 {
-      font-size: 2.25rem !important;
+      font-size: 2.25em !important;
       font-weight: 775 !important;
-      margin-bottom: 1rem !important;
+      margin-bottom: 1em !important;
       line-height: 1.0 !important;
     }
 
     h4 {
-      font-size: 2rem !important;
+      font-size: 2em !important;
       font-weight: 700 !important;
-      margin-bottom: 1rem !important;
+      margin-bottom: 1em !important;
       line-height: 1.0 !important;
     }
 
     h5 {
-      font-size: 1.75rem !important;
+      font-size: 1.75em !important;
       font-weight: 650 !important;
-      margin-bottom: 1rem !important;
+      margin-bottom: 1em !important;
       line-height: 1.0 !important;
     }
 
     h6 {
-      font-size: 1.45rem !important;
+      font-size: 1.45em !important;
       font-weight: 600 !important;
-      margin-bottom: 1rem !important;
+      margin-bottom: 1em !important;
       line-height: 1.0 !important;
     }
 
     p, ul, ol, dl, blockquote {
-      font-size: 1.175rem !important;
+      font-size: 1.175em !important;
       line-height: 1.4 !important;
     }
 
     img {
-      border-radius: 0.75rem;
+      border-radius: 0.75em;
       margin-top: 0.1em !important;
       margin-bottom: 0.1em !important;      
     }
