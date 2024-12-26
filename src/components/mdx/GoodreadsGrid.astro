@@ -67,6 +67,18 @@ function formatDate(dateString: any) {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  .placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #c3c3c3;
+    width: 100%;
+    height: 100%;
+    opacity: 0.25;
+  }
+  .hidden {
+    display: none;
+  }
 </style>
 
 <div class="goodreads">
@@ -81,22 +93,28 @@ function formatDate(dateString: any) {
             class="h-36 w-24"
             target="_blank"
           >
-            <img
-              src={book.book_image_url}
-              alt={book.title}
-              class="h-full w-full rounded-md object-cover"
-              title={`${book.title}`}
-              width={101}
-              height={150}
-            />
+            <div class="relative h-full w-full">
+              <div class="placeholder rounded-md" id={`placeholder-${book.book_id}`}>
+                <div class="h-12 w-12 bg-gray-300 rounded-md"></div>
+              </div>
+              <img
+                src={book.book_image_url}
+                alt={book.title}
+                class="h-full w-full rounded-md object-cover hidden"
+                title={`${book.title}`}
+                width={101}
+                height={150}
+                onload={`document.getElementById('placeholder-${book.book_id}').classList.add('hidden'); this.classList.remove('hidden');`}
+              />
+            </div>
           </a>
           <div class={`mt-${titleMarginTop} text-center`}>
             <a
               href={`https://www.goodreads.com/book/show/${book.book_id}`}
               class="line-clamp-2 block w-20 text-xs font-semibold underline"
-              style="text-underline-offset: 3px;"
+              style="text-underline-offset: 2px;"
               target="_blank"
-              title={`${book.title}`}}
+              title={`${book.title}`}
             >
               {book.title}
             </a>
