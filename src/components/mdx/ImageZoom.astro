@@ -16,7 +16,7 @@ const isValidAstroImage = typeof src === 'object' && src.src;
 
 <div class="image-zoom-container">
   {isValidAstroImage ? (
-    <Image {...src} alt={alt} class={`zoomable-image ${className}`} />
+    <Image src={src} alt={alt} class={`zoomable-image ${className}`} />
   ) : (
     <img src={typeof src === 'string' ? src : ''} alt={alt} class={`zoomable-image ${className}`} />
   )}
