@@ -132,6 +132,10 @@
       line-height: 1.4 !important;
     }
 
+    ol p {
+      font-size: 1em !important;
+    }    
+
     img {
       border-radius: 0.75em;
       margin-top: 0.1em !important;
