@@ -2,8 +2,7 @@
 import xml2js from 'xml2js'
 import { Image } from 'astro:assets';
 
-const { titleMarginTop = 1 } = Astro.props;
-const { ratingMarginBottom = 4 } = Astro.props;
+const { titleMarginTop = 1, ratingMarginBottom = 4, filterYear } = Astro.props;
 
 const GOODREADS_URL =
   'https://www.goodreads.com/review/list_rss/152185079?key=_0elm4i3w7r24rhlGCl4tPmj0V9u5Jla71mdKQ_MBPUwhSys&shelf=read'
@@ -11,7 +10,7 @@ const GOODREADS_URL =
 const response = await fetch(GOODREADS_URL)
 const data = await response.text()
 const result = await xml2js.parseStringPromise(data)
-const books = result.rss.channel[0].item.map((item: any) => {
+let books = result.rss.channel[0].item.map((item: any) => {
   const highResImageUrl = item.book_image_url[0]
     .replace(/(\._SX\d+_|\._SY\d+_)+/g, '._SX150_SY150_')
     .replace(/(\._SY\d+_)+/g, '._SY150_')
@@ -26,6 +25,14 @@ const books = result.rss.channel[0].item.map((item: any) => {
     book_id: item.book_id[0],
   }
 })
+
+// Filter books by year if filterYear is provided
+if (filterYear) {
+  books = books.filter((book: any) => {
+    const date = new Date(book.date_read);
+    return date.getUTCFullYear() === filterYear;
+  });
+}
 
 // Sort books by date_read (latest first)
 books.sort((a: any, b: any) => {
