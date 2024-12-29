@@ -2,7 +2,7 @@
 import xml2js from 'xml2js'
 import { Image } from 'astro:assets';
 
-const { titleMarginTop = 1, ratingMarginBottom = 4, filterYear } = Astro.props;
+const { titleMarginTop = 1, ratingMarginBottom = 4, filterYear, filterTitles } = Astro.props;
 
 const GOODREADS_URL =
   'https://www.goodreads.com/review/list_rss/152185079?key=_0elm4i3w7r24rhlGCl4tPmj0V9u5Jla71mdKQ_MBPUwhSys&shelf=read'
@@ -34,14 +34,23 @@ if (filterYear) {
   });
 }
 
-// Sort books by date_read (latest first)
-books.sort((a: any, b: any) => {
-  if (!a.date_read || a.date_read[0] === '') return -1; // Place a at the top if date_read is missing
-  if (!b.date_read || b.date_read[0] === '') return 1; // Place b at the top if date_read is missing
-  const dateA = new Date(a.date_read);
-  const dateB = new Date(b.date_read);
-  return dateB.getTime() - dateA.getTime();
-});
+// Filter books by title if filterTitles is provided
+if (filterTitles && filterTitles.length > 0) {
+  books = books.filter((book: any) => filterTitles.includes(book.title));
+  // Sort books by the order of titles in filterTitles
+  books.sort((a: any, b: any) => filterTitles.indexOf(a.title) - filterTitles.indexOf(b.title));
+}
+
+// Sort books by date_read (latest first) if not filtering by titles
+if (!filterTitles || filterTitles.length === 0) {
+  books.sort((a: any, b: any) => {
+    if (!a.date_read || a.date_read[0] === '') return -1; // Place a at the top if date_read is missing
+    if (!b.date_read || b.date_read[0] === '') return 1; // Place b at the top if date_read is missing
+    const dateA = new Date(a.date_read);
+    const dateB = new Date(b.date_read);
+    return dateB.getTime() - dateA.getTime();
+  });
+}
 
 function formatDate(dateString: any) {
   const monthNames = [
