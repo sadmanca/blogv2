@@ -1,5 +1,6 @@
 ---
 import xml2js from 'xml2js'
+import { Image } from 'astro:assets';
 
 const { titleMarginTop = 1 } = Astro.props;
 const { ratingMarginBottom = 4 } = Astro.props;
@@ -110,7 +111,7 @@ function formatDate(dateString: any) {
               <div class="placeholder rounded-md" id={`placeholder-${book.book_id}`}>
                 <div class="h-12 w-12 bg-gray-300 rounded-md"></div>
               </div>
-              <img
+              <Image
                 src={book.book_image_url}
                 alt={book.title}
                 class="h-full w-full rounded-md object-cover zoomable-image"
