@@ -76,18 +76,18 @@ function formatDate(dateString: any) {
     height: 100%;
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
-  }
-  .hidden {
-    opacity: 0;
+    position: relative;
+    z-index: 1;
   }
   .zoomable-image {
     opacity: 0;
-    transition: opacity 6.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 2;
   }
   .zoomable-image.loaded {
     opacity: 1;
