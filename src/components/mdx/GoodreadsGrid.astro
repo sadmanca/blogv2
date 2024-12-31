@@ -6,7 +6,7 @@ const { gridMarginTop = 4, titleMarginTop = 1, ratingMarginBottom = 4, filterYea
 
 const TIMEOUT = 200000; // Set timeout to 200 seconds
 
-const fetchWithTimeout = async (url, options = {}, timeout = TIMEOUT) => {
+const fetchWithTimeout = async (url: string, options = {}, timeout = TIMEOUT) => {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   const response = await fetch(url, { ...options, signal: controller.signal });

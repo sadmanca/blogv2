@@ -11,9 +11,9 @@ const LIMIT = 999999999999999999999;
 const TIMEOUT = 200000; // Set timeout to 200 seconds
 
 let watchedItems = [];
-let ratings = [];
+let ratings: never[] = [];
 
-const fetchWithTimeout = async (url, options = {}, timeout = TIMEOUT) => {
+const fetchWithTimeout = async (url: string, options = {}, timeout = TIMEOUT) => {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   const response = await fetch(url, { ...options, signal: controller.signal });
@@ -50,7 +50,7 @@ try {
 
   const ratingsData = await ratingsResponse.json();
 
-  ratings = ratingsData.reduce((acc, item) => {
+  ratings = ratingsData.reduce((acc: { [x: string]: any; }, item: { [x: string]: { ids: { tmdb: string | number; }; }; rating: any; }) => {
     acc[item[type.slice(0, -1)].ids.tmdb] = item.rating;
     return acc;
   }, {});
@@ -128,7 +128,9 @@ try {
 
 <div class={`mt-${gridMarginTop} trakt`}>
   <div class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7">
-    {watchedItems.map((item: { title: string; year: number; last_watched_at: string; poster: string; rating: number }) => (
+    {watchedItems.map((item: {
+[x: string]: any; title: string; year: number; last_watched_at: string; poster: string; rating: number 
+}) => (
     <div class="flex flex-col items-center">
       <a
         href={`https://www.imdb.com/title/${item.imdb}`}
