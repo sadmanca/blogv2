@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 
-const { gridMarginTop = 5, titleMarginTop = 1, ratingMarginBottom = 1, filterYear, filterTitles, type = 'movies' } = Astro.props;
+const { gridMarginTop = 5, titleMarginTop = 1, ratingMarginBottom = 1, filterYear, filterTitles = [], type = 'movies' } = Astro.props;
 
 const TRAKT_WATCHED_URL = `https://api.trakt.tv/users/sadmanca/watched/${type}`;
 const TRAKT_RATINGS_URL = `https://api.trakt.tv/users/sadmanca/ratings/${type}`;
@@ -50,9 +50,9 @@ try {
     const tmdbId = item[type.slice(0, -1)].ids.tmdb;
     let image_api_request;
     if (type == 'movies') {
-      image_api_request = `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
+      image_api_request = `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`;
     } else {
-      image_api_request = `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
+      image_api_request = `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`;
     }
     const tmdbResponse = await fetch(image_api_request);
     const tmdbData = await tmdbResponse.json();
@@ -70,6 +70,11 @@ try {
   if (filterYear) {
     watchedItems = watchedItems.filter(item => new Date(item.last_watched_at).getFullYear() === filterYear);
   }
+
+  if (filterTitles.length > 0) {
+    watchedItems = watchedItems.filter(item => filterTitles.includes(item.title));
+  }
+
   watchedItems.sort((a, b) => new Date(b.last_watched_at).getTime() - new Date(a.last_watched_at).getTime());
 
 } catch (error) {
