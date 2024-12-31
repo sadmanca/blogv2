@@ -8,12 +8,21 @@ const TRAKT_RATINGS_URL = `https://api.trakt.tv/users/sadmanca/ratings/${type}`;
 const TRAKT_CLIENT_ID = '21d632f4344d0df01f8602f8e64f30b4e5ee7e37b7d14989082b528d8c3f23c6';
 const TMDB_API_KEY = 'aff1d91cd3e2013154db0527ea0c5f18';
 const LIMIT = 999999999999999999999;
+const TIMEOUT = 200000; // Set timeout to 200 seconds
 
 let watchedItems = [];
 let ratings = [];
 
+const fetchWithTimeout = async (url, options = {}, timeout = TIMEOUT) => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  const response = await fetch(url, { ...options, signal: controller.signal });
+  clearTimeout(id);
+  return response;
+};
+
 try {
-  const watchedResponse = await fetch(TRAKT_WATCHED_URL, {
+  const watchedResponse = await fetchWithTimeout(TRAKT_WATCHED_URL, {
     headers: {
       'Content-Type': 'application/json',
       'trakt-api-version': '2',
@@ -27,7 +36,7 @@ try {
 
   const watchedData = await watchedResponse.json();
 
-  const ratingsResponse = await fetch(TRAKT_RATINGS_URL, {
+  const ratingsResponse = await fetchWithTimeout(TRAKT_RATINGS_URL, {
     headers: {
       'Content-Type': 'application/json',
       'trakt-api-version': '2',
@@ -54,7 +63,7 @@ try {
     } else {
       image_api_request = `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`;
     }
-    const tmdbResponse = await fetch(image_api_request);
+    const tmdbResponse = await fetchWithTimeout(image_api_request);
     const tmdbData = await tmdbResponse.json();
 
     return {
@@ -222,15 +231,45 @@ try {
 </div>
 
 <style>
-.trakt-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 16px;
-}
-
-.trakt-item {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
-}
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #c3c3c3;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    position: relative;
+    z-index: 1;
+  }
+  .zoomable-image {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+  .zoomable-image.loaded {
+    opacity: 1;
+  }
+  .trakt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+  .trakt-item {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
 </style>
