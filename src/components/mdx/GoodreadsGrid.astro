@@ -2,7 +2,7 @@
 import xml2js from 'xml2js'
 import { Image } from 'astro:assets';
 
-const { titleMarginTop = 1, ratingMarginBottom = 4, filterYear, filterTitles } = Astro.props;
+const { gridMarginTop = 4, titleMarginTop = 1, ratingMarginBottom = 4, filterYear, filterTitles } = Astro.props;
 
 const GOODREADS_URL =
   'https://www.goodreads.com/review/list_rss/152185079?key=_0elm4i3w7r24rhlGCl4tPmj0V9u5Jla71mdKQ_MBPUwhSys&shelf=read'
@@ -111,7 +111,7 @@ function formatDate(dateString: any) {
   }
 </style>
 
-<div class="goodreads">
+<div class=`mt-${gridMarginTop} goodreads`>
   <div
     class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7"
   >
@@ -141,7 +141,7 @@ function formatDate(dateString: any) {
           <div class={`mt-${titleMarginTop} text-center`}>
             <a
               href={`https://www.goodreads.com/book/show/${book.book_id}`}
-              class="line-clamp-2 block w-20 text-xs font-semibold underline"
+              class="line-clamp-2 block w-31 text-xs font-semibold underline"
               style="text-underline-offset: 2px;"
               target="_blank"
               title={`${book.title}`}
@@ -149,7 +149,7 @@ function formatDate(dateString: any) {
               {book.title}
             </a>
             <span
-              class="mt-1 block w-20 truncate text-xs text-muted-foreground"
+              class="mt-1 block w-31 truncate text-xs text-muted-foreground"
               title={`${book.author_name}`}
             >
               {book.author_name}
