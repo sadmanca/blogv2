@@ -34,6 +34,7 @@ try {
       year: item.movie.year,
       last_watched_at: item.last_watched_at,
       poster: `https://image.tmdb.org/t/p/w200${tmdbData.poster_path}`, // Use TMDB poster path
+      imdb: item.movie.ids.imdb,
     };
   }));
 } catch (error) {
@@ -41,31 +42,83 @@ try {
 }
 
 ---
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #c3c3c3;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    position: relative;
+    z-index: 1;
+  }
+  .zoomable-image {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+  .zoomable-image.loaded {
+    opacity: 1;
+  }
+</style>
+
 <div class={`mt-${gridMarginTop} trakt`}>
   <div class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7">
     {watchedItems.map((item: { title: string; year: number; last_watched_at: string; poster: string }) => (
-      <div class="flex flex-col items-center">
-        <div class="h-36 w-24">
-          <div class="relative h-full w-full">
-            <Image
-              src={item.poster}
-              alt={item.title}
-              class="h-full w-full rounded-md object-cover"
-              title={`${item.title}`}
-              width={101}
-              height={150}
-            />
+    <div class="flex flex-col items-center">
+      <a
+        href={`https://www.imdb.com/title/${item.imdb}`}
+        class="h-36 w-24"
+        target="_blank"
+      >
+        <div class="relative h-full w-full">
+          <div class="placeholder rounded-md" id={`placeholder-${item.title}`}>
+            <div class="h-12 w-12 bg-gray-300 rounded-md"></div>
           </div>
+          <Image
+            src={item.poster}
+            alt={item.title}
+            class="h-full w-full rounded-md object-cover zoomable-image"
+            title={`${item.title}`}
+            width={101}
+            height={150}
+            onload={`document.getElementById('placeholder-${item.title}').classList.add('hidden'); this.classList.add('loaded');`}
+          />
         </div>
+      </a>
         <div class={`mt-${titleMarginTop} text-center`}>
-          <span class="line-clamp-2 block w-31 text-xs font-semibold underline" style="text-underline-offset: 2px;" title={`${item.title}`}>
+          <a 
+            href={`https://www.imdb.com/title/${item.imdb}`} 
+            class="line-clamp-4 block w-31 text-xs underline"
+            style="text-underline-offset: 2px;"
+            target="_blank" 
+            rel="noopener noreferrer"
+            title={`${item.title}`}
+          >
             {item.title} ({item.year})
-          </span>
-          <span class="mt-1 block text-xs text-muted-foreground" title="Last Watched">
-            Last Watched: {new Date(item.last_watched_at).toLocaleDateString()}
-          </span>
+          </a>
+          <span 
+            class="mt-1 block text-xs text-muted-foreground" 
+            title="Last Watched">
+              Last Watched: {new Date(item.last_watched_at).toLocaleDateString()}
+          </span>            
         </div>
-      </div>
+    </div>
     ))}
   </div>
 </div>
