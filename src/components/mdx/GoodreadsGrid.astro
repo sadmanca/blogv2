@@ -5,15 +5,18 @@ import { Image } from 'astro:assets';
 const { gridMarginTop = 4, titleMarginTop = 1, ratingMarginBottom = 4, filterYear, filterTitles } = Astro.props;
 
 const TIMEOUT = 200000; // Set timeout to 200 seconds
+const REQUEST_DELAY = 500;
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const fetchWithTimeout = async (url: string, options = {}, timeout = TIMEOUT) => {
+  await delay(REQUEST_DELAY);
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   const response = await fetch(url, { ...options, signal: controller.signal });
   clearTimeout(id);
   return response;
 };
-
 
 const GOODREADS_URL =
   'https://www.goodreads.com/review/list_rss/152185079?key=_0elm4i3w7r24rhlGCl4tPmj0V9u5Jla71mdKQ_MBPUwhSys&shelf=read'
@@ -122,7 +125,7 @@ function formatDate(dateString: any) {
   }
 </style>
 
-<div class=`mt-${gridMarginTop} goodreads`>
+<div class={`mt-${gridMarginTop} goodreads`}>
   <div
     class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7"
   >

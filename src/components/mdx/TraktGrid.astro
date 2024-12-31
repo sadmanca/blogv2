@@ -9,11 +9,15 @@ const TRAKT_CLIENT_ID = '21d632f4344d0df01f8602f8e64f30b4e5ee7e37b7d14989082b528
 const TMDB_API_KEY = 'aff1d91cd3e2013154db0527ea0c5f18';
 const LIMIT = 999999999999999999999;
 const TIMEOUT = 200000; // Set timeout to 200 seconds
+const REQUEST_DELAY = 200;
 
 let watchedItems = [];
 let ratings: never[] = [];
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 const fetchWithTimeout = async (url: string, options = {}, timeout = TIMEOUT) => {
+  await delay(REQUEST_DELAY);
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   const response = await fetch(url, { ...options, signal: controller.signal });
@@ -55,7 +59,8 @@ try {
     return acc;
   }, {});
 
-  watchedItems = await Promise.all(watchedData.slice(0, LIMIT).map(async (item: any) => {
+  watchedItems = await Promise.all(watchedData.slice(0, LIMIT).map(async (item: any, index: any) => {
+    await delay(index * REQUEST_DELAY); // Throttle requests
     const tmdbId = item[type.slice(0, -1)].ids.tmdb;
     let image_api_request;
     if (type == 'movies') {
@@ -90,6 +95,19 @@ try {
   console.error('Error fetching or parsing data from Trakt API:', error);
 }
 
+function formatDate(dateString: any) {
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+
+  const date = new Date(dateString);
+  const day = date.getUTCDate();
+  const month = monthNames[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+
+  return `${day} ${month} ${year}`;
+}
 ---
 
 <style>
@@ -124,13 +142,23 @@ try {
   .zoomable-image.loaded {
     opacity: 1;
   }
+  .trakt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+  .trakt-item {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
 </style>
 
 <div class={`mt-${gridMarginTop} trakt`}>
   <div class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7">
     {watchedItems.map((item: {
-[x: string]: any; title: string; year: number; last_watched_at: string; poster: string; rating: number 
-}) => (
+      [x: string]: any; title: string; year: number; last_watched_at: string; poster: string; rating: number 
+    }) => (
     <div class="flex flex-col items-center">
       <a
         href={`https://www.imdb.com/title/${item.imdb}`}
@@ -231,47 +259,3 @@ try {
     ))}
   </div>
 </div>
-
-<style>
-  .line-clamp-4 {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #c3c3c3;
-    width: 100%;
-    height: 100%;
-    opacity: 1;
-    transition: opacity 0.5s ease-in-out;
-    position: relative;
-    z-index: 1;
-  }
-  .zoomable-image {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-  }
-  .zoomable-image.loaded {
-    opacity: 1;
-  }
-  .trakt-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 16px;
-  }
-  .trakt-item {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-  }
-</style>
