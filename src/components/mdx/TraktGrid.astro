@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+
+const { gridMarginTop = 4, titleMarginTop = 1, ratingMarginBottom = 4, filterYear, filterTitles } = Astro.props;
+
+const TRAKT_URL = 'https://api.trakt.tv/users/sadmanca/watched/movies'; // Replace {username} with the actual username
+const TRAKT_CLIENT_ID = '21d632f4344d0df01f8602f8e64f30b4e5ee7e37b7d14989082b528d8c3f23c6'; // Replace with your Trakt API client ID
+const TMDB_API_KEY = 'aff1d91cd3e2013154db0527ea0c5f18'; // Replace with your TMDB API key
+const LIMIT = 4; // Set the limit for the number of movies to display
+
+let watchedItems = [];
+
+try {
+  const response = await fetch(TRAKT_URL, {
+    headers: {
+      'Content-Type': 'application/json',
+      'trakt-api-version': '2',
+      'trakt-api-key': TRAKT_CLIENT_ID,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  watchedItems = await Promise.all(data.slice(0, LIMIT).map(async (item: any) => {
+    const tmdbResponse = await fetch(`https://api.themoviedb.org/3/movie/${item.movie.ids.tmdb}?api_key=${TMDB_API_KEY}&language=en-US`);
+    const tmdbData = await tmdbResponse.json();
+
+    return {
+      title: item.movie.title,
+      year: item.movie.year,
+      last_watched_at: item.last_watched_at,
+      poster: `https://image.tmdb.org/t/p/w200${tmdbData.poster_path}`, // Use TMDB poster path
+    };
+  }));
+} catch (error) {
+  console.error('Error fetching or parsing data from Trakt API:', error);
+}
+
+---
+<div class={`mt-${gridMarginTop} trakt`}>
+  <div class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7">
+    {watchedItems.map((item: { title: string; year: number; last_watched_at: string; poster: string }) => (
+      <div class="flex flex-col items-center">
+        <div class="h-36 w-24">
+          <div class="relative h-full w-full">
+            <Image
+              src={item.poster}
+              alt={item.title}
+              class="h-full w-full rounded-md object-cover"
+              title={`${item.title}`}
+              width={101}
+              height={150}
+            />
+          </div>
+        </div>
+        <div class={`mt-${titleMarginTop} text-center`}>
+          <span class="line-clamp-2 block w-31 text-xs font-semibold underline" style="text-underline-offset: 2px;" title={`${item.title}`}>
+            {item.title} ({item.year})
+          </span>
+          <span class="mt-1 block text-xs text-muted-foreground" title="Last Watched">
+            Last Watched: {new Date(item.last_watched_at).toLocaleDateString()}
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+.trakt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.trakt-item {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+</style>
