@@ -1,13 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 
-const { gridMarginTop = 4, titleMarginTop = 1, ratingMarginBottom = 4, filterYear, filterTitles } = Astro.props;
+const { gridMarginTop = 5, titleMarginTop = 1, ratingMarginBottom = 1, filterYear, filterTitles, type = 'movies' } = Astro.props;
 
-const TRAKT_WATCHED_URL = 'https://api.trakt.tv/users/sadmanca/watched/movies';
-const TRAKT_RATINGS_URL = 'https://api.trakt.tv/users/sadmanca/ratings/movies';
+const TRAKT_WATCHED_URL = `https://api.trakt.tv/users/sadmanca/watched/${type}`;
+const TRAKT_RATINGS_URL = `https://api.trakt.tv/users/sadmanca/ratings/${type}`;
 const TRAKT_CLIENT_ID = '21d632f4344d0df01f8602f8e64f30b4e5ee7e37b7d14989082b528d8c3f23c6';
 const TMDB_API_KEY = 'aff1d91cd3e2013154db0527ea0c5f18';
-const LIMIT = 30;
+const LIMIT = 999999999999999999999;
 
 let watchedItems = [];
 let ratings = [];
@@ -42,21 +42,28 @@ try {
   const ratingsData = await ratingsResponse.json();
 
   ratings = ratingsData.reduce((acc, item) => {
-    acc[item.movie.ids.tmdb] = item.rating;
+    acc[item[type.slice(0, -1)].ids.tmdb] = item.rating;
     return acc;
   }, {});
 
   watchedItems = await Promise.all(watchedData.slice(0, LIMIT).map(async (item: any) => {
-    const tmdbResponse = await fetch(`https://api.themoviedb.org/3/movie/${item.movie.ids.tmdb}?api_key=${TMDB_API_KEY}&language=en-US`);
+    const tmdbId = item[type.slice(0, -1)].ids.tmdb;
+    let image_api_request;
+    if (type == 'movies') {
+      image_api_request = `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
+    } else {
+      image_api_request = `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
+    }
+    const tmdbResponse = await fetch(image_api_request);
     const tmdbData = await tmdbResponse.json();
 
     return {
-      title: item.movie.title,
-      year: item.movie.year,
+      title: item[type.slice(0, -1)].title,
+      year: item[type.slice(0, -1)].year,
       last_watched_at: item.last_watched_at,
       poster: `https://image.tmdb.org/t/p/w200${tmdbData.poster_path}`,
-      imdb: item.movie.ids.imdb,
-      rating: ratings[item.movie.ids.tmdb] || 'N/A',
+      imdb: item[type.slice(0, -1)].ids.imdb,
+      rating: ratings[tmdbId] || 'N/A',
     };
   }));
 
@@ -72,9 +79,9 @@ try {
 ---
 
 <style>
-  .line-clamp-2 {
+  .line-clamp-4 {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -115,7 +122,7 @@ try {
         target="_blank"
       >
         <div class="relative h-full w-full">
-          <div class="placeholder rounded-md" id={`placeholder-${item.title}`}>
+          <div class="placeholder rounded-md" id={`placeholder-${item.imdb}`}>
             <div class="h-12 w-12 bg-gray-300 rounded-md"></div>
           </div>
           <Image
@@ -125,7 +132,7 @@ try {
             title={`${item.title}`}
             width={101}
             height={150}
-            onload={`document.getElementById('placeholder-${item.title}').classList.add('hidden'); this.classList.add('loaded');`}
+            onload={`document.getElementById('placeholder-${item.imdb}').classList.add('hidden'); this.classList.add('loaded');`}
           />
         </div>
       </a>
