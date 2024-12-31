@@ -36,13 +36,18 @@ const { post, authors } = Astro.props;
 
 const { Content, headings } = await post.render();
 
-const authorData = authors.map((author) => ({
-  slug: author,
-  name: author,
-  full_name: author,
-  avatar: '/static/profile.png',
-  isRegistered: false,
-}));
+const allAuthors = await getCollection('authors');
+
+const authorData = authors.map((authorSlug) => {
+  const author = allAuthors.find((a) => a.slug === authorSlug);
+  return {
+    slug: authorSlug,
+    name: author ? author.data.name : authorSlug,
+    full_name: author ? author.data.full_name : authorSlug,
+    avatar: '/static/profile.png',
+    isRegistered: !!author,
+  };
+});
 
 const posts = (await getCollection('posts'))
   .filter((post) => !post.data.draft)
@@ -123,7 +128,7 @@ const prevPost = getPrevPost(currentPostSlug);
                         underline
                         class="text-foreground"
                       >
-                        <span>{author.full_name}</span>
+                        <span>{author.name}</span>
                       </Link>
                     </div>
                   ))}

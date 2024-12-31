@@ -10,50 +10,26 @@ export async function getStaticPaths() {
   const authors = await getCollection('authors');
   return authors.map((author) => ({
     params: { slug: author.slug },
-    props: { author },
   }));
 }
 
-type Author = {
-  slug: string;
-  name: string;
-  full_name: string;
-  avatar: string;
-  isRegistered: boolean;
-};
+const { slug } = Astro.params;
 
-type Props = {
-  author: {
-    name: string;
-    full_name: string;
-    avatar: string;
-    bio: string;
-    pronouns?: string;
-    linkedin?: string;
-    github?: string;
-    twitter?: string;
-    bluesky?: string;
-    threads?: string;
-    mastodon?: string;
-    instagram?: string;
-    website?: string;
-    goodreads?: string;
-    mail?: string;
-    slug: string;
-  };
-};
+const author = await getCollection('authors').then((authors) =>
+  authors.find((a) => a.slug === slug)
+);
 
-const { author } = Astro.props as Props;
+if (!author) {
+  throw new Error(`Author not found for slug: ${slug}`);
+}
 
 const allPosts = await getCollection('posts');
 const authorPosts = allPosts
-  .filter((post) => {
-    return post.data.authors && post.data.authors.includes(author.slug);
-  })
+  .filter((post) => post.data.authors?.includes(author.slug))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const authors = await getCollection('authors');
-const authorsData: Author[] = authors.map(author => ({
+const authorsData = authors.map(author => ({
   slug: author.slug,
   name: author.data.name,
   full_name: author.data.full_name,
@@ -61,9 +37,9 @@ const authorsData: Author[] = authors.map(author => ({
   isRegistered: true,
 }));
 
-const getAuthorsForPost = (post: CollectionEntry<'posts'>): Author[] => {
-  return (post.data.authors || []).map((authorSlug: string) => {
-    return authorsData.find((author) => author.slug === authorSlug) || {
+const getAuthorsForPost = (post: CollectionEntry<'posts'>) => {
+  return (post.data.authors || []).map((authorSlug) => {
+    return authorsData.find((a) => a.slug === authorSlug) || {
       slug: authorSlug,
       name: authorSlug,
       full_name: authorSlug,
@@ -75,37 +51,35 @@ const getAuthorsForPost = (post: CollectionEntry<'posts'>): Author[] => {
 ---
 
 <Layout
-  title={`${author.name} (Author)`}
-  description={author.bio || `Profile of ${author.name}.`}
+  title={`${author.data.name}`}
+  description={author.data.bio || `Profile of ${author.data.name}.`}
 >
   <Container class="flex flex-col gap-y-6">
     <Breadcrumbs
       items={[
         { href: '/about', label: 'Authors', icon: 'lucide:users' },
-        { label: author.name, icon: 'lucide:user' },
+        { label: author.data.name, icon: 'lucide:user' },
       ]}
     />
 
     <section>
-      <AuthorCard author={author} linkDisabled />
+      <AuthorCard author={{ ...author.data, slug: author.slug, bio: author.data.bio || "" }} linkDisabled />
     </section>
     <section class="flex flex-col gap-y-4">
-      <h2 class="text-2xl font-semibold">Posts by {author.full_name}</h2>
-      {
-        authorPosts.length > 0 ? (
-          <ul class="not-prose flex flex-col gap-4">
-            {authorPosts.map((post) => (
-              <li>
-                <BlogCard entry={post} authors={getAuthorsForPost(post)} />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p class="text-muted-foreground">
-            No posts available from this author.
-          </p>
-        )
-      }
+      <h2 class="text-2xl font-semibold">Posts by {author.data.full_name}</h2>
+      {authorPosts.length > 0 ? (
+        <ul class="not-prose flex flex-col gap-4">
+          {authorPosts.map((post) => (
+            <li>
+              <BlogCard entry={post} authors={getAuthorsForPost(post)} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="text-muted-foreground">
+          No posts available from this author.
+        </p>
+      )}
     </section>
   </Container>
 </Layout>
