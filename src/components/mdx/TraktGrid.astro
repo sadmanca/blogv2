@@ -3,15 +3,17 @@ import { Image } from 'astro:assets';
 
 const { gridMarginTop = 4, titleMarginTop = 1, ratingMarginBottom = 4, filterYear, filterTitles } = Astro.props;
 
-const TRAKT_URL = 'https://api.trakt.tv/users/sadmanca/watched/movies'; // Replace {username} with the actual username
-const TRAKT_CLIENT_ID = '21d632f4344d0df01f8602f8e64f30b4e5ee7e37b7d14989082b528d8c3f23c6'; // Replace with your Trakt API client ID
-const TMDB_API_KEY = 'aff1d91cd3e2013154db0527ea0c5f18'; // Replace with your TMDB API key
-const LIMIT = 4; // Set the limit for the number of movies to display
+const TRAKT_WATCHED_URL = 'https://api.trakt.tv/users/sadmanca/watched/movies';
+const TRAKT_RATINGS_URL = 'https://api.trakt.tv/users/sadmanca/ratings/movies';
+const TRAKT_CLIENT_ID = '21d632f4344d0df01f8602f8e64f30b4e5ee7e37b7d14989082b528d8c3f23c6';
+const TMDB_API_KEY = 'aff1d91cd3e2013154db0527ea0c5f18';
+const LIMIT = 30;
 
 let watchedItems = [];
+let ratings = [];
 
 try {
-  const response = await fetch(TRAKT_URL, {
+  const watchedResponse = await fetch(TRAKT_WATCHED_URL, {
     headers: {
       'Content-Type': 'application/json',
       'trakt-api-version': '2',
@@ -19,13 +21,32 @@ try {
     },
   });
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+  if (!watchedResponse.ok) {
+    throw new Error(`HTTP error! status: ${watchedResponse.status}`);
   }
 
-  const data = await response.json();
+  const watchedData = await watchedResponse.json();
 
-  watchedItems = await Promise.all(data.slice(0, LIMIT).map(async (item: any) => {
+  const ratingsResponse = await fetch(TRAKT_RATINGS_URL, {
+    headers: {
+      'Content-Type': 'application/json',
+      'trakt-api-version': '2',
+      'trakt-api-key': TRAKT_CLIENT_ID,
+    },
+  });
+
+  if (!ratingsResponse.ok) {
+    throw new Error(`HTTP error! status: ${ratingsResponse.status}`);
+  }
+
+  const ratingsData = await ratingsResponse.json();
+
+  ratings = ratingsData.reduce((acc, item) => {
+    acc[item.movie.ids.tmdb] = item.rating;
+    return acc;
+  }, {});
+
+  watchedItems = await Promise.all(watchedData.slice(0, LIMIT).map(async (item: any) => {
     const tmdbResponse = await fetch(`https://api.themoviedb.org/3/movie/${item.movie.ids.tmdb}?api_key=${TMDB_API_KEY}&language=en-US`);
     const tmdbData = await tmdbResponse.json();
 
@@ -33,10 +54,17 @@ try {
       title: item.movie.title,
       year: item.movie.year,
       last_watched_at: item.last_watched_at,
-      poster: `https://image.tmdb.org/t/p/w200${tmdbData.poster_path}`, // Use TMDB poster path
+      poster: `https://image.tmdb.org/t/p/w200${tmdbData.poster_path}`,
       imdb: item.movie.ids.imdb,
+      rating: ratings[item.movie.ids.tmdb] || 'N/A',
     };
   }));
+
+  if (filterYear) {
+    watchedItems = watchedItems.filter(item => new Date(item.last_watched_at).getFullYear() === filterYear);
+  }
+  watchedItems.sort((a, b) => new Date(b.last_watched_at).getTime() - new Date(a.last_watched_at).getTime());
+
 } catch (error) {
   console.error('Error fetching or parsing data from Trakt API:', error);
 }
@@ -79,7 +107,7 @@ try {
 
 <div class={`mt-${gridMarginTop} trakt`}>
   <div class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7">
-    {watchedItems.map((item: { title: string; year: number; last_watched_at: string; poster: string }) => (
+    {watchedItems.map((item: { title: string; year: number; last_watched_at: string; poster: string; rating: number }) => (
     <div class="flex flex-col items-center">
       <a
         href={`https://www.imdb.com/title/${item.imdb}`}
@@ -116,7 +144,52 @@ try {
             class="mt-1 block text-xs text-muted-foreground" 
             title="Last Watched">
               Last Watched: {new Date(item.last_watched_at).toLocaleDateString()}
-          </span>            
+          </span>
+            <div class={`mb-${ratingMarginBottom} flex items-center justify-center`} title={`Rating given: ${item.rating}/10`}>
+              {Array.from({ length: 5 }, (_, i) => {
+                const fullStars = Math.floor(item.rating / 2);
+                const hasHalfStar = item.rating % 2 >= 1;
+                const isFullStar = i < fullStars;
+                const isHalfStar = i === fullStars && hasHalfStar;
+
+                return (
+                  <svg
+                    class={`h-4 w-4 ${
+                      isFullStar || isHalfStar ? 'text-black-500 dark:text-white' : 'text-gray-300 dark:text-gray-600'
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    {/* Full star */}
+                    {isFullStar && (
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
+                    )}
+
+                    {/* Half star */}
+                    {isHalfStar && (
+                      <>
+                        {/* Left half */}
+                        <path 
+                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" 
+                          class="text-gray-300 dark:text-gray-600"
+                          fill="currentColor"
+                        />
+                        {/* Right half */}
+                        <path
+                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z"
+                        />
+                      </>
+                    )}
+
+                    {/* Empty star */}
+                    {!isFullStar && !isHalfStar && (
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
+                    )}
+                  </svg>
+                );
+              })}
+            </div>
+
         </div>
     </div>
     ))}
