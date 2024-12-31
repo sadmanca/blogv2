@@ -145,51 +145,64 @@ try {
             title="Last Watched">
               Last Watched: {new Date(item.last_watched_at).toLocaleDateString()}
           </span>
-            <div class={`mb-${ratingMarginBottom} flex items-center justify-center`} title={`Rating given: ${item.rating}/10`}>
-              {Array.from({ length: 5 }, (_, i) => {
-                const fullStars = Math.floor(item.rating / 2);
-                const hasHalfStar = item.rating % 2 >= 1;
-                const isFullStar = i < fullStars;
-                const isHalfStar = i === fullStars && hasHalfStar;
+          <div class={`mb-${ratingMarginBottom} flex items-center justify-center`} title={`Rating given: ${item.rating}/10`}>
+            {Array.from({ length: 5 }, (_, i) => {
+              const fullStars = Math.floor(item.rating / 2);
+              const hasHalfStar = item.rating % 2 >= 1;
+              const isFullStar = i < fullStars;
+              const isHalfStar = i === fullStars && hasHalfStar;
 
-                return (
-                  <svg
-                    class={`h-4 w-4 ${
-                      isFullStar || isHalfStar ? 'text-black-500 dark:text-white' : 'text-gray-300 dark:text-gray-600'
-                    }`}
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    {/* Full star */}
-                    {isFullStar && (
+              return (
+                <div class="relative h-4 w-4">
+                  {/* Full star */}
+                  {isFullStar && (
+                    <svg
+                      class="absolute h-full w-full text-black-500 dark:text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
-                    )}
+                    </svg>
+                  )}
 
-                    {/* Half star */}
-                    {isHalfStar && (
-                      <>
-                        {/* Left half */}
-                        <path 
-                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" 
-                          class="text-gray-300 dark:text-gray-600"
-                          fill="currentColor"
-                        />
-                        {/* Right half */}
-                        <path
-                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z"
-                        />
-                      </>
-                    )}
+                  {/* Half star */}
+                  {isHalfStar && (
+                    <>
+                      {/* Left half */}
+                      <svg
+                        class="absolute h-full w-full text-black-500 dark:text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        style="clip-path: inset(0 50% 0 0);"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
+                      </svg>
+                      {/* Right half */}
+                      <svg
+                        class="absolute h-full w-full text-gray-300 dark:text-gray-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        style="clip-path: inset(0 0 0 50%);"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
+                      </svg>
+                    </>
+                  )}
 
-                    {/* Empty star */}
-                    {!isFullStar && !isHalfStar && (
+                  {/* Empty star */}
+                  {!isFullStar && !isHalfStar && (
+                    <svg
+                      class="absolute h-full w-full text-gray-300 dark:text-gray-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
-                    )}
-                  </svg>
-                );
-              })}
-            </div>
-
+                    </svg>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
     </div>
     ))}
