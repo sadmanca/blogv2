@@ -111,9 +111,9 @@ function formatDate(dateString: any) {
 ---
 
 <style>
-  .line-clamp-4 {
+  .line-clamp-3 {
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -183,7 +183,7 @@ function formatDate(dateString: any) {
         <div class={`mt-${titleMarginTop} text-center`}>
           <a 
             href={`https://www.imdb.com/title/${item.imdb}`} 
-            class="line-clamp-4 block w-31 text-xs underline"
+            class="line-clamp-3 block w-31 text-xs underline"
             style="text-underline-offset: 2px;"
             target="_blank" 
             rel="noopener noreferrer"
@@ -194,7 +194,7 @@ function formatDate(dateString: any) {
           <span 
             class="mt-1 block text-xs text-muted-foreground" 
             title="Last Watched">
-              Last Watched: {new Date(item.last_watched_at).toLocaleDateString()}
+              Last Watched:<br/>{formatDate(item.last_watched_at)}
           </span>
           <div class={`mb-${ratingMarginBottom} flex items-center justify-center`} title={`Rating given: ${item.rating}/10`}>
             {Array.from({ length: 5 }, (_, i) => {
