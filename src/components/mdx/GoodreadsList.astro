@@ -1,8 +1,7 @@
 ---
 import xml2js from "xml2js";
 
-const GOODREADS_URL =
-  "https://www.goodreads.com/review/list_rss/152185079?key=_0elm4i3w7r24rhlGCl4tPmj0V9u5Jla71mdKQ_MBPUwhSys&shelf=read";
+const GOODREADS_URL = import.meta.env.GOODREADS_URL;
 
 const response = await fetch(GOODREADS_URL);
 const data = await response.text();

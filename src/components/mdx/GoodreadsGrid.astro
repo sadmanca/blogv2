@@ -18,10 +18,8 @@ const fetchWithTimeout = async (url: string, options = {}, timeout = TIMEOUT) =>
   return response;
 };
 
-const GOODREADS_URL =
-  'https://www.goodreads.com/review/list_rss/152185079?key=_0elm4i3w7r24rhlGCl4tPmj0V9u5Jla71mdKQ_MBPUwhSys&shelf=read'
-
-const response = await fetchWithTimeout(GOODREADS_URL)
+const GOODREADS_URL = import.meta.env.GOODREADS_URL;
+const response = await fetchWithTimeout(GOODREADS_URL);
 const data = await response.text()
 const result = await xml2js.parseStringPromise(data)
 let books = result.rss.channel[0].item.map((item: any) => {

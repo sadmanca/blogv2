@@ -5,8 +5,8 @@ const { gridMarginTop = 5, titleMarginTop = 1, ratingMarginBottom = 1, filterYea
 
 const TRAKT_WATCHED_URL = `https://api.trakt.tv/users/sadmanca/watched/${type}`;
 const TRAKT_RATINGS_URL = `https://api.trakt.tv/users/sadmanca/ratings/${type}`;
-const TRAKT_CLIENT_ID = '21d632f4344d0df01f8602f8e64f30b4e5ee7e37b7d14989082b528d8c3f23c6';
-const TMDB_API_KEY = 'aff1d91cd3e2013154db0527ea0c5f18';
+const TRAKT_CLIENT_ID = import.meta.env.TRAKT_CLIENT_ID;
+const TMDB_API_KEY = import.meta.env.TMDB_API_KEY;
 const LIMIT = 999999999999999999999;
 const TIMEOUT = 200000; // Set timeout to 200 seconds
 const REQUEST_DELAY = 200;
