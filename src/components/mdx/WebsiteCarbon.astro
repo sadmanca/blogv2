@@ -1,0 +1,116 @@
+---
+interface Props {
+  co2?: string;
+  percentage?: string;
+}
+
+const { co2 = "-", percentage = "" } = Astro.props;
+
+const dict = {
+  en: {
+    p1: "of",
+    p2: "view",
+    p3: "Cleaner than",
+    p4: "Dirtier than",
+    p5: "of pages tested",
+  },
+  fr: {
+    p1: "de",
+    p2: "vue",
+    p3: "Page web plus légère que",
+    p4: "Page web plus lourde que",
+    p5: "des pages testées",
+  },
+};
+
+const ps = dict.en;
+---
+
+<style>
+  .carbonbadge {
+    --b1: #0e11a8;
+    --b2: #00ffbc;
+    font-size: 15px;
+    text-align: center;
+    color: var(--b1);
+    line-height: 1.15;
+  }
+  .carbonbadge a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1em;
+    line-height: 1.15;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    text-decoration: none;
+    margin: 0.2em 0;
+    padding: 0.3em 0.5em;
+    border: 0.13em solid var(--b2);
+    border-radius: 0.3em 0 0 0.3em;
+    background: #fff;
+    border-right: 0;
+    min-width: 8.2em;
+    color: var(--b1);
+  }
+  .carbonbadge sub {
+    vertical-align: middle;
+    position: relative;
+    top: 0.3em;
+    font-size: 0.7em;
+  }
+  .carbonbadge .link {
+    border-radius: 0 0.3em 0.3em 0;
+    border-left: 0;
+    background: var(--b1);
+    color: #fff;
+    font-weight: 700;
+    border-color: var(--b1);
+  }
+  .carbonbadge .link.dark {
+    color: var(--b1);
+    background: var(--b2);
+    border-color: var(--b2);
+  }
+  .carbonbadge .percentage {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1em;
+    line-height: 1.15;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    text-decoration: none;
+    margin: 0.2em 0;
+  }
+  .carbonbadge .percentage.dark {
+    color: #fff;
+  }
+</style>
+
+<div class="carbonbadge">
+  <div>
+    <a
+      class="text-gray-500 dark:text-gray-600"
+      target="_blank"
+      rel="noopener noreferrer"
+      href={`https://www.websitecarbon.com/website/sadman.ca`}
+    >
+      {co2}g {ps.p1} CO<sub>2</sub>/{ps.p2}
+    </a><a
+      class="link text-gray-500 dark:text-gray-600"
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://websitecarbon.com"
+    >
+      Website Carbon
+    </a>
+  </div>
+  <span class="percentage text-gray-500 dark:text-gray-600">
+    {percentage
+      ? parseInt(percentage) > 50
+        ? `${ps.p3} ${percentage}% ${ps.p5}`
+        : `${ps.p4} ${percentage}% ${ps.p5}`
+      : ""}
+  </span>
+</div>

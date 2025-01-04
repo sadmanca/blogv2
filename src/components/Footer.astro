@@ -2,6 +2,7 @@
 import Container from '@/components/Container.astro'
 import { SOCIAL_LINKS } from '@/consts'
 import SocialIcons from './SocialIcons.astro'
+import WebsiteCarbon from '@/components/mdx/WebsiteCarbon.astro'
 ---
 
 <footer class="py-4">
@@ -17,35 +18,9 @@ import SocialIcons from './SocialIcons.astro'
       <SocialIcons links={SOCIAL_LINKS} />
     </div>
     <div
-      class="mt-2 flex flex-col items-center justify-center gap-y-2 sm:flex-row sm:justify-between sm:mt-0"
+      class="websitecarbon mt-2 flex flex-col items-center justify-center gap-y-2 sm:flex-row sm:justify-between sm:mt-0"
     >
-      <div id="wcb" class="carbonbadge flex justify-center"></div>
+      <WebsiteCarbon co2="0.20" percentage="79"/>
     </div>
   </Container>
 </footer>
-
-<script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" defer></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const wcbElement = document.getElementById('wcb');
-    const observer = new MutationObserver(() => {
-      if (document.documentElement.classList.contains('dark')) {
-        if (wcbElement) {
-          wcbElement.classList.add('wcb-d');
-        }
-      } else {
-        if (wcbElement) {
-          wcbElement.classList.remove('wcb-d');
-        }
-      }
-    });
-
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-    if (document.documentElement.classList.contains('dark')) {
-      if (wcbElement) {
-        wcbElement.classList.add('wcb-d');
-      }
-    }
-  });
-</script>
