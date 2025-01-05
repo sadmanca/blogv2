@@ -20,6 +20,8 @@ type Props = {
     mastodon?: string;
     instagram?: string;
     website?: string;
+    spotify?: string;
+    lastfm?: string;
     goodreads?: string;
     mail?: string;
     slug: string;
@@ -44,6 +46,8 @@ const {
   instagram,
   website,
   goodreads,
+  spotify,
+  lastfm,
   mail,
 } = author;
 
@@ -56,6 +60,8 @@ const socialLinks: SocialLink[] = [
   threads && { href: threads, label: 'Threads' },
   mastodon && { href: mastodon, label: 'Mastodon' },
   instagram && { href: instagram, label: 'Instagram' },
+  spotify && { href: spotify, label: 'Spotify' },
+  lastfm && { href: lastfm, label: 'Lastfm' },
   goodreads && { href: goodreads, label: 'Goodreads' },
   mail && { href: mail, label: 'Email' },
 ].filter(Boolean) as SocialLink[];

@@ -21,6 +21,8 @@ const iconMap = {
   Threads: 'tabler:brand-threads',
   Mastodon: 'tabler:brand-mastodon',
   Instagram: 'lucide:instagram',
+  Spotify: 'tabler:brand-spotify',
+  Lastfm: 'tabler:brand-lastfm',
   Goodreads: 'tabler:book',
   Email: 'lucide:mail',
   RSS: 'lucide:rss',
@@ -44,7 +46,7 @@ const getSocialLink = ({ href, label }: SocialLink) => ({
             href={href}
             aria-label={ariaLabel}
             title={ariaLabel}
-            class={buttonVariants({ variant: 'default', size: 'icon' })}
+            class={buttonVariants({ variant: 'social', size: 'icon' })}
             external
           >
             <Icon name={iconName} class="size-6" />

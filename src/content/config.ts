@@ -46,6 +46,8 @@ const authors = defineCollection({
     threads: z.string().url().optional(),
     mastodon: z.string().url().optional(),
     instagram: z.string().url().optional(),
+    spotify: z.string().url().optional(),
+    lastfm: z.string().url().optional(),
     goodreads: z.string().url().optional(),
     discord: z.string().url().optional(),
   }),
