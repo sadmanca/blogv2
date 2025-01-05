@@ -33,6 +33,8 @@ const { title, description, image = '/static/twitter-card.png' } = Astro.props
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#121212" />
+<link rel="me" href="https://mastodon.social/@sadmanca" />
+
 <meta name="msapplication-TileColor" content="#121212" />
 <meta name="theme-color" content="#121212" />
 
@@ -48,6 +50,7 @@ const { title, description, image = '/static/twitter-card.png' } = Astro.props
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
 
 <ViewTransitions />
 <HoverPrefetch max={8} />
