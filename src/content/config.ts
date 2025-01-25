@@ -1,5 +1,4 @@
 import { defineCollection, z } from 'astro:content'
-import { feedLoader } from "@ascorbic/feed-loader";
 import xml2js from 'xml2js'
 
 const goodreads_read_books = defineCollection({
