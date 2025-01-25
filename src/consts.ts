@@ -31,7 +31,7 @@ export const NAV_LINKS: Link[] = [
 
 export const SOCIAL_LINKS: Link[] = [
   { href: 'https://github.com/sadmanca', label: 'GitHub' },
-  { href: 'https://twitter.com/sadmanca', label: 'Twitter' },
+  { href: 'https://www.linkedin.com/in/sadmanca', label: 'LinkedIn' },
   { href: 'sadman.hossain@mail.utoronto.ca', label: 'Email' },
   { href: '/rss.xml', label: 'RSS' },
 ]

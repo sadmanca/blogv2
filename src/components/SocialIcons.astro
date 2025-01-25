@@ -32,22 +32,22 @@ const iconMap = {
 const getSocialLink = ({ href, label }: SocialLink) => ({
   href: label === 'Email' ? `mailto:${href}` : href,
   ariaLabel: label,
-  iconName:
-    iconMap[label as keyof typeof iconMap] || 'lucide:message-circle-question',
+  iconName: iconMap[label as keyof typeof iconMap] || 'lucide:message-circle-question',
+  variant: label.toLowerCase() as 'default' | 'link' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'social' | 'linkedin' | 'github' | 'twitter' | 'bluesky' | 'threads' | 'mastodon' | 'pixelfed' | 'instagram' | 'spotify' | 'lastfm' | 'goodreads' | 'email' | 'rss' | undefined,
 })
 ---
 
 <ul class={cn('not-prose flex flex-wrap gap-2', className)} role="list">
   {
     links.map((link) => {
-      const { href, ariaLabel, iconName } = getSocialLink(link)
+      const { href, ariaLabel, iconName, variant } = getSocialLink(link)
       return (
         <li>
           <Link
             href={href}
             aria-label={ariaLabel}
             title={ariaLabel}
-            class={buttonVariants({ variant: 'social', size: 'icon' })}
+            class={buttonVariants({variant, size: 'icon' })}
             external
           >
             <Icon name={iconName} class="size-6" />

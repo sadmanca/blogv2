@@ -28,6 +28,8 @@
     --secondary-foreground: 0 0% 9%;
     --tertiary: 247 100% 66%;
     --tertiary-foreground: 0 0% 100%;
+    --goodreads: 30 81% 26%;
+    --goodreads-foreground: 51 40% 86%;
     --muted: 0 0% 80.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 80.1%;
@@ -48,6 +50,8 @@
     --secondary-foreground: 0 0% 98%;
     --tertiary: 247 100% 66%;
     --tertiary-foreground: 0 0% 100%;
+    --goodreads: 51 40% 86%;
+    --goodreads-foreground: 30 81% 26%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
     --accent: 0 0% 14.9%;

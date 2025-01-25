@@ -25,6 +25,10 @@ const config: Config = {
           DEFAULT: 'hsl(var(--tertiary))',
           foreground: 'hsl(var(--tertiary-foreground))',
         },
+        goodreads: {
+          DEFAULT: 'hsl(var(--goodreads))',
+          foreground: 'hsl(var(--goodreads-foreground))',
+        },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
