@@ -22,9 +22,15 @@ export function MoreDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-background">
-        <DropdownMenuItem onClick={() => window.location.href = '/uses'}>
+        <DropdownMenuItem>
+        <a
+          href="/uses"
+          target={'_self'}
+          className='inline-flex items-center transition-colors duration-300 ease-in-out hover:decoration-foreground'
+        >
           <Laptop className="mr-2 size-4" />
-          <span>Uses</span>
+          Uses
+        </a>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
