@@ -1,67 +1,65 @@
 ---
-import xml2js from 'xml2js'
-import { Image } from 'astro:assets';
+import { Image } from 'astro:assets'
+import { getCollection } from 'astro:content'
 
-const { gridMarginTop = 4, titleMarginTop = 1, ratingMarginBottom = 4, filterYear, filterTitles } = Astro.props;
-
-const TIMEOUT = 200000; // Set timeout to 200 seconds
-const REQUEST_DELAY = 500;
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-const fetchWithTimeout = async (url: string, options = {}, timeout = TIMEOUT) => {
-  await delay(REQUEST_DELAY);
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-  const response = await fetch(url, { ...options, signal: controller.signal });
-  clearTimeout(id);
-  return response;
-};
-
-const GOODREADS_URL = import.meta.env.GOODREADS_URL;
-const response = await fetchWithTimeout(GOODREADS_URL);
-const data = await response.text()
-const result = await xml2js.parseStringPromise(data)
-let books = result.rss.channel[0].item.map((item: any) => {
-  const highResImageUrl = item.book_image_url[0]
-    .replace(/(\._SX\d+_|\._SY\d+_)+/g, '._SX150_SY150_')
-    .replace(/(\._SY\d+_)+/g, '._SY150_')
-
-  return {
-    title: item.title[0],
-    shelves: item.user_shelves,
-    date_read: item.user_read_at,
-    rating: item.user_rating[0],
-    author_name: item.author_name,
-    book_image_url: highResImageUrl,
-    book_id: item.book_id[0],
+type Book = {
+  data: {
+    id: string
+    title: string
+    shelves: string[]
+    date_read: string
+    rating: string
+    author_name: string
+    book_image_url: string
+    book_id: string
   }
-})
+}
+
+type Props = {
+  gridMarginTop?: number
+  titleMarginTop?: number
+  ratingMarginBottom?: number
+  filterYear?: number
+  filterTitles?: string[]
+}
+
+const {
+  gridMarginTop = 4,
+  titleMarginTop = 1,
+  ratingMarginBottom = 4,
+  filterYear,
+  filterTitles,
+} = Astro.props
+
+let books = await getCollection('goodreads_read_books')
 
 // Filter books by year if filterYear is provided
 if (filterYear) {
-  books = books.filter((book: any) => {
-    const date = new Date(book.date_read);
-    return date.getUTCFullYear() === filterYear;
-  });
+  books = books.filter((book: Book) => {
+    const date = new Date(book.data.date_read)
+    return date.getUTCFullYear() === filterYear
+  })
 }
 
 // Filter books by title if filterTitles is provided
 if (filterTitles && filterTitles.length > 0) {
-  books = books.filter((book: any) => filterTitles.includes(book.title));
+  books = books.filter((book: Book) => filterTitles.includes(book.data.title))
   // Sort books by the order of titles in filterTitles
-  books.sort((a: any, b: any) => filterTitles.indexOf(a.title) - filterTitles.indexOf(b.title));
+  books.sort(
+    (a: Book, b: Book) =>
+      filterTitles.indexOf(a.data.title) - filterTitles.indexOf(b.data.title),
+  )
 }
 
 // Sort books by date_read (latest first) if not filtering by titles
 if (!filterTitles || filterTitles.length === 0) {
-  books.sort((a: any, b: any) => {
-    if (!a.date_read || a.date_read[0] === '') return -1; // Place a at the top if date_read is missing
-    if (!b.date_read || b.date_read[0] === '') return 1; // Place b at the top if date_read is missing
-    const dateA = new Date(a.date_read);
-    const dateB = new Date(b.date_read);
-    return dateB.getTime() - dateA.getTime();
-  });
+  books.sort((a: Book, b: Book) => {
+    if (!a.data.date_read || a.data.date_read[0] === '') return -1 // Place a at the top if date_read is missing
+    if (!b.data.date_read || b.data.date_read[0] === '') return 1 // Place b at the top if date_read is missing
+    const dateA = new Date(a.data.date_read)
+    const dateB = new Date(b.data.date_read)
+    return dateB.getTime() - dateA.getTime()
+  })
 }
 
 function formatDate(dateString: any) {
@@ -100,7 +98,6 @@ function formatDate(dateString: any) {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #c3c3c3;
     width: 100%;
     height: 100%;
     opacity: 1;
@@ -128,53 +125,62 @@ function formatDate(dateString: any) {
     class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7"
   >
     {
-      books.map((book: any) => (
+      books.map((book: Book) => (
         <div class="flex flex-col items-center">
           <a
-            href={`https://www.goodreads.com/book/show/${book.book_id}`}
+            href={`https://www.goodreads.com/book/show/${book.data.book_id}`}
             class="h-36 w-24"
             target="_blank"
           >
             <div class="relative h-full w-full">
-              <div class="placeholder rounded-md" id={`placeholder-${book.book_id}`}>
-                <div class="h-12 w-12 bg-gray-300 rounded-md"></div>
+              <div
+                class="placeholder rounded-lg bg-gray-300 dark:bg-gray-800"
+                id={`placeholder-${book.data.book_id}`}
+              >
+                <div class="h-12 w-12 rounded-3xl bg-gray-200 dark:bg-gray-700" />
               </div>
               <Image
-                src={book.book_image_url}
-                alt={book.title}
-                class="h-full w-full rounded-md object-cover zoomable-image"
-                title={`${book.title}`}
+                src={book.data.book_image_url}
+                alt={book.data.title}
+                class="zoomable-image h-full w-full rounded-md object-cover"
+                title={`${book.data.title}`}
                 width={101}
                 height={150}
-                onload={`document.getElementById('placeholder-${book.book_id}').classList.add('hidden'); this.classList.add('loaded');`}
+                onload={`document.getElementById('placeholder-${book.data.book_id}').classList.add('hidden'); this.classList.add('loaded');`}
               />
             </div>
           </a>
           <div class={`mt-${titleMarginTop} text-center`}>
             <a
-              href={`https://www.goodreads.com/book/show/${book.book_id}`}
-              class="line-clamp-2 block w-31 text-xs font-semibold underline"
+              href={`https://www.goodreads.com/book/show/${book.data.book_id}`}
+              class="w-24 line-clamp-2 block text-xs font-semibold underline"
               style="text-underline-offset: 2px;"
               target="_blank"
-              title={`${book.title}`}
+              title={`${book.data.title}`}
             >
-              {book.title}
+              {book.data.title}
             </a>
             <span
-              class="mt-1 block w-31 truncate text-xs text-muted-foreground"
-              title={`${book.author_name}`}
+              class="w-24 mt-1 block truncate text-xs text-muted-foreground"
+              title={`${book.data.author_name}`}
             >
-              {book.author_name}
+              {book.data.author_name}
             </span>
-            {book.date_read[0] !== '' && (
-              <span class="block text-xs text-muted-foreground" title="Date read">
-                {formatDate(book.date_read)}
+            {book.data.date_read[0] !== '' && (
+              <span
+                class="block text-xs text-muted-foreground"
+                title="Date read"
+              >
+                {formatDate(book.data.date_read)}
               </span>
             )}
-            <div class={`mb-${ratingMarginBottom} flex items-center justify-center`} title={`Rating given: ${book.rating}/5 stars`}>
+            <div
+              class={`mb-${ratingMarginBottom} flex items-center justify-center`}
+              title={`Rating given: ${book.data.rating}/5 stars`}
+            >
               {Array.from({ length: 5 }, (_, i) => (
                 <svg
-                  class={`h-4 w-4 ${i < book.rating ? 'text-black-500 dark:text-white' : 'text-gray-300 dark:text-gray-600'}`}
+                  class={`h-4 w-4 ${i < Number(book.data.rating) ? 'text-black-500 dark:text-white' : 'text-gray-200 dark:text-gray-700'}`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
