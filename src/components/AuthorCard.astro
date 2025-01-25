@@ -18,6 +18,7 @@ type Props = {
     bluesky?: string;
     threads?: string;
     mastodon?: string;
+    pixelfed?: string;
     instagram?: string;
     website?: string;
     spotify?: string;
@@ -43,6 +44,7 @@ const {
   bluesky,
   threads,
   mastodon,
+  pixelfed,
   instagram,
   website,
   goodreads,
@@ -59,6 +61,7 @@ const socialLinks: SocialLink[] = [
   bluesky && { href: bluesky, label: 'Bluesky' },
   threads && { href: threads, label: 'Threads' },
   mastodon && { href: mastodon, label: 'Mastodon' },
+  pixelfed && { href: pixelfed, label: 'Pixelfed' },
   instagram && { href: instagram, label: 'Instagram' },
   spotify && { href: spotify, label: 'Spotify' },
   lastfm && { href: lastfm, label: 'Lastfm' },
