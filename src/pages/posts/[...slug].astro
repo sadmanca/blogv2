@@ -13,6 +13,7 @@ import { formatDate, readingTime } from '@/lib/utils';
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 import { type CollectionEntry, getCollection } from 'astro:content';
+import Comments from '@/components/Comments.astro';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('posts'))
@@ -177,7 +178,7 @@ const prevPost = getPrevPost(currentPostSlug);
     </article>
 
     <PostNavigation prevPost={prevPost} nextPost={nextPost} />
-
+    <Comments/>
   </section>
 
   <Button

@@ -1,0 +1,65 @@
+<div id="comments-container"class="comments-container col-start-2 flex flex-col mx-auto w-full">
+</div>
+
+<script>
+  function loadGiscus(theme: string) {
+    const commentsContainer = document.getElementById('comments-container');
+    // Only proceed if comments container exists
+    if (!commentsContainer) return;
+
+    // Remove existing giscus element if it exists
+    const existingGiscus = document.querySelector('.giscus');
+    if (existingGiscus) {
+      existingGiscus.remove();
+    }
+
+    // Create new script element
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'sadmanca/blogv2');
+    script.setAttribute('data-repo-id', 'R_kgDONNW6Hw');
+    script.setAttribute('data-category', 'Comments');
+    script.setAttribute('data-category-id', 'DIC_kwDONNW6H84CmV_t');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('data-loading', 'lazy');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
+    script.async = true;
+
+    commentsContainer.appendChild(script);
+  }
+
+  // Initialize comments with current theme
+  document.addEventListener('astro:page-load', () => {
+    const commentsContainer = document.getElementById('comments-container');
+    // Only initialize if comments container exists
+    if (!commentsContainer) return;
+
+    const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    loadGiscus(theme);
+
+    // Listen for theme changes
+    const themeButton = document.getElementById('theme-button');
+    if (themeButton) {
+      themeButton.addEventListener('click', () => {
+        setTimeout(() => {
+          const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+          loadGiscus(newTheme);
+        }, 0);
+      });
+    }
+
+    // Listen for changes to the class list of the document element
+    const observer = new MutationObserver(() => {
+      const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      loadGiscus(newTheme);
+    });
+
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  });
+</script>
