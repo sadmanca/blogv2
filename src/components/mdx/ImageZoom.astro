@@ -8,7 +8,7 @@ export interface Props {
   isAstroImage?: boolean;
 }
 
-let { src, alt, class: className, isAstroImage } = Astro.props;
+let { src, alt, class: className } = Astro.props;
 
 // Ensure `isAstroImage` only applies to valid Astro Image metadata
 const isValidAstroImage = typeof src === 'object' && src.src;

@@ -7,7 +7,6 @@ import Layout from '@/layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const projects = await getCollection('projects');
-const projectsData = projects.map(project => project.data);
 ---
 
 <Layout title="Projects" description={SITE.DESCRIPTION}>

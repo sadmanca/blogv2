@@ -5,8 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown, CalendarFold, Laptop, Moon, Sun } from 'lucide-react'
-import * as React from 'react'
+import { ChevronDown, Laptop, } from 'lucide-react'
 
 export function MoreDropdown() {
   return (

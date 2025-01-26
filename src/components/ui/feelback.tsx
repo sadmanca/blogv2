@@ -1,4 +1,3 @@
-import React from 'react';
 import { FeelbackPulse, PRESET_PULSE_HEART, FeelbackYesNo, PRESET_UP_DOWN_VOTE } from "@feelback/react";
 
 export default function Feelback() {
