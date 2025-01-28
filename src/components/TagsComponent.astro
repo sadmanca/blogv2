@@ -16,7 +16,7 @@ const { tags } = Astro.props;
     {tags.map((tag) => (
       <Link
         href={`/tags/${tag}`}
-        class={badgeVariants({ variant: 'secondary' })}
+        class={`hover-card ${badgeVariants({ variant: 'secondary' })}`}
       >
         <Icon name="lucide:hash" class="size-3 -translate-x-0.5" />
         {tag}
