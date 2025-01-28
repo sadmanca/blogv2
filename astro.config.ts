@@ -79,6 +79,8 @@ export default defineConfig({
     '/blog/work-study-at-uoft': '/posts/work-study-at-uoft/',
     '/blog/pey-coop-jobs-at-uoft': '/posts/pey-coop-jobs-at-uoft/',
 
+    '/magellan-101/': '/uoft-ece-upper-year-course-planning-tips/',
+
     '/categories': '/tags',
     '/archives': '/posts',
     '/blog': '/posts',
