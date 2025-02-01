@@ -19,7 +19,6 @@ import sectionize from '@hbsnow/rehype-sectionize'
 
 import icon from 'astro-icon'
 
-import partytown from '@astrojs/partytown'
 import swup from '@swup/astro';
 
 // https://astro.build/config
@@ -33,11 +32,6 @@ export default defineConfig({
     mdx(),
     react(),
     icon(),
-    partytown({
-      config: {
-        forward: ["dataLayer.push"],
-      },
-    }),
     swup({
       animationClass: 'transition-',
       containers: ['main'],
