@@ -53,6 +53,8 @@ const { title, description, image = '/static/twitter-card.png' } = Astro.props
 
 <HoverPrefetch max={8} />
 
+<script defer src="https://unpkg.com/tailwindcss-intersect@2.x.x/dist/observer.min.js"></script>
+
 <script is:inline>
   function setDarkMode(document) {
     const getThemePreference = () => {
