@@ -51,6 +51,11 @@ const config: Config = {
       lineHeight: {
         'extra-tight': '1.1',
       },
+      transitionDuration: {
+        '0': '0ms',
+        '1400': '1400ms',
+        '2000': '2000ms',
+       }
     },
   },
   plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate'), require('tailwindcss-intersect')],

@@ -86,7 +86,7 @@ const years = Object.keys(postsByYear).sort((a, b) => parseInt(b) - parseInt(a))
           <div class="font-semibold">{year}</div>
           <ul class="not-prose flex flex-col gap-4">
             {postsByYear[year].map((post) => (
-              <li>
+              <li class="translate-y-2/4 intersect:translate-y-0 transition ease-in-out duration-1000 opacity-0 intersect:opacity-100 intersect-once">
                 <BlogCard entry={post} authors={getAuthorsForPost(post)} />
               </li>
             ))}
