@@ -16,6 +16,7 @@ const { project } = Astro.props
 >
   <Link href={project.data.link} class="block" external>
     <Image
+      loading="eager"
       src={project.data.image}
       alt={project.data.name}
       width={400}
