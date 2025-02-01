@@ -93,6 +93,7 @@ const prevPost = getPrevPost(currentPostSlug);
     {
       post.data.image && (
         <Image
+          loading="eager"
           src={post.data.image}
           alt={post.data.title}
           width={300}
@@ -118,6 +119,7 @@ const prevPost = getPrevPost(currentPostSlug);
                   {authorData.map((author) => (
                     <div class="flex items-center gap-x-1.5">
                       <Image
+                        loading="eager"
                         src={author.avatar}
                         alt={author.name}
                         width={24}

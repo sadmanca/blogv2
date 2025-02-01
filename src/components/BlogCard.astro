@@ -33,7 +33,8 @@ const readTime = readingTime(entry.body);
   >
     {entry.data.image && (
       <div class="max-w-[200px] sm:flex-shrink-0">
-        <Image
+        <Image 
+          loading="eager"
           src={entry.data.image}
           alt={entry.data.title}
           width={1200}
