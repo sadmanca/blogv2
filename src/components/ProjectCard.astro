@@ -24,8 +24,13 @@ const { project } = Astro.props
       class="w-full object-cover rounded-xl"
     />
     <div class="p-4">
-      <h3 class="mb-2 text-xl font-black leading-extra-tight">{project.data.name}</h3>
-      <p class="mb-4 text-sm text-muted-foreground">
+      <h3 class="mb-1 text-xl font-black leading-none break-words hyphens-auto">{
+        project.data.name}
+        </h3>
+      <p class="mb-2 text-xs underline text-theme">
+        {project.data.link}
+      </p>
+      <p class="mb-2 text-sm text-muted-foreground leading-small">
         {project.data.description}
       </p>
       <div class="flex flex-wrap gap-2">

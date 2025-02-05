@@ -7,6 +7,28 @@ import Layout from '@/layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const projects = await getCollection('projects');
+
+
+// Define the order of project slugs
+const projectOrder = [
+  'blog/blog',
+  'eagerdb/eagerdb',
+  'pey-2023-dashboard/pey-2023-dashboard',
+  'fricdl/fricdl',
+  'libstreetmap/libstreetmap',
+  'work-study-2024/work-study-2024',
+];
+
+// Sort projects based on the defined order
+const orderedProjects = projects.sort((a, b) => {
+  const indexA = projectOrder.indexOf(a.slug);
+  const indexB = projectOrder.indexOf(b.slug);
+
+  if (indexA === -1 && indexB === -1) return 0;
+  if (indexA === -1) return 1;
+  if (indexB === -1) return -1;
+  return indexA - indexB;
+});
 ---
 
 <Layout title="Projects" description={SITE.DESCRIPTION}>
@@ -22,7 +44,7 @@ const projects = await getCollection('projects');
 
         <!-- <h2 class="mb-4 text-2xl font-semibold">Projects</h2> -->
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
+          {orderedProjects.map((project) => (
             <ProjectCard project={project} />
           ))}
         </div>
