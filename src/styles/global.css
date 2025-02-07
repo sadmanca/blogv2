@@ -182,69 +182,40 @@
       @apply relative rounded bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium;
     }
 
-    /* Code blocks */
-    figure[data-rehype-pretty-code-figure] {
-      @apply relative;
+  }
 
-      /* Code block titles */
-      [data-rehype-pretty-code-title] {
-        @apply break-words rounded-t-xl border-x border-t px-4 py-2 text-sm font-medium text-foreground;
-
-        /* Remove top margin from code block if a title is present */
-        & + pre {
-          @apply mt-0 rounded-t-none;
-        }
-      }
-
-      /* Code block styles */
-      pre {
-        @apply static max-h-[600px] overflow-auto rounded-xl border bg-secondary/20 py-4 text-sm leading-loose;
-
-        /* Code block content */
-        > code {
-          @apply whitespace-pre-wrap;
-          counter-reset: line;
-
-          /* For code blocks with line numbers */
-          &[data-line-numbers] {
-            > [data-line]::before {
-              counter-increment: line;
-              content: counter(line);
-              @apply mr-4 inline-block w-4 text-right text-muted-foreground;
-            }
-          }
-
-          /* For each line in the code block */
-          > [data-line] {
-            @apply px-4;
-          }
-
-          /* Highlighted lines */
-          [data-highlighted-line] {
-            @apply bg-foreground/10;
-          }
-
-          /* Highlighted characters */
-          [data-highlighted-chars] > span {
-            @apply bg-muted-foreground/40 py-[7px];
-          }
-
-          /* Diff lines */
-          .diff {
-            &.add {
-              @apply bg-additive/15;
-            }
-            &.remove {
-              @apply bg-destructive/15;
-            }
-          }
-
-          /* Copy button */
-          > button:has(> span) {
-            @apply right-0.5 top-[3px] m-0 size-8 rounded-md bg-background p-1 backdrop-blur-none transition-all;
-          }
-        }
-      }
+  .expressive-code .frame.has-title:not(.is-terminal) {
+    /* Language Icons */
+    .title::before {
+      content: '';
+      @apply iconify-color size-4;
+      @apply -ml-1 mr-2 -translate-y-[0.1em] align-middle;
+    }
+  
+    &:has(pre[data-language='python']) .title::before {
+      @apply vscode-icons--file-type-python;
+    }
+  
+    &:has(pre[data-language='js']) .title::before {
+      @apply vscode-icons--file-type-js-official;
+    }
+  
+    &:has(pre[data-language='html']) .title::before {
+      @apply iconify-color size-6;
+      @apply -ml-2 mr-1 -translate-y-[0.1em] align-middle;      
+      @apply vscode-icons--file-type-xml;
+    }
+  
+    &:has(pre[data-language='typ']) .title::before {
+      @apply -ml-2 mr-1 -translate-y-[0.1em] align-middle;
+      @apply vscode-icons--default-file;
+    }
+  
+    &:has(pre[data-language='tex']) .title::before {
+      @apply iconify-color size-6;
+      @apply -ml-2 mr-1 -translate-y-[0.1em] align-middle;
+      @apply align-middle;
+      @apply vscode-icons--file-type-tex;
     }
   }
 }
@@ -401,4 +372,12 @@ html.dark .swup-progress-bar {
 
 .dark .hover-card.highlight:active {
   @apply bg-yellow-900 border border-yellow-700;
+}
+
+.expressive-code pre {
+  max-height: min(68vh, 600px) !important;
+  overflow: auto;
+}
+.expressive-code pre::-webkit-scrollbar-corner {
+  display: none;
 }

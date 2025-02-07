@@ -17,8 +17,8 @@ export const SITE: Site = {
   DESCRIPTION:
     'Sometimes boring explorations into a world of software and beyond.',
   EMAIL: 'sadman.hossain@mail.utoronto.ca',
-  NUM_POSTS_ON_HOMEPAGE: 25,
-  POSTS_PER_PAGE: 50,
+  NUM_POSTS_ON_HOMEPAGE: 3,
+  POSTS_PER_PAGE: 15,
   SITEURL: process.env.NODE_ENV === 'development' ? 'http://localhost:1234' : 'https://sadman.ca',
 }
 
