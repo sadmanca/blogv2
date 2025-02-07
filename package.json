@@ -19,6 +19,8 @@
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.5",
+    "@expressive-code/plugin-collapsible-sections": "^0.40.1",
+    "@expressive-code/plugin-line-numbers": "^0.40.1",
     "@feelback/react": "^0.3.4",
     "@hbsnow/rehype-sectionize": "^1.0.7",
     "@iconify-json/lucide": "^1.2.4",
@@ -38,6 +40,7 @@
     "@types/react-dom": "^18.3.0",
     "@unpic/astro": "^0.1.0",
     "astro": "^5.1.9",
+    "astro-expressive-code": "^0.40.1",
     "astro-feelback": "^0.3.4",
     "astro-hover-prefetch": "^1.0.7",
     "astro-seo": "^0.8.4",
@@ -63,6 +66,8 @@
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
+    "@iconify-json/vscode-icons": "^1.2.11",
+    "@iconify/tailwind": "^1.2.0",
     "@tailwindcss/typography": "^0.5.13",
     "@types/react-router-dom": "^5.3.3",
     "@types/xml2js": "^0.4.14",

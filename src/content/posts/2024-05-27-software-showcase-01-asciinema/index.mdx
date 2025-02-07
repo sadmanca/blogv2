@@ -16,7 +16,7 @@ import Callout from '@/components/mdx/Callout.astro';
 
 I'm always coming across new tools, libraries, and frameworks for automating tasks or creating cool new things, and I always forget to take note of whatever I come across, so this post is the start of (hopefully) many in a series of me doing double-duty to show off all the interesting bits of software I come across[^includinghowto] (from things as small as bash scripts to things as large as full-blown software toolkits like `ffmpeg`) and make a formal record of all of them for my own notekeeping (because I have starred so many repositories on GitHub and I can hardly remember what a fraction of them are even about).
 
-<Callout type="info" icon="lucide:meh">
+<Callout type="flag" icon="lucide:arrow-big-down" classes="border-grey-950/100 bg-grey-100 dark:border-grey-100/100 dark:bg-grey-950">
   *What the average terminal session looks like for me whenever I'm trying to run some old CLI tool or executable that I haven't used for a while:*
 </Callout>
 
@@ -46,9 +46,15 @@ Terminal session recorders, like [`asciinema`](https://github.com/asciinema/asci
 2. You can actually copy the raw text being displayed when playing back recordings[^sousefulforweb] in the terminal or on the web; and
 3. You can actually customize how terminal sessions look during playback by editing the recorded files or just by changing your playback settings (which means you don't have to re-record sessions for small modifications like changing font styles)
 
-*What an `asciinema` recording embedded on the web looks like:*
+<Callout type="flag" icon="lucide:arrow-big-down" classes="border-grey-950/100 bg-grey-100 dark:border-grey-100/100 dark:bg-grey-950">
+  **What an `asciinema` recording embedded on the web looks like.**
+</Callout>
+
 <script id="asciicast-9593" src="https://asciinema.org/a/9593.js" data-speed="2.8" data-autoplay="false" data-loop="true" data-preload="true" async></script>
-**Shown:** _"Iterative git rebase with vim"_. **Source:** https://asciinema.org/a/9593.
+
+<figcaption class="-mt-9">
+_"Iterative git rebase with vim"_. **Source:** https://asciinema.org/a/9593.
+</figcaption>
 
 [^mentally]: Despite being constantly reminded my eyes that it's spelled "as-ciinema", I just can't pronouncing it in my head as "ascii-cinema" 😅
 
@@ -78,8 +84,8 @@ But before we dive into those `asciinema`-derivatives, let's take a quick look a
 
 You can install [`asciinema`](https://github.com/asciinema/asciinema) using PyPI via pip or using your package repository of choice on Linux, macOS, and FreeBSD (you can find the full list of supported OSes at [docs.asciinema.org/manual/cli/installation](https://docs.asciinema.org/manual/cli/installation/)).
 
-```bash
-> pip install asciinema
+```bash showLineNumbers=false
+pip install asciinema
 ```
 
 *As you might've noticed, Windows is not listed under supported OSes.* There's a good reason for that, and we'll get to it when we talk about [`PowerSession-rs`]().
@@ -135,8 +141,8 @@ Replay a terminal session recorded using `asciinema rec` (at a local file or url
 
 This command uploads a local recording to whatever URL is specified in the `ASCIINEMA_API_URL` environment variable ([asciinema.org](https://asciinema.org/) by default, under whatever account has been authenticated via ` asciinema auth`, or anonymously if you haven't run that yet).
 
-<Callout type="info">
-  *Try jumping to different markers by clicking on the player timeline below:*
+<Callout type="flag" icon="lucide:arrow-big-down" classes="border-grey-950/100 bg-grey-100 dark:border-grey-100/100 dark:bg-grey-950">
+  **Try jumping to different markers by clicking on the player timeline below.**
 </Callout>
 
 <script
@@ -153,36 +159,60 @@ async></script>
 
 You can view your and others' uploaded recordings on [asciinema.org](https://asciinema.org/) (and there are quite a few cool recordings on there, from a [demo of a mapping CLI](https://asciinema.org/a/117813) to [iterative git rebasing with `vim`](https://asciinema.org/a/9593)). More importantly, you can embed uploaded recordings as iframes in HTML pages using some inline JavaScript as below:
 
-```html
-<script src="https://asciinema.org/a/646222.js" id="asciicast-646222" async></script>
+```html title="inline.html" {12} collapse={1-10,14-999999}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple HTML Page</title>
+</head>
+<body>
+  <h1>Asciinema Inline Script</h1>
+  <p>This page includes an Asciinema cast:</p>
+
+  <script src="https://asciinema.org/a/646222.js" id="asciicast-646222" async></script>
+
+</body>
+</html>
 ```
 
-> The resulting embedded `asciinema` recording:
+<Callout type="flag" icon="lucide:arrow-big-down" classes="border-grey-950/100 bg-grey-100 dark:border-grey-100/100 dark:bg-grey-950">
+  **The resulting embedded `asciinema` recording.**
+</Callout>
+
 <script src="https://asciinema.org/a/646222.js" id="asciicast-646222" async></script>
 
 While the look and feel of the embedded player defaults to the original uploader's settings, you can override settings yourself using the following modifications to the inline script:
 
-
-```html
-<script>
+```html title="asciinema_overrides.js" {" // OVERRIDES:": 5-21} ins={" // remove any inactivity longer than this many seconds":13-14} ins={" // set custom timestamp for asciinema player preview frame":16-17} ins={" // set playback terminal width & height":19-21} 
+<script
   src="https://asciinema.org/a/646222.js"
   id="..."
+
+
   data-start-at="00:40"
   data-autoplay="false"
   data-loop="true"
   data-speed="2.75"
-  data-idle-time-limit="2"
   data-theme="solarized-light"
-  data-poster="npt:1:23"  <!-- player preview frame timestamp -->
-  data-cols="130"         <!-- terminal width -->
-  data-rows="10"          <!-- terminal height -->
   data-preload="true"
-  async>
-</script>
+
+
+  data-idle-time-limit="2"
+
+
+  data-poster="npt:1:23"
+
+
+  data-cols="130"   <!-- terminal width -->
+  data-rows="10"    <!-- terminal height -->
+
+async></script>
 ```
 
-<Callout type="flag">
-  **Below**: The resulting embedded `asciinema` recording *with additional configuration and a zoomed out view.*
+<Callout type="flag" icon="lucide:arrow-big-down" classes="border-grey-950/100 bg-grey-100 dark:border-grey-100/100 dark:bg-grey-950">
+  **The resulting embedded `asciinema` recording *with additional configuration and a zoomed out view.***
 </Callout>
 
 <script src="https://asciinema.org/a/646222.js" id="asciicast-646222-two" data-start-at="00:40" data-autoplay="false" data-loop="true" data-speed="2.75" data-idle-time-limit="2" data-theme="solarized-dark" data-cols="130" data-rows="10" data-preload="true" async></script>
@@ -221,8 +251,13 @@ GitHub READMEs don't render `<script>` tags, which means that while you can tech
 
 [`agg`](https://github.com/asciinema/agg) is a CLI tool (and a successor to the now-deprecated [`asciicast2gif`](https://github.com/asciinema/asciicast2gif)) for generating GIF files from `asciinema` recordings[^thefileformat], written by the same developer as `asciinema`. It's built using Rust, so you will need to have Cargo installed to be able install it (Cargo is distributed by default with Rust). Files are stored using the [`asiicast-v2` file format](https://github.com/asciinema/asciinema/blob/main/doc/asciicast-v2.md)
 
-_A GIF generated from an `asciinema` recording using `agg`:_
+
+<figure>
 ![A GIF generated from an `asciinema` recording using `agg`](https://raw.githubusercontent.com/asciinema/agg/main/demo.gif)
+  <figcaption>
+  A GIF generated from an `asciinema` recording using `agg`.
+  </figcaption>
+</figure>
 
 ### Usage
 
@@ -230,11 +265,13 @@ _A GIF generated from an `asciinema` recording using `agg`:_
 
 You can use `agg` for rendering GIFs from a local asciicast `.cast` recording or from  URL like the below:
 
-```bash
+```bash showLineNumbers=false
 agg input.cast output.gif
 ```
 
-```bash
+<div class="h-3"></div>
+
+```bash showLineNumbers=false
 agg https://asciinema.org/a/569727 output.gif
 ```
 
@@ -272,17 +309,22 @@ For one, animated SVGs are able to look a *lot* more crisp at larger resolutions
   To find out why it's *almost* ideal (instead of just being ideal), continue reading to the **"Where `svg-term-cli` falls flat"** section.
 </Callout>
 
-*An animated SVG generated from an `asciinema` recording using `svg-term-cli`:*
+<figure>
 ![An animated SVG generated from an `asciinema` recording using `svg-term-cli`.](./02-svg-term-cli.svg)
-
+  <figcaption class="text-center">
+  An animated SVG generated from an `asciinema` recording using `svg-term-cli`.
+  </figcaption>
+</figure>
 
 ### Usage
 
 After installing `svg-term-cli` via `> npm install -g svg-term-cli`(yes, this is in fact a Node.js application), you can render a local `asciicast` file or a recording at a URL to an animated SVG using the following:
 
-```bash
+```bash showLineNumbers=false
 svg-term --cast <filename/url> --out [filename]
 ```
+
+<div class="h-4"></div>
 
 #### `svg-term`
 
@@ -309,8 +351,12 @@ If you're looking for a more up-to-date alternative, then there's the Go-based [
 
 [^maybeonedayinthefuture]: Might be worth doing a comparison of SVG generations (wrt file size, speed, etc.) between `termsvg` and `svg-term-cli` for a future blog post.
 
-*An animated SVG generated from an `asciinema` recording using `termsvg`. Looks just as good (if not better) than one generated by `svg-term-cli`:*
+<figure>
 ![An animated SVG generated from an `asciinema` recording using `termsvg`. Looks just as good (if not better) than one generated by `svg-term-cli`.](https://raw.githubusercontent.com/MrMarble/termsvg/master/examples/444816.svg)
+  <figcaption>
+  An animated SVG generated from an `asciinema` recording using `termsvg`. Looks just as good (if not better) than one generated by `svg-term-cli`.
+  </figcaption>
+</figure>
 
 ---
 

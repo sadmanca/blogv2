@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button'
+import * as React from "react"
+import { Sun, Moon, Laptop } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Laptop, Moon, Sun } from 'lucide-react'
-import * as React from 'react'
+} from "@/components/ui/dropdown-menu"
 
 export function ModeToggle() {
   const [theme, setThemeState] = React.useState<
@@ -27,6 +27,8 @@ export function ModeToggle() {
     document.documentElement.classList.add('disable-transitions')
 
     document.documentElement.classList[isDark ? 'add' : 'remove']('dark')
+    document.documentElement.classList[isDark ? 'remove' : 'add']('light')
+
 
     window
       .getComputedStyle(document.documentElement)

@@ -14,6 +14,9 @@ import PdfViewer from '@/components/PdfViewer.astro';
 import Callout from '@/components/mdx/Callout.astro';
 import ImageZoom from '@/components/mdx/ImageZoom.astro';
 
+import { Code } from 'astro-expressive-code/components';
+import latexsheet from './latexsheet.tex?raw';
+
 # Setting the stage
 
 **Picture it.** You're finally in that type of course that allows you to put *whatever* you want on your cheatsheet for the exam, no requirement to have handwritten it on your tablet or (god forbid) using a physical pen on a physical piece of paper, just free reign to type all of it up and copy-paste images to your heart's content. As an engineering student, such a scenario appears rarely, but when it does, it is oh-so-sweet.
@@ -72,7 +75,7 @@ On that last point, I took a quick search on Github[^gh] for any LaTeX cheatshee
 
 ---
 
-*A decent-looking LaTeX cheatsheet, albeit one that isn't necessarily the best use of space and is an absolute \*pain\* to edit in LaTeX. Source: [https://wch.github.io/latexsheet](https://wch.github.io/latexsheet)*
+*A decent-looking LaTeX cheatsheet, albeit one that isn't necessarily the best use of space and is an absolute \*pain\* to edit in LaTeX.*
 
 import latexsheet0 from './latexsheet-0.png'
 import latexsheet1 from './latexsheet-1.png'
@@ -82,74 +85,17 @@ import latexsheet1 from './latexsheet-1.png'
   { src: latexsheet1, caption: "Back page: sample LaTeX cheatsheet" },
 ]} columns={2} />
 
-```latex
-...
-\subsection{Common \texttt{documentclass} options}
-\newlength{\MyLen}
-\settowidth{\MyLen}{\texttt{letterpaper}/\texttt{a4paper} \ }
-\begin{tabular}{@{}p{\the\MyLen}%
-                @{}p{\linewidth-\the\MyLen}@{}}
-\texttt{10pt}/\texttt{11pt}/\texttt{12pt} & Font size. \\
-\texttt{letterpaper}/\texttt{a4paper} & Paper size. \\
-\texttt{twocolumn} & Use two columns. \\
-\texttt{twoside}   & Set margins for two-sided. \\
-\texttt{landscape} & Landscape orientation.  Must use
-                     \texttt{dvips -t landscape}. \\
-\texttt{draft}     & Double-space lines.
-\end{tabular}
+<br/>
 
-Usage:
-\verb!\documentclass[!\textit{opt,opt}\verb!]{!\textit{class}\verb!}!.
+*Source: [https://wch.github.io/latexsheet](https://wch.github.io/latexsheet)*
 
-
-\subsection{Packages}
-\settowidth{\MyLen}{\texttt{multicol} }
-\begin{tabular}{@{}p{\the\MyLen}%
-                @{}p{\linewidth-\the\MyLen}@{}}
-%\begin{tabular}{@{}ll@{}}
-\texttt{fullpage}  &  Use 1 inch margins. \\
-\texttt{anysize}   &  Set margins: \verb!\marginsize{!\textit{l}%
-                        \verb!}{!\textit{r}\verb!}{!\textit{t}%
-                        \verb!}{!\textit{b}\verb!}!.            \\
-\texttt{multicol}  &  Use $n$ columns:
-                        \verb!\begin{multicols}{!$n$\verb!}!.   \\
-\texttt{latexsym}  &  Use \LaTeX\ symbol font. \\
-\texttt{graphicx}  &  Show image:
-                        \verb!\includegraphics[width=!%
-                        \textit{x}\verb!]{!%
-                        \textit{file}\verb!}!. \\
-\texttt{url}       & Insert URL: \verb!\url{!%
-                        \textit{http://\ldots}%
-                        \verb!}!.
-\end{tabular}
-
-Use before \verb!\begin{document}!.
-Usage: \verb!\usepackage{!\textit{package}\verb!}!
-
-
-\subsection{Title}
-\settowidth{\MyLen}{\texttt{.author.text.} }
-\begin{tabular}{@{}p{\the\MyLen}%
-                @{}p{\linewidth-\the\MyLen}@{}}
-\verb!\author{!\textit{text}\verb!}! & Author of document. \\
-\verb!\title{!\textit{text}\verb!}!  & Title of document. \\
-\verb!\date{!\textit{text}\verb!}!   & Date. \\
-\end{tabular}
-
-These commands go before \verb!\begin{document}!.  The declaration
-\verb!\maketitle! goes at the top of the document.
-
-\subsection{Miscellaneous}
-\settowidth{\MyLen}{\texttt{.pagestyle.empty.} }
-\begin{tabular}{@{}p{\the\MyLen}%
-                @{}p{\linewidth-\the\MyLen}@{}}
-\verb!\pagestyle{empty}!     &   Empty header, footer
-                                 and no page numbers. \\
-\verb!\tableofcontents!      &   Add a table of contents here. \\
-
-\end{tabular}
-...
-```
+<Code 
+  code={latexsheet} 
+  lang="tex" 
+  title="latexsheet.tex" 
+  collapse="1-112, 157-999999" 
+  del={[{ label: "LaTeX is just faaar too verbose for comfort:", range: "114-130" }]} 
+/>
 
 ---
 
@@ -232,7 +178,9 @@ To see the whole project in action, take a look at [typst.app/project/rbJ15a29M2
 
 [^somedifs]: Note that there are some minute differences between the code linked here and the overview below for clarity purposes.
 
-```txt caption="The project structure for the cheatsheet, with the main content split into 2 separate files (content.typ and lazy.typ; the latter file is for when I got, as it is written, lazy and simply began copy-pasting text from lecture slides) and the content formatting specified within the aidsheet.typ file."
+<figure>
+
+```ansi showLineNumbers=false
 📁cheatsheet/
 ├── 📁fonts/
 ├── 📁images/
@@ -240,29 +188,40 @@ To see the whole project in action, take a look at [typst.app/project/rbJ15a29M2
 ├── content.typ
 └── lazy.typ
 ```
+<figcaption>
+The project structure for the cheatsheet, with the main content split into 2 separate files (content.typ and lazy.typ; the latter file is for when I got, as it is written, lazy and simply began copy-pasting text from lecture slides) and the content formatting specified within the aidsheet.typ file.
+</figcaption>
+</figure>
 
 First order of business before we get to the task of structuring our content: the page layout.
 
 Programmability is one of Typst's strong suits, and so it's good practice to set variables for your cheatsheet's document formatting properties (e.g. line spacing, image width, font size) because it can enable making minor document-wide changes down the road a *whole* lot easier. Of course, you'll notice that I don't do this all the time in my code below (and that's largely because I wrote this cheatsheet under the time crunch of studying for 2 exams in 2 days, which meant that many a corner had to be cut to get it done).
 
-```python title="aidsheet.typ" caption="Typst allows for importing modules and variables from other .typ files (gray), as well as setting page margins using code (green)." showLineNumbers{0} {1-2}
+```typ title="aidsheet.typ" {"TIP: you can easily import modules & variables from other .typ files in Typst":3-5} ins={"TIP: try to reduce page margins as much as possible":10-14}
+...
+
+
 #import "content.typ": *
 #import "lazy.typ": *
 
 #set page(
   paper: "us-letter",
   margin: (
-      top: 0.2in, # [!code ++]
-      bottom: 0.1in, # [!code ++]
-      left: 0.2in, # [!code ++]
-      right: 0.2in # [!code ++]
+
+      top: 0.2in, 
+      bottom: 0.1in,
+      left: 0.2in, 
+      right: 0.2in 
   )
 )
 
 ...
 ```
+<br/>
+```typ title="content.typ" {"TIP: Typst supports lots of variable types for formatting":3-7}
+...
 
-```python title="content.typ" caption="Example showing how variables of different types (percentage, size: pt/em, color) can be declared in .typ files." showLineNumbers{0} {1-4}
+
 #let img_width = 70%
 #let font_size = 3.6pt
 #let line_spacing = 0.2em

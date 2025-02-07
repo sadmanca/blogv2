@@ -1,6 +1,8 @@
 import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
+import { addIconSelectors } from "@iconify/tailwind";
+
 const config: Config = {
   darkMode: ['selector'],
   content: ['./src/**/*.{astro,md,mdx,ts,tsx}'],
@@ -58,7 +60,12 @@ const config: Config = {
        }
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate'), require('tailwindcss-intersect')],
+  plugins: [
+    require('@tailwindcss/typography'), 
+    require('tailwindcss-animate'), 
+    require('tailwindcss-intersect'),
+    addIconSelectors(["vscode-icons"]),
+  ],
   safelist: [
     {
       pattern: /m[bt]-(0|1|2|3|4|5|6|7|8|9|10|11|12|14|16|20|24|28|32|36|40|44|48|52|56|60|64|72|80|96)/,

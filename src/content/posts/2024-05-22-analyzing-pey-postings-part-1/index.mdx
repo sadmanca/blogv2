@@ -19,15 +19,19 @@ import a3 from './01-pey-viewed.jpg';
 import a4 from './02-pey-old-posting.jpg';
 import a5 from './02-pey-sample-posting.jpg';
 
+import { Code } from 'astro-expressive-code/components';
+import sampleHtml from './ML Developer – Software Automation & Dev Infra Intern - ML Developer – Software Automation & Dev Infra Intern (2024-09-17 10_38_07 PM).html?raw'
+
 ## UofT PEY Co-op
 
 Whether you're a new applicant to engineering/computer science at the University of Toronto (UofT) or someone who's going through their 1st, 2nd, or even 3rd or 4th years, you've probably been curious at one point or another about **what 12-16 month job positions are actually posted on the much acclaimed PEY Co-op job board**.
 
 Well, as a computer engineering student at UofT who's just finished their third year (and consequently have been able to access the portal for the entire past two semesters), I thought it would be interesting to do my own data collection on the topic, along with some analysis on recurring patterns (e.g. locations, international opportunities, etc.), and share both my findings and the raw data (thousands of jobs posted across several months) so that future PEY Co-op students can get a better idea of what to expect from the portal.
 
-```sql
+```sql showLineNumbers=false
 SELECT * FROM JobPostings LIMIT 5;
 ```
+<div class="h-5"></div>
 <div class="table-container">
 | id    | postingDate | title                                | company                          | companyDivision | companyWebsite                                      | location     | locationType          | numPositions | salary                                | startDate  | endDate    | function               | applicationDeadline       |
 |-------|-------------|--------------------------------------|----------------------------------|-----------------|----------------------------------------------------|--------------|-----------------------|--------------|----------------------------------------|------------|------------|------------------------|---------------------------|
@@ -109,7 +113,8 @@ It's all thanks to [Gildas Lormeau's](https://github.com/gildas-lormeau) [Single
 
 By <kbd>Ctrl</kbd>-clicking on every single job posting shown behind `New Posting Since Last Login` (so that every new posting opens on a new tab) and then using the SingleFile extension to save the page each tab in one go (using the `Save all tabs` option under the SingleFile extension.), I'm able to condense the whole process of saving new postings for the day to just 1-2 minutes. Put each day's postings into a timestamped folder (made faster thanks to a handy AutoHotKey script that's always a keyboard shortcut away), which itself goes into a big folder on my local computer of all PEY job postings collected thus far, and I've got myself data on almost 2k job postings just waiting to be analyzed for some insights.
 
-```txt caption="A snapshot of my local directory structure with HTML pages for saved job postings. You might notice that the naming convention for HTML files are slightly different across the folders shown. That's because my file naming system changed a few times over the course of my two semesters (due to the job board redesign and my reconfiguring of options for SingleFile)." {3-4,7-8}
+<figure>
+```ansi showLineNumbers=false {3-4,7-8} "Job Postings" /Job ID \d+/
 📁PEY POSTINGS ARCHIVE/
 ├── 📁2023-09-17_20-14-10/
 │   ├── ...Job Postings (9_17_2023 8_13_11 PM).html
@@ -123,6 +128,10 @@ By <kbd>Ctrl</kbd>-clicking on every single job posting shown behind `New Postin
 ├── ...
 └── 📁2024-05-17_16-25-26/
 ```
+<figcaption>
+A snapshot of my local directory structure with HTML pages for saved job postings. You might notice that the naming convention for HTML files are slightly different across the folders shown. That's because my file naming system changed a few times over the course of my two semesters (due to the job board redesign and my reconfiguring of options for SingleFile).
+</figcaption>
+</figure>
 
 #### Why not write a script to automate saving postings?
 
@@ -153,35 +162,12 @@ If it were just a single page, I could use something like [Microsoft Edge's Smar
 
 The HTML code for each job posting page doesn't have the best formatting...
 
-```html title="Job ID 43628 UofT Engineering Career Centre...Job Postings (9_18_2023 12_52_04 AM).html" caption="The page for the Cerebras position above has 3506 empty lines with only 809 lines dedicated to actual code, and the HTML code on non-empty lines isn't exactly the most pleasing to read."
-<div class=orbisModuleHeader>
-<div class=row-fluid>
-<div class=span2>
-<div style=text-align:center>
-<h1>
-Job ID
-: 43628
-</h1>
-</div>
-</div>
-<div class=span7>
-<h1>
-ML Developer - Software Automation &amp; Developer Infrastructure
-</h1>
-<h5>
-
-Cerebras Systems - Computer Science
-</h5>
-</div>
-<div class=span3>
-
-<ul class=pager>
-
-<li>
-<a href=javascript:void(0)><i class=icon-chevron-left></i>Back to Overview</a>
-</li>
-...
-```
+<figure class="-mt-2">
+<Code code={sampleHtml} lang="html" title="Job ID 43628 UofT Engineering...Job Postings (9_18_2023 12_52_04 AM).html" collapse="17-999999" />
+  <figcaption>
+  The page for the Cerebras position above has 3506 empty lines with only 809 lines dedicated to actual code, and the HTML code on non-empty lines isn't exactly the most pleasing to read.
+  </figcaption>
+</figure>
 
 ...but thanks to everything being stored in tables I can just use Python's trusty BeautifulSoup4 library on my locally saved HTML pages and get the text in every table data cell **in less than 50 lines of code:**
 
@@ -225,13 +211,18 @@ if __name__ == "__main__":
     parse_html_file(args.filepath, args.verbose)
 ```
 
+<div class="h-5"></div>
+
 Trying out the quickly-written `parse.py` script on one of the saved HTML pages, and it's able to get all of the values for all of the table fields with no issues:
 
-```bash
+<figure>
+```bash showLineNumbers=false
 python parse.py --verbose --filepath "Job ID 43628....html"
 ```
 
-```txt title="Output of above command" caption="Output of the parse.py script for the Cerebras job posting." {2-4, 7-9}
+<div class="h-2"></div>
+
+```txt frame="none" {2-4, 7-9}
 Position Type:: Professional Experience Year Co-op (PEY Co-op: 12-16 months)
 Job Title:: ML Developer - Software Automation & Developer Infrastructure
 Job Location:: Toronto
@@ -286,6 +277,10 @@ Division:: Computer Science
 Website:: https://cerebras.net/
 Length of Workterm:: FLEXIBLE PEY Co-op: 12-16 months (range)
 ```
+  <figcaption>
+  Output of the parse.py script for the Cerebras job posting.
+  </figcaption>
+</figure>
 
 #### Finetuning data extraction
 
@@ -305,13 +300,14 @@ Luckily, I had the foresight to configure SingleFile to include the job ID autom
 
 A quick manual parsing of the different HTML files shows that there's only two different locations that job IDs can be located (one for the old design, and the other for the new design), so I can just add another function to try and find the job ID located at either location in all files and I'm now able to extract all the job IDs as well:
 
-```python title="parse.py" showLineNumbers{0}
+```python title="parse.py" ins={"      ## quirk with SingleFile: you still have boilerplate HTML": 7-8} {5-23} collapse={29-9999999}
 import argparse
 from bs4 import BeautifulSoup
 import re
 
 def extract_job_id_from_html(soup):
     ## try to find job ID in a <h1> tag with the specific class
+
     header_tag = soup.find('h1', class_='h3 dashboard-header__profile-information-name mobile--small-font color--font--white margin--b--s')
     if header_tag:
         header_text = header_tag.get_text(strip=True)
@@ -439,6 +435,8 @@ def create_db_schema(db_cursor):
 if __name__ == "__main__":
     ...
 ```
+
+<div class="h-5"></div>
 
 ##### **Parsing to `.db`**
 
@@ -611,6 +609,8 @@ if __name__ == "__main__":
     logging.info("Parsing and storing completed.")
 ```
 
+<div class="h-5"></div>
+
 [^timestamped]: e.g. `📁2023-09-17_20-14-10`; easily achievable thanks to [github.com/sadmanca/ahk-scripts/blob/master/keys.ahk](https://github.com/sadmanca/ahk-scripts/blob/master/keys.ahk#L54)
 
 ## Viewing the data
@@ -632,6 +632,8 @@ FROM JobPosting
 GROUP BY company
 ORDER BY num_postings DESC;
 ```
+
+<div class="h-5"></div>
 
 <div class="table-container">
 | Company                                                   | Num Postings |
@@ -1015,6 +1017,8 @@ GROUP BY location
 ORDER BY num_postings DESC;
 ```
 
+<div class="h-5"></div>
+
 <div class="table-container">
 | Location                                                                 | Num Postings |
 |--------------------------------------------------------------------------|--------------|
@@ -1329,7 +1333,7 @@ ORDER BY num_postings DESC;
 
 #### How many job postings are there for mechatronics positions?
 
-```sql caption="SQLite query for: How many job postings are there for mechatronics positions?" {3-9}
+```sql {3-9}
 SELECT COUNT(*) AS num_mech_postings
 FROM JobPosting
 WHERE title                LIKE '%mechatronic%'
@@ -1341,7 +1345,9 @@ WHERE title                LIKE '%mechatronic%'
    OR preferredDisciplines LIKE '%mechatronic%';
 ```
 
-```txt
+<div class="h-5"></div>
+
+```txt showLineNumbers=false
 ┌─────────────────────┐
 │  num_mech_postings  │
 │─────────────────────│
@@ -1364,6 +1370,8 @@ WHERE title                LIKE '%mechatronic%'
    OR preferredDisciplines LIKE '%mechatronic%'
 LIMIT 1;
 ```
+
+<div class="h-5"></div>
 
 <div class="table-container">
 | id    | postingDate | title                     | company             | companyDivision | companyWebsite                                           | location          | locationType | numPositions | salary                               | startDate  | endDate    | function    |
