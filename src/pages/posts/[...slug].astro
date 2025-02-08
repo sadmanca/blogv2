@@ -105,7 +105,7 @@ const prevPost = getPrevPost(currentPostSlug);
     }
     <section class="col-start-2 flex flex-col gap-y-6 text-center">
       <div class="flex flex-col gap-y-4">
-        <h1 class="text-5xl font-black leading-none sm:text-6xl">
+        <h1 class="text-5xl font-black leading-none sm:text-6xl sm:leading-[0.9] -mx-8">
           {post.data.title}
         </h1>
 
@@ -144,6 +144,10 @@ const prevPost = getPrevPost(currentPostSlug);
             <span>{formatDate(post.data.date)}</span>
             <Separator orientation="vertical" className="h-4" />
             <span>{readingTime(post.body)}</span>
+            <Separator orientation="vertical" className="h-4" />
+            <span class="-ml-1">
+              <Feelback client:load />
+            </span>
           </div>
         </div>
         <div class="flex flex-wrap justify-center gap-2">
@@ -165,7 +169,6 @@ const prevPost = getPrevPost(currentPostSlug);
             )
           }
         </div>
-        <Feelback client:only="react" />
       </div>
 
       <PostNavigation prevPost={prevPost} nextPost={nextPost} />

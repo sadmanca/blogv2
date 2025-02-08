@@ -1,9 +1,9 @@
 ---
-title: "How to build a Goodreads Component in Astro"
-description: "Using the ."
-date: 2025-01-31
-slug: "goodreads-component-in-astro"
-tags: ['university', 'education', 'advice']
+title: "How to use Goodreads data in Astro"
+description: "Using the Content Loader API to get data from Goodreads book shelves/lists and dynamically build Goodreads components in Astro."
+date: 2025-02-07
+slug: "how-to-use-goodreads-data-in-astro"
+tags: ['blog', 'astro', 'goodreads', 'books', 'webdev']
 image: './00-thumbnail.png'
 authors: ['sadman']
 ---
@@ -12,10 +12,18 @@ import Callout from '@/components/mdx/Callout.astro';
 import ImageGalleryCaption from '@/components/ImageGalleryCaption.astro';
 import TraktGrid from '@/components/mdx/TraktGrid.astro';
 import ImageZoom from '@/components/mdx/ImageZoom.astro';
+import CodeToggle from '@/components/mdx/CodeToggle.astro';
+
 import { Image } from 'astro:assets';
 import { SITE } from '@/consts';
 
 I've taken a lot of courses from my time in UofT ECE (most of them were about software, some of them were not). If you're a budding ECE student (or someone in 3rd year) trying to figure out what courses to take (or perhaps when to take them), then you might find the following descriptions helpful for planning out the rest of your degree.
+
+<CodeToggle 
+  code="console.log('Hello world!')" 
+  lang="js" 
+  title="test"
+/>
 
 ## Who this page is for
 
