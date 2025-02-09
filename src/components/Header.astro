@@ -1,4 +1,5 @@
 ---
+// filepath: /c:/Users/MSadm/Documents/Sadman/code/SIDEPROJECTS/blogv2/src/components/Header.astro
 import Container from '@/components/Container.astro'
 import Link from '@/components/Link.astro'
 import MobileMenu from '@/components/ui/mobile-menu'
@@ -8,18 +9,18 @@ import { NAV_LINKS, SITE } from '@/consts'
 ---
 
 <header
-  class="sticky top-0 z-50 bg-background/50 backdrop-blur-lg"
+  class="fixed top-0 left-0 w-full z-50 bg-background/50 backdrop-blur-lg transition-transform duration-300"
   transition:persist
 >
-  <Container>
-    <div class="flex flex-wrap items-center justify-between gap-4 py-4">
+  <Container class="max-w-full px-8">
+    <div class="flex flex-wrap items-center justify-between gap-4 py-3">
       <Link
         href="/"
         class="flex flex-shrink-0 items-center gap-2 text-xl font-semibold transition-colors duration-300 hover:text-primary"
       >
-      <svg width="34" height="34" viewBox="0 0 34 34" class="size-9">
-        <circle cx="17" cy="17" r="17" fill="#6854ff" />
-      </svg>
+        <svg width="34" height="34" viewBox="0 0 34 34" class="size-9">
+          <circle cx="17" cy="17" r="17" fill="#6854ff" />
+        </svg>
         <h1 class="font-extrabold">
           {SITE.TITLE}
         </h1>
@@ -44,3 +45,20 @@ import { NAV_LINKS, SITE } from '@/consts'
     </div>
   </Container>
 </header>
+
+<script>
+  let lastScrollTop = 0;
+  const header = document.querySelector('header');
+
+  window.addEventListener('scroll', function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop > lastScrollTop){
+      // if (header) header.style.top = '-80px';
+      if (header) header.classList.add('transform', '-translate-y-full');
+    } else {
+      // if (header) header.style.top = '0';
+      if (header) header.classList.remove('transform', '-translate-y-full');
+    }
+    lastScrollTop = scrollTop;
+  });
+</script>
