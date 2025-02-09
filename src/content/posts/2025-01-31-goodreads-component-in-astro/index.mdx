@@ -1,7 +1,7 @@
 ---
 title: "How to use Goodreads data in Astro"
 description: "Using the Astro Content Loader API to get data from Goodreads bookshelves and dynamically build Goodreads components in Astro."
-date: 2025-02-07
+date: 2025-02-09
 slug: "how-to-use-goodreads-data-in-astro"
 tags: ['astro', 'goodreads', 'code', 'webdev', 'software-showcase']
 image: './00-thumbnail.jpg'
@@ -24,6 +24,8 @@ import goodreadsTailwindImg from './goodreads-tailwind.jpg';
 import goodreadsUnstyled from './goodreads-unstyled.astro?raw';
 import goodreadsTailwind from './goodreads-tailwind.astro?raw';
 import goodreadsGrid from './GoodreadsGrid.astro?raw';
+
+import schema from './schema.ts?raw';
 
 import { Image } from 'astro:assets';
 import { SITE } from '@/consts';
@@ -368,11 +370,11 @@ export const markSortAndFilter = new RegExp("\\b(sort|filter)\\b", "gi");
 
 <hr/>
 
-## Using plain JavaScript to retrieve Goodreads data
+## Retrieving Goodreads data without the Content Loader API
 
-If you're still on Astro 4.x and below, you can't use the Content Loader API to retrieve data from Goodreads, but you can still use plain JavaScript to fetch the data and then pass it to your components as props. 
+If you're still on Astro 4.x and below, you can't use the Content Loader API to retrieve data from Goodreads, but you can still use JavaScript to fetch the data and then pass it to your components as props. 
 
-```astro title="src/components/mdx/GoodreadsGrid.astro" wrap=false del="fetch" del={3-16, 19} del={"I added a timeout & retry logic for fetching data to minimize any errors":8} mark={"Since I alreadyhad code for fetching data & parsing to a schema, it was easy to transition to using the Content Loader API": 21-32}
+```astro title="src/components/mdx/GoodreadsGrid.astro" wrap=false del="fetch" del={3-16, 19} del={"I added a timeout & retry logic for fetching data to minimize any errors":8} mark={"Same code as when using the Content Loader API": 21-32}
 import xml2js from 'xml2js'
 
 const TIMEOUT = 200000; // Set timeout to 200 seconds
@@ -416,6 +418,18 @@ let books = result.rss.channel[0].item.map((item: any) => {
 
   While that's not a big deal (beyond being poor practice) since it was just retrieving and parsing an XML file, it was *faaar* more painful when I tried to use the same approach for loading data using APIs with rate limits (which often broke components while I was trying to test them in dev). In fact, that was the catalyst for me to upgrade to Astro 5.x and start using the Content Loader API.
 </Callout>
+
+<hr/>
+
+## Why you can't use the Astro feed loader to fetch Goodreads data
+
+While the [`@ascorbic/feed-loader`](https://github.com/ascorbic/astro-loaders/tree/main/packages/feed) package does allow you to load data from RSS feeds similar to how we did above, the package has a *very* limited schema that does not allow for the kind of complex data retrieval and parsing that we need to do for Goodreads data (which results in most of the fields in the Goodreads RSS feed being ignored and little actual data being retrieved).
+
+export const colon = new RegExp("\\w+:", "gm");
+
+<Code code={schema} lang="ts" title="astro-loaders/packages/feed/src/schema.ts" collapse="1-34, 54-9999999" mark={mark} wrap={false} />
+
+<CodeToggle showSourceText="Show XML Code for Goodreads RSS Feed" HideSourceText="Hide XML Code for Goodreads RSS Feed" code={sadmanRss} lang="xml" title="rss.xml" collapse="1-20, 63-9999999" mark={mark} wrap={false} />
 
 <hr/>
 
