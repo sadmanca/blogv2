@@ -47,7 +47,10 @@ const config: Config = {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
-        border: 'hsl(var(--border))',
+        border:  {
+          DEFAULT: 'hsl(var(--border))',
+          foreground: 'hsl(var(--border-foreground))',
+        },
         ring: 'hsl(var(--ring))',
       },
       lineHeight: {

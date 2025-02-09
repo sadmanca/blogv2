@@ -39,6 +39,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
+    --border-foreground: 0 0% 94%;
     --ring: 0 0% 3.9%;
   }
   .dark {
@@ -61,6 +62,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
+    --border-foreground: 0 0% 13%;
     --ring: 0 0% 83.1%;
   }
 

@@ -5,8 +5,6 @@ import MobileMenu from '@/components/ui/mobile-menu'
 import { ModeToggle } from '@/components/ui/mode-toggle'
 import { MoreDropdown } from '@/components/ui/more-dropdown'
 import { NAV_LINKS, SITE } from '@/consts'
-import { Image } from 'astro:assets'
-import logo from '../../public/static/logo.png'
 ---
 
 <header
@@ -19,7 +17,9 @@ import logo from '../../public/static/logo.png'
         href="/"
         class="flex flex-shrink-0 items-center gap-2 text-xl font-semibold transition-colors duration-300 hover:text-primary"
       >
-        <Image loading="eager" src={logo} alt="" class="size-10" width="36" height="36" style="object-fit: contain;" />
+      <svg width="34" height="34" viewBox="0 0 34 34" class="size-9">
+        <circle cx="17" cy="17" r="17" fill="#6854ff" />
+      </svg>
         <h1 class="font-extrabold">
           {SITE.TITLE}
         </h1>
