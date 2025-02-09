@@ -46,6 +46,12 @@ Here's how.
   **If you're still on Astro 4.x and below**, you can still retrieve the data using plain JavaScript (I've included [a section on that](#using-plain-javascript-to-retrieve-goodreads-data) near the end of this post) and then pass it to your components as props, but the Content Loader API is a much more elegant solution for handling data fetching and caching in Astro (so upgrading is recommended!).
 </Callout>
 
+<Callout type="info" classes="border-grey-950/100 bg-grey-100 dark:border-grey-100/100 dark:bg-grey-950">
+  If you're curious about what's possible with the Astro Content Loader API and Goodreads RSS feeds, check out the following pages on my blog that use the exact same setup as described in this post:
+  - [/about](/about) -- where I list my recently read books; and
+  - [What I read in 2024](/posts/what-i-read-in-2024) -- where I showcase my favourite books from the last year.
+</Callout>
+
 ## Goodreads RSS feeds
 
 You can find the RSS feed that Goodreads generates for each user shelf in one of two ways:
@@ -342,6 +348,15 @@ The Goodreads component I built for my blog is a bit more complex than the one a
   ]}
 />
 
+
+<Callout type="info" classes="border-grey-950/100 bg-grey-100 dark:border-grey-100/100 dark:bg-grey-950">
+  You can use a similar content loader setup to retrieve data from other sources (like APIs) too. 
+
+  I reused a large portion of the code above to create a similar component for my [trakt.tv](https://trakt.tv) data (on my watched movies and TV shows) and it was a breeze to set up.
+
+  - [What I watched in 2024](/posts/what-i-watched-in-2024) -- my favourite movies and TV shows of 2024 (and others).
+</Callout>
+
 <hr/>
 
 ### Filtering & sorting collection entries 
@@ -431,11 +446,11 @@ export const colon = new RegExp("\\w+:", "gm");
 
 <CodeToggle showSourceText="Show XML Code for Goodreads RSS Feed" HideSourceText="Hide XML Code for Goodreads RSS Feed" code={sadmanRss} lang="xml" title="rss.xml" collapse="1-20, 63-9999999" mark={mark} wrap={false} />
 
-<hr/>
+<hr/> 
 
 ## Closing notes
 
-It's incredible how much you can do with the Astro Content Loader API and a little bit of creativity. I'm really glad that Goodreads provides RSS feeds for their bookshelves because otherwise I feel like there's really no other easy way of accessing your data programmatically (short of scraping the site, which would be a massive pain).
+It's incredible how much you can do with the Astro Content Loader API and a little bit of creativity. I'm really glad that Goodreads provides RSS feeds for their bookshelves because otherwise I feel like there's really no other easy way of accessing your data programmatically (short of exporting your data, which would be a massive pain to do on a regular basis).
 
 I've been tracking my read (and want-to-read) books on Goodreads since early 2023 (ever since I got my hands on an ereader), and it's really nice to be able to display them on my blog so that I can share my experiences with others (as you might have concluded, I absolutely love reading). 
 
