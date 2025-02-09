@@ -10,6 +10,7 @@ interface Props {
   mark?: string;
   ins?: string;
   del?: string;
+  collapse?: string;
   className?: string;
   preserveIndent?: boolean;
   showLineNumbers?: boolean;
@@ -23,6 +24,7 @@ const {
     mark,
     ins,
     del,
+    collapse,
     className,
     preserveIndent,
     showLineNumbers = true,
@@ -63,6 +65,7 @@ if (frame === "code" || frame === "terminal" || frame === "none" || frame === "a
           mark={mark}
           ins={ins}
           del={del}
+          collapse={collapse}
           class={className}
           preserveIndent={preserveIndent}
           showLineNumbers={showLineNumbers}

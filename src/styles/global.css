@@ -200,7 +200,23 @@
       @apply vscode-icons--file-type-js-official;
     }
   
+    &:has(pre[data-language='ts']) .title::before {
+      @apply vscode-icons--file-type-typescript-official;
+    }
+  
+    &:has(pre[data-language='astro']) .title::before {
+      @apply iconify-color size-5;
+      @apply -ml-2 mr-1 translate-y-[0.1em] align-middle;      
+      @apply vscode-icons--file-type-astro;
+    }
+  
     &:has(pre[data-language='html']) .title::before {
+      @apply iconify-color size-6;
+      @apply -ml-2 mr-1 -translate-y-[0.1em] align-middle;      
+      @apply vscode-icons--file-type-xml;
+    }
+  
+    &:has(pre[data-language='xml']) .title::before {
       @apply iconify-color size-6;
       @apply -ml-2 mr-1 -translate-y-[0.1em] align-middle;      
       @apply vscode-icons--file-type-xml;
