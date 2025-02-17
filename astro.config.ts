@@ -37,7 +37,7 @@ export default defineConfig({
     progress: true,
     routes: false,
     smoothScrolling: false,
-    updateBodyClass: false,
+    updateBodyClass: true,
     updateHead: true,
     reloadScripts: true,
     debug: false,
