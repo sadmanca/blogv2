@@ -62,7 +62,7 @@ export default defineConfig({
     '/blog/work-study-at-uoft': '/posts/work-study-at-uoft/',
     '/blog/pey-coop-jobs-at-uoft': '/posts/pey-coop-jobs-at-uoft/',
 
-    '/magellan-101/': 'posts/uoft-ece-upper-year-reviews/',
+    '/magellan-101/': '/posts/uoft-ece-upper-year-course-reviews/',
 
     '/categories': '/tags',
     '/archives': '/posts',
@@ -105,4 +105,8 @@ export default defineConfig({
   experimental: {
     responsiveImages: true,
   },
+  prefetch: {
+    defaultStrategy: 'hover',
+    prefetchAll: true,
+  }
 })
