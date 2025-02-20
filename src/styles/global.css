@@ -399,3 +399,7 @@ html.dark .swup-progress-bar {
 .expressive-code pre::-webkit-scrollbar-corner {
   display: none;
 }
+
+.pswp-img {
+  cursor: zoom-in !important;
+}
