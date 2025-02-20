@@ -403,3 +403,7 @@ html.dark .swup-progress-bar {
 .pswp-img {
   cursor: zoom-in !important;
 }
+
+.pswp-img-link {
+  cursor: default !important;
+}

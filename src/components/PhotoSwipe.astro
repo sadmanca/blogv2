@@ -1,14 +1,17 @@
 ---
-// filepath: /c:/Users/MSadm/Documents/Sadman/code/SIDEPROJECTS/blogv2/src/components/PhotoSwipe.astro
 import type { ImageMetadata } from "astro";
 import { Image, getImage } from "astro:assets";
+import { marked } from "marked";
+
+interface ImageInfo {
+  src: ImageMetadata;
+  caption: string;
+  width?: number;
+  height?: number;
+}
 
 interface Props {
-  // Accepts an array of imported image modules (for local /src images).
-  // For example:
-  //   import myLocalImage from '/src/.../goodreads-tailwind.jpg';
-  //   <PhotoSwipe imagePaths={[myLocalImage, myLocalImage]} />
-  imagePaths: (ImageMetadata)[];
+  imagePaths: ImageInfo[];
 }
 
 const { imagePaths } = Astro.props;
@@ -16,46 +19,57 @@ const { imagePaths } = Astro.props;
 
 <div
   id="gallery"
-  class="w-full px-2 pb-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2"
+  class="w-full grid gap-2"
+  style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-auto-flow: dense;
+  "
 >
   {
     imagePaths.map(async (item) => {
-      // Instead of using item.src (a string), we use the entire imported module
-      // Pass the module directly so Astro can optimize it.
-      const optimizedImage = await getImage({
-        src: item,
-        width: 1920,
+      let optimizedImage = await getImage({
+        src: item.src,
       });
+
       return (
-        <a
-          href={optimizedImage.src}
-          data-pswp-width={optimizedImage.attributes.width}
-          data-pswp-height={optimizedImage.attributes.height}
-          target="_blank"
-          class="overflow-hidden rounded-md"
-        >
-          <Image
-            src={item}
-            alt="altText"
-            width={item.width}
-            height={item.height}
-            class="object-cover w-full pswp-img hover:opacity-70 hover:scale-110 transition-transform duration-300"
-          />
-        </a>
+      <figure class="overflow-hidden rounded-lg block relative">
+          <a
+            href={optimizedImage.src}
+            data-pswp-width={optimizedImage.attributes.width}
+            data-pswp-height={optimizedImage.attributes.height}
+            target="_blank"
+            class="pswp-img-link block"
+          >
+            <div class="absolute inset-0 bg-gray-100 dark:bg-gray-900 animate-pulse" id="skeleton"></div>
+            <Image
+              src={item.src}
+              alt={item.caption.replace(/<\/?[^>]+(>|$)/g, "")} 
+              class="pswp-img rounded-lg w-full h-full object-cover hover:cursor-zoom-in hover:opacity-60"
+              onload="this.previousElementSibling.style.display='none';"
+            />
+          </a>
+          <figcaption class="text-center mt-2 text-xs text-gray-600 dark:text-gray-400"
+            set:html={marked(item.caption)}>
+          </figcaption>
+        </figure>
       );
     })
   }
 </div>
 
+<link rel="stylesheet" href="https://unpkg.com/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css">
 <script>
     import PhotoSwipeLightbox from "photoswipe/lightbox";
+    import PhotoSwipeDynamicCaption from 'photoswipe-dynamic-caption-plugin';
+
     import "photoswipe/style.css";
   
     let lightbox: PhotoSwipeLightbox;
     lightbox = new PhotoSwipeLightbox({
       gallery: "#gallery",
       children: "a",
-      padding: { top: 20, bottom: 40, left: 100, right: 100 },
+      padding: { top: 20, bottom: 20, left: 30, right: 30 },
       initialZoomLevel: 'fit',
       secondaryZoomLevel: 'fill',
       imageClickAction: 'close',
@@ -65,17 +79,21 @@ const { imagePaths } = Astro.props;
     });
       
     function initLightbox() {
+      const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
+        // Plugins options, for example:
+        type: 'auto',
+      });
       lightbox.init();
     }
   
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", initLightbox);
     } else {
-      initLightbox();
+      initLightbox()
     }
 
     document.addEventListener("astro:page-load", () => {
-      lightbox.init();
+      initLightbox();
     });
   
     document.addEventListener("astro:before-swap", () => {
