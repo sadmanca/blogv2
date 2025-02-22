@@ -53,6 +53,7 @@ const { imagePaths } = Astro.props;
             data-pswp-height={optimizedImage.attributes.height}
             target="_blank"
             class="pswp-img-link block"
+            onclick="event.preventDefault();"
           >
             <div class="absolute inset-0 bg-gray-100 dark:bg-gray-900 animate-pulse" id="skeleton"></div>
             <Image
