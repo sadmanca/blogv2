@@ -49,6 +49,10 @@ items.sort(
 )
 
 function formatDate(dateString: any) {
+  if (!dateString) return "—";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "—";
+
   const monthNames = [
     'Jan',
     'Feb',
@@ -64,7 +68,6 @@ function formatDate(dateString: any) {
     'Dec',
   ]
 
-  const date = new Date(dateString)
   const day = date.getUTCDate()
   const month = monthNames[date.getUTCMonth()]
   const year = date.getUTCFullYear()
@@ -112,13 +115,13 @@ function formatDate(dateString: any) {
   >
     {
       items.map((item: TraktItem) => (
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center group">
           <a
             href={`https://www.imdb.com/title/${item.data.imdb}`}
-            class="hover-card h-36 w-24"
+            class="h-36 w-24"
             target="_blank"
           >
-            <div class="relative h-full w-full">
+            <div class="relative h-full w-full transform transition-transform duration-300 group-hover:-translate-y-2">
               <div
                 class="placeholder rounded-lg bg-gray-300 dark:bg-gray-800"
                 id={`placeholder-${item.data.imdb}`}
