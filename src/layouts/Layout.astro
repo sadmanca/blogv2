@@ -16,6 +16,7 @@ const { title, description, image } = Astro.props
 <!doctype html>
 <html lang="en">
   <head>
+    <script defer src="https://unpkg.com/tailwindcss-intersect@2.x.x/dist/observer.min.js" is:inline data-astro-rerun></script>
     <!-- Google tag (gtag.js) -->
     <script
       is:inline
@@ -47,5 +48,22 @@ const { title, description, image } = Astro.props
       </main>
       <Footer />
     </div>
+    <script is:inline>
+      function rerunObserver() {
+        const script = document.querySelector('script[data-astro-rerun]');
+        if (script) {
+          const newScript = document.createElement('script');
+          newScript.src = script.src;
+          newScript.defer = true;
+          newScript.is = 'inline';
+          newScript.dataset.astroRerun = true;
+          script.replaceWith(newScript);
+        }
+      }
+
+      document.addEventListener('astro:page-load', rerunObserver);
+      document.addEventListener('astro:after-swap', rerunObserver);
+      document.addEventListener('swup:enable', rerunObserver);
+    </script>
   </body>
 </html>
