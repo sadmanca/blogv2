@@ -59,7 +59,7 @@ const { imagePaths } = Astro.props;
             <Image
               src={item.src}
               alt={item.caption.replace(/<\/?[^>]+(>|$)/g, "")} 
-              class="pswp-img rounded-lg w-full h-full object-cover hover:cursor-zoom-in hover:opacity-60"
+              class="pswp-img rounded-lg w-full h-full object-cover hover:cursor-zoom-in"
               onload="this.previousElementSibling.style.display='none';"
             />
           </a>
@@ -71,46 +71,3 @@ const { imagePaths } = Astro.props;
     })
   }
 </div>
-
-<link rel="stylesheet" href="https://unpkg.com/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css">
-<script>
-    import PhotoSwipeLightbox from "photoswipe/lightbox";
-    import PhotoSwipeDynamicCaption from 'photoswipe-dynamic-caption-plugin';
-
-    import "photoswipe/style.css";
-  
-    let lightbox: PhotoSwipeLightbox;
-    lightbox = new PhotoSwipeLightbox({
-      gallery: "#gallery",
-      children: "a",
-      padding: { top: 20, bottom: 20, left: 30, right: 30 },
-      initialZoomLevel: 'fit',
-      secondaryZoomLevel: 'fill',
-      imageClickAction: 'close',
-      tapAction: 'close',
-      doubleTapAction: false,
-      pswpModule: () => import("photoswipe"),
-    });
-      
-    function initLightbox() {
-      const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
-        // Plugins options, for example:
-        type: 'auto',
-      });
-      lightbox.init();
-    }
-  
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initLightbox);
-    } else {
-      initLightbox()
-    }
-
-    document.addEventListener("astro:page-load", () => {
-      initLightbox();
-    });
-  
-    document.addEventListener("astro:before-swap", () => {
-      lightbox.destroy();
-    });
-  </script>
