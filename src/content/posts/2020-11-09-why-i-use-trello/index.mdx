@@ -8,6 +8,7 @@ authors: ['sadman']
 ---
 
 import { Image } from 'astro:assets';
+import PhotoSwipe from "@/components/PhotoSwipe.astro";
 
 ## To Have a 'To-Do' List is To Be Human
 
@@ -23,12 +24,9 @@ Trello is a (free!) visual project management tool that is based on the kanban s
 
 import trellokanban from './1_trello_drag_drop.gif';
 
-<Image
-  loading="eager"
-  src={trellokanban}
-  layout="constrained"
-  alt="A kanban board with cards in Trello"
-/>
+<PhotoSwipe imagePaths={[
+  { src: trellokanban, caption: "A kanban board with cards in Trello" },
+]} />
 
 If we left it at that, Trello would've been a nice, simple tool for building to do lists. But it gets better.
 
@@ -38,11 +36,9 @@ Within each card, you have a smorgasbord of options. You can add a description, 
 
 import withincards from './2_within_cards.gif';
 
-<Image
-  src={withincards}
-  layout="constrained"
-  alt="Trello card options including description, due date, checklists, labels, and more"
-/>
+<PhotoSwipe imagePaths={[
+  { src: withincards, caption: "Trello card options including description, due date, checklists, labels, and more" },
+]} />
 
 <br/>
 
@@ -52,11 +48,9 @@ There’s no strict rules regarding how you need to use Trello. Personally, I tr
 
 import howIUseIt from './3_how_i_use_it.jpg';
 
-<Image
-  src={howIUseIt}
-  layout="constrained"
-  alt="Example of using Trello to organize schoolwork, side projects, and extracurricular activities"
-/>
+<PhotoSwipe imagePaths={[
+  { src: howIUseIt, caption: "Example of using Trello to organize schoolwork, side projects, and extracurricular activities" },
+]} />
 
 <br/>
 
@@ -68,10 +62,8 @@ Some examples of Power-Up functionality include showing due dates on a calendar 
 
 import powerups from './4_power_ups.gif';
 
-<Image
-  src={powerups}
-  layout="constrained"
-  alt="Examples of Trello Power-Ups including calendar integration, due date countdowns, and cloud service integrations"
-/>
+<PhotoSwipe imagePaths={[
+  { src: powerups, caption: "Examples of Trello Power-Ups including calendar integration, due date countdowns, and cloud service integrations" },
+]} />
 
 Even with only a single Power-Up, Trello is an absolute banger of a tool to use if you’re looking for something that can help you organize everything, from your Mom’s birthday to your projects at work, in one place. A lot of tools try to do everything at once, and end up doing mediocre at best for whatever they try to do. Trello is an example of the rare tool that pulls it off.

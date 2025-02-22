@@ -12,6 +12,8 @@ import Callout from '@/components/mdx/Callout.astro';
 import ImageGalleryCaption from '@/components/ImageGalleryCaption.astro';
 import { Image } from 'astro:assets';
 import ImageZoom from '@/components/mdx/ImageZoom.astro';
+import PhotoSwipe from "@/components/PhotoSwipe.astro";
+
 import peyLoginImage from './01-01-pey-login.png';
 import a1 from './01-pey-advanced-search.jpg';
 import a2 from './01-pey-landing-page.jpg';
@@ -53,26 +55,25 @@ The UofT PEY Co-op job board itself is located behind a login portal at [https:/
 
 All of which means that unless you're a keen student in your second year who's opted in to get access and do your PEY early, you're either in your third year or you don't have access to the job portal. As an engineering student who's just finished their third year (at the time of writing), I've had privileged access for 8 months and counting, and I've been able to save data on every single job posted on the portal since the very first day I've had access (I came prepared).
 
-<figure>
-  <ImageZoom class="rounded-xl" src={peyLoginImage} alt="PEY job board login portal" />
-  <figcaption>The PEY job board login portal at <a href="https://www.uoftengcareerportal.ca/notLoggedIn">https://www.uoftengcareerportal.ca/notLoggedIn</a></figcaption>
-</figure>
+<PhotoSwipe imagePaths={[
+  { src: peyLoginImage, caption: 'The PEY job board login portal at <a href="https://www.uoftengcareerportal.ca/notLoggedIn">uoftengcareerportal.ca/notLoggedIn</a>' },
+]} />
 
 ### What you can expect from the job board
 
 The [landing page](https://uoftengcareerportal.ca/myAccount/internship/postings.htm) for the PEY Co-op job board has the same look as the one for all the cross-institutional job boards at UofT's [Career Learning Network (CLNx)](https://clnx.utoronto.ca/myAccount/dashboard.htm) and uses the same organization of elements and processes for browsing, searching for, and applying to job postings, so if you're a UofT student who's used CLNx in the past (e.g. for applying to work study positions) then you already know what it's like to experience using the PEY job board (from what I've seen on Reddit, I'm pretty sure WaterlooWorks uses the same frontend as well).
 
-<ImageGalleryCaption images={[
-  { src: a2, caption: "The PEY Co-op job board landing page (Job Postings)" },
+<PhotoSwipe imagePaths={[
+  { src: a2, caption: 'The PEY Co-op job board landing page (Job Postings)' },
   { src: a1, caption: "Advanced search options (Search Job Postings)" },
-]} columns={2} />
+]} />
+
 
 import viewedjobs from './01-pey-viewed.jpg';
 
-<figure>
-  <ImageZoom class="rounded-xl" src={viewedjobs} alt="PEY Co-op job board viewed jobs" />
-  <figcaption>Viewed jobs (Viewed)</figcaption>
-</figure>
+<PhotoSwipe imagePaths={[
+  { src: viewedjobs, caption: 'Viewed jobs (Viewed)' },
+]} />
 
 #### Sample job postings
 
@@ -82,10 +83,10 @@ Your average PEY job postings look like the below.
   **Note**: The design on the left was used for a couple years, until the most recent redesign in late 2023 (which took place halfway through my fall semester of third year). **If you're an upcoming PEY Co-op student, job postings should look like the image on the right for you** (Edit 2024-11-14: the job board has been redesigned again, and now looks unlike either image; check out my post on 2024-2025 UofT Co-op job postings to see what they look like now).
 </Callout>
 
-<ImageGalleryCaption images={[
+<PhotoSwipe imagePaths={[
   { src: a4, caption: "Old design for PEY job postings. One of the earliest jobs to be posted on the job board for my cohort (2T5) in 2023. Shown: ML Developer - Software Automation & Developer Infrastructure @ Cerebras" },
   { src: a5, caption: "Current design for PEY job postings. One of the most recent jobs posted at the time of writing. Shown: Software Developer Intern @ Geotab" },
-]} columns={2} />
+]} />
 
 Nothing much to look at, just some basic tables with information about the job and the company, which thankfully are simple to parse.
 
@@ -135,10 +136,13 @@ A snapshot of my local directory structure with HTML pages for saved job posting
 
 #### Why not write a script to automate saving postings?
 
-<ImageGalleryCaption images={[
-  { src: "https://imgs.xkcd.com/comics/is_it_worth_the_time.png", caption: "xkcd: 'Is It Worth the Time?'", width: 740, height: 274 },
-  { src: "https://imgs.xkcd.com/comics/automation.png", caption: "xkcd: 'Automation'", width: 740, height: 274 },
-]} columns={2} />
+import isitworth from './is_it_worth_the_time.png';
+import automation from './automation.png';
+
+<PhotoSwipe imagePaths={[
+  { src: isitworth, caption: "xkcd: 'Is It Worth the Time?'" },
+  { src: automation, caption: "xkcd: 'Automation'" },
+]} />
 
 ##### ***Is it possible to automate the whole process of saving data for job postings?***
 

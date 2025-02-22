@@ -24,16 +24,29 @@ const { imagePaths } = Astro.props;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-auto-flow: dense;
+    margin-top: 0rem !important;
+    margin-bottom: 0rem !important;
   "
 >
   {
     imagePaths.map(async (item) => {
-      let optimizedImage = await getImage({
-        src: item.src,
-      });
+      let optimizedImage;
+      if (item.src.src.endsWith('.gif')) {
+        optimizedImage = { src: item.src.src, attributes: { width: item.width, height: item.height } };
+      } else {
+        optimizedImage = await getImage({
+          src: item.src,
+        });
+      }
 
       return (
-      <figure class="overflow-hidden rounded-lg block relative">
+      <figure 
+        class="overflow-hidden relative"
+        style="
+          margin-top: 0rem !important;
+          margin-bottom: -0.25rem !important;
+        "
+      >
           <a
             href={optimizedImage.src}
             data-pswp-width={optimizedImage.attributes.width}
@@ -49,7 +62,7 @@ const { imagePaths } = Astro.props;
               onload="this.previousElementSibling.style.display='none';"
             />
           </a>
-          <figcaption class="text-center mt-2 text-xs text-gray-600 dark:text-gray-400"
+          <figcaption class="text-center mt-0 -translate-y-2 text-xs text-gray-400 dark:text-gray-400"
             set:html={marked(item.caption)}>
           </figcaption>
         </figure>

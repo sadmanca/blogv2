@@ -74,11 +74,11 @@
 
   html {
     color-scheme: light;
-    @apply bg-background text-foreground;
-
     &.dark {
       color-scheme: dark;
     }
+    
+    @apply bg-background text-foreground;
 
     ::-webkit-scrollbar-corner {
       @apply bg-transparent;
