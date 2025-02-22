@@ -115,4 +115,5 @@ function buildToc(headings: Heading[]): Heading[] {
 
   document.addEventListener('astro:page-load', setupToc)
   document.addEventListener('astro:after-swap', setupToc)
+  document.addEventListener('swup:enable', setupToc)
 </script>
