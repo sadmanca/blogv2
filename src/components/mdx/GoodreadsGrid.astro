@@ -50,7 +50,7 @@ let books = await getCollection('goodreads_read_books')
 
 // Filter books by year if filterYear is provided
 if (filterYear) {
-  books = books.filter((book: Book) => {
+  books = books.filter((book) => {
     const date = new Date(book.data.user_read_at)
     return date.getUTCFullYear() === filterYear
   })
@@ -58,17 +58,17 @@ if (filterYear) {
 
 // Filter books by title if filterTitles is provided
 if (filterTitles && filterTitles.length > 0) {
-  books = books.filter((book: Book) => filterTitles.includes(book.data.title))
+  books = books.filter((book) => filterTitles.includes(book.data.title ?? ''))
   // Sort books by the order of titles in filterTitles
   books.sort(
-    (a: Book, b: Book) =>
-      filterTitles.indexOf(a.data.title) - filterTitles.indexOf(b.data.title),
+    (a, b) =>
+      filterTitles.indexOf(a.data.title ?? '') - filterTitles.indexOf(b.data.title ?? ''),
   )
 }
 
 // Sort books by user_read_at (latest first) if not filtering by titles
 if (!filterTitles || filterTitles.length === 0) {
-  books.sort((a: Book, b: Book) => {
+  books.sort((a, b) => {
     if (!a.data.user_read_at || a.data.user_read_at === '') return -1 // Place a at the top if user_read_at is missing
     if (!b.data.user_read_at || b.data.user_read_at === '') return 1 // Place b at the top if user_read_at is missing
     const dateA = new Date(a.data.user_read_at)
@@ -143,7 +143,7 @@ function formatDate(dateString: any) {
     class="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7"
   >
     {
-      books.map((book: Book) => (
+      books.map((book) => (
         <div class="flex flex-col items-center group">
           <a
             href={`https://www.goodreads.com/book/show/${book.data.book_id}`}
@@ -159,7 +159,7 @@ function formatDate(dateString: any) {
               </div>
               <Image
                 src={book.data.book_medium_image_url}
-                alt={book.data.title}
+                alt={book.data.title ?? ''}
                 class="zoomable-image h-full w-full rounded-md object-cover"
                 title={`${book.data.title}`}
                 width={101}
