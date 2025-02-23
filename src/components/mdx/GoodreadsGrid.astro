@@ -6,12 +6,27 @@ type Book = {
   data: {
     id: string
     title: string
-    shelves: string[]
-    date_read: string
-    rating: string
-    author_name: string
-    book_image_url: string
+    guid: string
+    pubDate: string
+    link: string
     book_id: string
+    book_image_url: string
+    book_small_image_url: string
+    book_medium_image_url: string
+    book_large_image_url: string
+    book_description: string
+    num_pages?: string
+    author_name: string
+    isbn: string
+    user_name: string
+    user_rating: number
+    user_read_at: string
+    user_date_added: string
+    user_date_created: string
+    user_shelves?: string
+    user_review?: string
+    average_rating: number
+    book_published: string
   }
 }
 
@@ -36,7 +51,7 @@ let books = await getCollection('goodreads_read_books')
 // Filter books by year if filterYear is provided
 if (filterYear) {
   books = books.filter((book: Book) => {
-    const date = new Date(book.data.date_read)
+    const date = new Date(book.data.user_read_at)
     return date.getUTCFullYear() === filterYear
   })
 }
@@ -51,13 +66,13 @@ if (filterTitles && filterTitles.length > 0) {
   )
 }
 
-// Sort books by date_read (latest first) if not filtering by titles
+// Sort books by user_read_at (latest first) if not filtering by titles
 if (!filterTitles || filterTitles.length === 0) {
   books.sort((a: Book, b: Book) => {
-    if (!a.data.date_read || a.data.date_read[0] === '') return -1 // Place a at the top if date_read is missing
-    if (!b.data.date_read || b.data.date_read[0] === '') return 1 // Place b at the top if date_read is missing
-    const dateA = new Date(a.data.date_read)
-    const dateB = new Date(b.data.date_read)
+    if (!a.data.user_read_at || a.data.user_read_at === '') return -1 // Place a at the top if user_read_at is missing
+    if (!b.data.user_read_at || b.data.user_read_at === '') return 1 // Place b at the top if user_read_at is missing
+    const dateA = new Date(a.data.user_read_at)
+    const dateB = new Date(b.data.user_read_at)
     return dateB.getTime() - dateA.getTime()
   })
 }
@@ -143,7 +158,7 @@ function formatDate(dateString: any) {
                 <div class="h-12 w-12 rounded-3xl bg-gray-200 dark:bg-gray-700" />
               </div>
               <Image
-                src={book.data.book_image_url}
+                src={book.data.book_medium_image_url}
                 alt={book.data.title}
                 class="zoomable-image h-full w-full rounded-md object-cover"
                 title={`${book.data.title}`}
@@ -169,21 +184,21 @@ function formatDate(dateString: any) {
             >
               {book.data.author_name}
             </span>
-            {book.data.date_read[0] !== '' && (
+            {book.data.user_read_at !== '' && (
               <span
                 class="block text-xs text-muted-foreground"
                 title="Date read"
               >
-                {formatDate(book.data.date_read)}
+                {formatDate(book.data.user_read_at)}
               </span>
             )}
             <div
               class={`mb-${ratingMarginBottom} flex items-center justify-center`}
-              title={`Rating given: ${book.data.rating}/5 stars`}
+              title={`Rating given: ${book.data.user_rating}/5 stars`}
             >
               {Array.from({ length: 5 }, (_, i) => (
                 <svg
-                  class={`h-4 w-4 ${i < Number(book.data.rating) ? 'text-black-500 dark:text-white' : 'text-gray-200 dark:text-gray-700'}`}
+                  class={`h-4 w-4 ${i < Number(book.data.user_rating) ? 'text-black-500 dark:text-white' : 'text-gray-200 dark:text-gray-700'}`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >

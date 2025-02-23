@@ -1,6 +1,13 @@
 import { defineCollection, z } from 'astro:content'
 import { RateLimiter } from 'limiter'
 import { XMLParser } from 'fast-xml-parser'
+import { goodreadsLoader } from 'astro-loader-goodreads';
+
+const goodreads_read_books = defineCollection({
+  loader: goodreadsLoader({
+    GOODREADS_SHELF_URL: import.meta.env.GOODREADS_URL
+  })
+});
 
 const TRAKT_WATCHED_URL = `https://api.trakt.tv/users/sadmanca/watched`
 const TRAKT_RATINGS_URL = `https://api.trakt.tv/users/sadmanca/ratings`
@@ -32,40 +39,6 @@ async function fetchWithRetry(url: string, type: string, options = {}) {
 
   throw new Error('Too many requests, please try again later.');
 }
-
-const goodreads_read_books = defineCollection({
-  schema: z.object({
-    id: z.coerce.string(),
-    title: z.coerce.string(),
-    date_read: z.string(),
-    rating: z.number(),
-    author_name: z.string(),
-    book_image_url: z.string(),
-  }),
-  loader: async () => {
-    const response = await fetch(`${import.meta.env.GOODREADS_URL}`);
-    const data = await response.text();
-    const parser = new XMLParser();
-    const result = parser.parse(data);
-    const goodreads_read_books = result.rss.channel.item.map((item: any) => {
-      const highResImageUrl = item.book_image_url
-        .replace(/\._[^.]+_/g, '') // remove any substring starting with "._" and ending with "_"
-        .replace(/(\.\w+)$/, '._SX300_SY300_$1'); // add height and width size before the file extension
-
-      return {
-        id: String(item.book_id),
-        title: String(item.title),
-        shelves: item.user_shelves,
-        date_read: item.user_read_at,
-        rating: item.user_rating,
-        author_name: item.author_name,
-        book_image_url: highResImageUrl,
-      };
-    });
-
-    return goodreads_read_books;
-  }
-});
 
 const trakt_watched_movies = defineCollection({
   schema: z.object({
@@ -274,5 +247,5 @@ export const collections = {
   projects, 
   goodreads_read_books, 
   trakt_watched_movies,
-  trakt_watched_shows
+  trakt_watched_shows,
 }
