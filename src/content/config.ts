@@ -1,6 +1,6 @@
 import { defineCollection, z } from 'astro:content'
 import { RateLimiter } from 'limiter'
-import xml2js from 'xml2js'
+import { XMLParser } from 'fast-xml-parser'
 
 const TRAKT_WATCHED_URL = `https://api.trakt.tv/users/sadmanca/watched`
 const TRAKT_RATINGS_URL = `https://api.trakt.tv/users/sadmanca/ratings`
@@ -35,33 +35,31 @@ async function fetchWithRetry(url: string, type: string, options = {}) {
 
 const goodreads_read_books = defineCollection({
   schema: z.object({
-    id: z.string(),
-    title: z.string(),
-    shelves: z.array(z.string()),
+    id: z.coerce.string(),
+    title: z.coerce.string(),
     date_read: z.string(),
-    rating: z.string(),
+    rating: z.number(),
     author_name: z.string(),
     book_image_url: z.string(),
-    book_id: z.string(),
   }),
   loader: async () => {
     const response = await fetch(`${import.meta.env.GOODREADS_URL}`);
     const data = await response.text();
-    const result = await xml2js.parseStringPromise(data);
-    const goodreads_read_books = result.rss.channel[0].item.map((item: any) => {
-      const highResImageUrl = item.book_image_url[0]
+    const parser = new XMLParser();
+    const result = parser.parse(data);
+    const goodreads_read_books = result.rss.channel.item.map((item: any) => {
+      const highResImageUrl = item.book_image_url
         .replace(/\._[^.]+_/g, '') // remove any substring starting with "._" and ending with "_"
         .replace(/(\.\w+)$/, '._SX300_SY300_$1'); // add height and width size before the file extension
 
       return {
-        id: item.book_id[0],
-        title: item.title[0],
+        id: String(item.book_id),
+        title: String(item.title),
         shelves: item.user_shelves,
-        date_read: item.user_read_at[0],
-        rating: item.user_rating[0],
-        author_name: item.author_name[0],
+        date_read: item.user_read_at,
+        rating: item.user_rating,
+        author_name: item.author_name,
         book_image_url: highResImageUrl,
-        book_id: item.book_id[0],
       };
     });
 

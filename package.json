@@ -46,6 +46,7 @@
     "bootstrap-icons": "^1.11.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "fast-xml-parser": "^5.0.6",
     "limiter": "^3.0.0",
     "lucide-react": "^0.441.0",
     "marked": "^15.0.7",
@@ -64,8 +65,7 @@
     "tailwindcss": "^3.4.3",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-intersect": "^2.1.0",
-    "typescript": "^5.4.5",
-    "xml2js": "^0.6.2"
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "@iconify-json/vscode-icons": "^1.2.11",
