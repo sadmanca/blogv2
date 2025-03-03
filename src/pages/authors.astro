@@ -1,0 +1,25 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Container from '@/components/Container.astro';
+import Layout from '@/layouts/Layout.astro';
+
+import { getCollection } from 'astro:content';
+const blogPosts = await getCollection('blogPosts');
+---
+
+<Layout title="Blog Posts" description="A collection of all blog posts.">
+  <Container class="flex flex-col gap-y-6">
+    <Breadcrumbs items={[{ label: 'Blog Posts', icon: 'lucide:laptop' }]} />
+    
+    <ul class="list-disc pl-5">
+      {blogPosts.map(post => (
+        <li>
+          <a href={post.data.link} target="_blank" class="underline underline-offset-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">{post.data.title}</a>
+          <p class="text-gray-600 dark:text-gray-400" set:html={post.data.description}></p>
+          <p class="text-gray-600 dark:text-gray-400">Published on: {post.data.pubDate}</p>
+          <p class="text-gray-600 dark:text-gray-400">Author: {post.data.author}</p>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</Layout>

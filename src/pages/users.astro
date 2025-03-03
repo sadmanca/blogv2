@@ -1,0 +1,26 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Container from '@/components/Container.astro';
+import Layout from '@/layouts/Layout.astro';
+
+import { getCollection } from 'astro:content';
+const userUpdates = await getCollection('userUpdates');
+---
+
+<Layout title="User Updates" description="A collection of all user updates.">
+  <Container class="flex flex-col gap-y-6">
+    <Breadcrumbs items={[{ label: 'User Updates', icon: 'lucide:user' }]} />
+    
+    <ul class="list-disc pl-5">
+      {userUpdates.map(update => (
+        <li>
+          <a href={update.data.link} target="_blank" class="underline underline-offset-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">{update.data.title}</a>
+          <p class="text-gray-600 dark:text-gray-400" set:html={update.data.description}></p>
+          <p class="text-gray-600 dark:text-gray-400">Published on: {update.data.pubDate}</p>
+          <p class="text-gray-600 dark:text-gray-400">Item Type: {update.data.itemType}</p>
+          <p class="text-gray-600 dark:text-gray-400">Item Data: {JSON.stringify(update.data.itemData)}</p>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</Layout>
