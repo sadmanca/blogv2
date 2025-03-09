@@ -5,7 +5,7 @@ import { goodreadsLoader } from 'astro-loader-goodreads';
 
 const goodreads_read_books = defineCollection({
   loader: goodreadsLoader({
-    GOODREADS_SHELF_URL: import.meta.env.GOODREADS_URL
+    url: import.meta.env.GOODREADS_URL
   })
 });
 
