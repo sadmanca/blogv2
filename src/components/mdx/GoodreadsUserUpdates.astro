@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   collection?: string;
@@ -68,7 +69,48 @@ const formatDate = (dateString: string) => {
               </a>
               {itemData?.type && (
                 <span class="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-                  {itemData.type}
+                  {(() => {
+                    let typeAbbreviation = '';
+                    let icon = '';
+
+                    switch (itemData.type) {
+                      case 'ReadStatus':
+                        typeAbbreviation = 'Read';
+                        icon = 'book';
+                        break;
+                      case 'Review':
+                        typeAbbreviation = 'Review';
+                        icon = 'star';
+                        break;
+                      case 'UserStatus':
+                        typeAbbreviation = 'Progress';
+                        icon = 'activity';
+                        break;
+                      case 'CommentReview':
+                      case 'CommentStatus':
+                        typeAbbreviation = 'Comment';
+                        icon = 'message-square';
+                        break;
+                      case 'LikeReview':
+                      case 'LikeReadStatus':
+                        typeAbbreviation = 'Like';
+                        icon = 'thumbs-up';
+                        break;
+                      case 'AuthorFollowing':
+                        typeAbbreviation = 'Follow';
+                        icon = 'user-plus';
+                        break;
+                      default:
+                        typeAbbreviation = "...";
+                        icon = 'info';
+                    }
+
+                    return (
+                      <>
+                        <Icon name={`lucide:${icon}`} class="w-4 h-4 inline-block align-middle relative -top-[1.5px]" /> {typeAbbreviation}
+                      </>
+                    );
+                  })()}
                 </span>
               )}
             </div>
