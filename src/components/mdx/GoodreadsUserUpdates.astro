@@ -41,35 +41,6 @@ const formatDate = (dateString: string) => {
   const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
   return `${day} ${month}, ${year} at ${time}`;
 };
-
-const timeAgo = (dateString: string) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-  const weeks = Math.floor(days / 7);
-  const months = Math.floor(days / 30);
-  const years = Math.floor(days / 365);
-
-  if (years > 0) {
-    return `${years} year${years > 1 ? 's' : ''} ago`;
-  } else if (months > 0) {
-    return `${months} month${months > 1 ? 's' : ''} ago`;
-  } else if (weeks > 0) {
-    return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
-  } else if (days > 0) {
-    return `${days} day${days > 1 ? 's' : ''} ago`;
-  } else if (hours > 0) {
-    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-  } else if (minutes > 0) {
-    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-  } else {
-    return 'Just now';
-  }
-};
 ---
 
 <div class={`goodreads-updates ${className}`}>
@@ -82,17 +53,16 @@ const timeAgo = (dateString: string) => {
       updates.map((update) => {
         const itemData = update.data.itemData;
         const date = formatDate(update.data.pubDate);
-        const time_ago = timeAgo(update.data.pubDate);
         const goodreadsLink = update.data.link || "#";
         
         return (
-          <div class="update-item border border-gray-200 dark:border-gray-800 rounded-lg p-4 bg-gray-100/50 dark:bg-gray-950">
+          <div class="update-item border border-gray-200 dark:border-gray-800 rounded-lg p-4 bg-gray-100/50 dark:bg-gray-950" data-pub-date={update.data.pubDate}>
             <div class="flex justify-between items-start mb-2">
               <a href={goodreadsLink} class="text-sm text-gray-500 dark:text-gray-400 relative group cursor-hover hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
                 <span class="flex items-center justify-center">
-                  {time_ago}
+                  <span id={`time-ago-${update.id}`}>... days ago</span>
                 </span>
-                <span class="hidden group-hover:block absolute z-10 w-max bg-gray-100 border border-gray-500 text-gray-700 py-1 px-2 rounded shadow-md text-xs whitespace-nowrap left-1/2 -translate-x-1/2  bottom-full">
+                <span class="hidden group-hover:block absolute z-10 w-max bg-gray-100 dark:bg-gray-900 border border-gray-500 text-gray-700 dark:text-gray-200 py-1 px-2 rounded shadow-md text-xs whitespace-nowrap left-1/2 -translate-x-1/2 bottom-full">
                   {date}
                 </span>
               </a>
@@ -291,3 +261,45 @@ const timeAgo = (dateString: string) => {
     )}
   </div>
 </div>
+
+<script>
+  const timeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
+
+    if (years > 0) {
+      return `${years} year${years > 1 ? 's' : ''} ago`;
+    } else if (months > 0) {
+      return `${months} month${months > 1 ? 's' : ''} ago`;
+    } else if (weeks > 0) {
+      return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+    } else if (days > 0) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      return 'Just now';
+    }
+  };
+
+  const updates = document.querySelectorAll('.update-item');
+
+  updates.forEach(update => {
+    const timeAgoElement = update.querySelector('[id^="time-ago-"]');
+    const pubDateString = (update as HTMLElement).dataset.pubDate;
+
+    if (timeAgoElement && pubDateString) {
+      timeAgoElement.textContent = timeAgo(pubDateString);
+    }
+  });
+</script>
