@@ -137,7 +137,7 @@ const formatDate = (dateString: string) => {
                 </a>
                 <div>
                   <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> 
+                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> 
                     <span class="">{itemData.readingStatus}</span>
                     {' '}
                     <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
@@ -170,7 +170,7 @@ const formatDate = (dateString: string) => {
                 </a>
                 <div>
                   <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> Rated <span class="font-medium">{itemData.rating} stars</span>
+                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> Rated <span class="font-bold">{itemData.rating} stars</span>
                     {' '}for{' '}
                     <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
                       {itemData.bookTitle}
@@ -209,7 +209,7 @@ const formatDate = (dateString: string) => {
                 </a>
                 <div>
                   <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> <span class="font-medium">
+                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> <span class="font-bold">
                       {itemData.percentRead ? `${itemData.percentRead}% through` : "Reading"}
                     </span>
                     {' '}
@@ -234,7 +234,7 @@ const formatDate = (dateString: string) => {
             {itemData?.type === "CommentReview" && (
               <div>
                 <p class="text-gray-900 dark:text-gray-200">
-                  <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> commented on <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.reviewUser}'s review</a> of{' '}
+                  <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> commented on <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.reviewUser}'s review</a> of{' '}
                   <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.bookTitle}</a>
                 </p>
                 <div class="flex items-start gap-2 mt-2">
@@ -273,7 +273,7 @@ const formatDate = (dateString: string) => {
                 </a>
                 <div>
                   <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.reviewUser}'s review</a> of{' '}
+                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.reviewUser}'s review</a> of{' '}
                     <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.bookTitle}</a>
                   </p>
                 </div>
@@ -284,7 +284,7 @@ const formatDate = (dateString: string) => {
             {itemData?.type === "AuthorFollowing" && (
               <div>
                 <p class="text-gray-900 dark:text-gray-200">
-                  <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> started following author <a href={`https://www.goodreads.com/author/show/${itemData.authorId}`} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
+                  <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> started following author <a href={`https://www.goodreads.com/author/show/${itemData.authorId}`} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
                     {update.data.title.replace("is now following", "").trim()}
                   </a>
                 </p>
@@ -295,7 +295,7 @@ const formatDate = (dateString: string) => {
             {itemData?.type === "CommentStatus" && (
               <div>
                 <p class="text-gray-900 dark:text-gray-200">
-                  <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> commented on <a href={itemData.statusUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.statusUser}'s status</a>:
+                  <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> commented on <a href={itemData.statusUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.statusUser}'s status</a>:
                 </p>
                 <div class="flex items-start gap-2 mt-2">
                   {itemData.userUrl && (
@@ -316,7 +316,7 @@ const formatDate = (dateString: string) => {
             {itemData?.type === "LikeReadStatus" && (
             <div>
               <p class="text-gray-900 dark:text-gray-200">
-                <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked {itemData.readStatusUser}'s status update:
+                <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked {itemData.readStatusUser}'s status update:
               </p>
               <div class="flex items-start gap-2 mt-2">
                 {itemData.readStatusUserImgUrl && (

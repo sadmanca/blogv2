@@ -42,7 +42,7 @@
     "astro": "^5.4.2",
     "astro-expressive-code": "^0.40.1",
     "astro-feelback": "^0.3.4",
-    "astro-loader-goodreads": "^1.1.0",
+    "astro-loader-goodreads": "^1.1.1",
     "astro-seo": "^0.8.4",
     "bootstrap-icons": "^1.11.3",
     "class-variance-authority": "^0.7.0",
