@@ -46,7 +46,7 @@ const formatDate = (dateString: string) => {
 ---
 
 <div class={`goodreads-updates ${className}`}>
-  <div class="updates-container space-y-6">
+  <div class="updates-container space-y-4">
     {updates.length === 0 ? (
       <div class="text-center text-gray-500 dark:text-gray-400 my-8">
         <p>No recent updates found.</p>
@@ -237,9 +237,18 @@ const formatDate = (dateString: string) => {
                   <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> commented on <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.reviewUser}'s review</a> of{' '}
                   <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.bookTitle}</a>
                 </p>
-                <blockquote class="mt-2 pl-4 border-l-4 border-gray-300 dark:border-gray-700 italic text-gray-700 dark:text-gray-300">
-                  {itemData.comment}
-                </blockquote>
+                <div class="flex items-start gap-2 mt-2">
+                  {itemData.userUrl && (
+                    <img 
+                      src="static/profile.jpg"
+                      alt={`${itemData.userUrl}'s profile`} 
+                      class="w-8 h-8 rounded-full"
+                    />
+                  )}
+                  <div class="mt-7 relative bg-[#6854ff] text-gray-100 rounded-r-lg rounded-bl-lg p-3">
+                    {itemData.comment}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -288,33 +297,42 @@ const formatDate = (dateString: string) => {
                 <p class="text-gray-900 dark:text-gray-200">
                   <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> commented on <a href={itemData.statusUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.statusUser}'s status</a>:
                 </p>
-                <blockquote class="mt-2 pl-4 border-l-4 border-gray-300 dark:border-gray-700 italic text-gray-700 dark:text-gray-300">
-                  {itemData.comment}
-                </blockquote>
+                <div class="flex items-start gap-2 mt-2">
+                  {itemData.userUrl && (
+                    <img 
+                      src="static/profile.jpg"
+                      alt={`${itemData.userUrl}'s profile`} 
+                      class="w-8 h-8 rounded-full"
+                    />
+                  )}
+                  <div class="mt-7 relative bg-[#6854ff] text-gray-100 rounded-r-lg rounded-bl-lg p-3">
+                    {itemData.comment}
+                  </div>
+                </div>
               </div>
             )}
 
             {/* LikeReadStatus: liked someone's read status */}
             {itemData?.type === "LikeReadStatus" && (
-              <div class="flex items-start gap-4">
+            <div>
+              <p class="text-gray-900 dark:text-gray-200">
+                <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked {itemData.readStatusUser}'s status update:
+              </p>
+              <div class="flex items-start gap-2 mt-2">
                 {itemData.readStatusUserImgUrl && (
                   <img 
-                    src={itemData.readStatusUserImgUrl} 
+                    src={itemData.readStatusUserImgUrl}
                     alt={`${itemData.readStatusUser}'s profile`} 
-                    class="w-10 h-10 rounded-full"
+                    class="w-8 h-8 rounded-full object-cover aspect-square"
                   />
                 )}
-                <div>
-                  <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked {itemData.readStatusUser}'s status update:
-                    <blockquote class="mt-2 pl-4 border-l-4 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 italic">
-                      {itemData.readStatusUser} {itemData.readStatus} {' '}
-                      <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.bookTitle}</a>
-                    </blockquote>                    
-                  </p>
+                <div class="mt-7 relative bg-gray-300/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-r-lg rounded-bl-lg p-3 italic">
+                  {itemData.readStatusUser} {itemData.readStatus} 
+                  <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.bookTitle}</a>
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
             {/* Fallback for any other types or missing itemData */}
             {(!itemData || !["ReadStatus", "Review", "UserStatus", "CommentReview", "LikeReview", "AuthorFollowing", "CommentStatus", "LikeReadStatus"].includes(itemData.type)) && (
