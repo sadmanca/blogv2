@@ -1,0 +1,255 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  collection?: string;
+  limit?: number;
+  showTypes?: Array<string>;
+  className?: string;
+}
+
+const { 
+  collection, 
+  limit = 10,
+  showTypes,
+  className = ""
+} = Astro.props;
+
+// Get the updates from the content collection
+const allUpdates = await getCollection("goodreads_user_updates");
+
+// Sort updates by publication date (newest first)
+const sortedUpdates = allUpdates.sort((a, b) => 
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+
+// Filter by type if showTypes is provided
+const filteredUpdates = showTypes 
+  ? sortedUpdates.filter(update => update.data.itemData && 
+      showTypes.includes(update.data.itemData.type))
+  : sortedUpdates;
+
+// Limit the number of updates to display
+const updates = filteredUpdates.slice(0, limit);
+
+// Format date to a more readable format
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString('default', { month: 'long' });
+  const year = date.getFullYear();
+  const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+  return `${day} ${month}, ${year} at ${time}`;
+};
+---
+
+<div class={`goodreads-updates ${className}`}>
+  <div class="updates-container space-y-6">
+    {updates.length === 0 ? (
+      <div class="text-center text-gray-500 dark:text-gray-400 my-8">
+        <p>No recent updates found.</p>
+      </div>
+    ) : (
+      updates.map((update) => {
+        const itemData = update.data.itemData;
+        const date = formatDate(update.data.pubDate);
+        
+        return (
+          <div class="update-item border border-gray-200 dark:border-gray-800 rounded-lg p-4 bg-white dark:bg-gray-950 shadow-sm">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-sm text-gray-500 dark:text-gray-400">{date}</span>
+              {itemData?.type && (
+                <span class="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                  {itemData.type}
+                </span>
+              )}
+            </div>
+
+            {/* ReadStatus: started reading, wants to read, finished reading */}
+            {itemData?.type === "ReadStatus" && (
+              <div class="flex gap-4 items-start">
+                {itemData.bookImgUrl && (
+                  <img 
+                    src={itemData.bookImgUrl} 
+                    alt={`Cover of ${itemData.bookTitle}`} 
+                    class="w-16 h-auto rounded shadow-sm"
+                  />
+                )}
+                <div>
+                  <p class="text-gray-900 dark:text-gray-100">
+                    <span class="font-medium">{itemData.readingStatus}</span>
+                    {' '}
+                    <a href={itemData.bookUrl} class="text-blue-600 dark:text-blue-400 hover:underline">
+                      {itemData.bookTitle}
+                    </a>
+                    {' '}by {itemData.bookAuthor}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Review: rated a book */}
+            {itemData?.type === "Review" && (
+              <div class="flex gap-4 items-start">
+                {itemData.bookImgUrl && (
+                  <img 
+                    src={itemData.bookImgUrl} 
+                    alt={`Cover of ${itemData.bookTitle}`} 
+                    class="w-16 h-auto rounded shadow-sm"
+                  />
+                )}
+                <div>
+                  <p class="text-gray-900 dark:text-gray-100">
+                    Rated <span class="font-medium">{itemData.rating} stars</span>
+                    {' '}for{' '}
+                    <a href={itemData.bookUrl} class="text-blue-600 dark:text-blue-400 hover:underline">
+                      {itemData.bookTitle}
+                    </a>
+                    {' '}by {itemData.bookAuthor}
+                  </p>
+                  <div class="flex mt-1">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span class={`text-lg ${i < itemData.rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}>
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* UserStatus: reading progress */}
+            {itemData?.type === "UserStatus" && (
+              <div class="flex gap-4 items-start">
+                {itemData.bookImgUrl && (
+                  <img 
+                    src={itemData.bookImgUrl} 
+                    alt={`Cover of ${itemData.bookTitle}`} 
+                    class="w-16 h-auto rounded shadow-sm"
+                  />
+                )}
+                <div>
+                  <p class="text-gray-900 dark:text-gray-100">
+                    <span class="font-medium">
+                      {itemData.percentRead ? `${itemData.percentRead}% through` : "Reading"}
+                    </span>
+                    {' '}
+                    <a href={itemData.bookUrl} class="text-blue-600 dark:text-blue-400 hover:underline">
+                      {itemData.bookTitle}
+                    </a>
+                    {' '}by {itemData.bookAuthor}
+                  </p>
+                  {itemData.percentRead && (
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-2">
+                      <div 
+                        class="bg-blue-600 h-2.5 rounded-full" 
+                        style={`width: ${itemData.percentRead}%`}>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* CommentReview: commented on a review */}
+            {itemData?.type === "CommentReview" && (
+              <div>
+                <p class="text-gray-900 dark:text-gray-100">
+                  Commented on <a href={itemData.reviewUrl} class="text-blue-600 dark:text-blue-400 hover:underline">{itemData.reviewUser}'s review</a> of{' '}
+                  <a href={itemData.bookUrl} class="text-blue-600 dark:text-blue-400 hover:underline">{itemData.bookTitle}</a>
+                </p>
+                <blockquote class="mt-2 pl-4 border-l-4 border-gray-300 dark:border-gray-700 italic text-gray-700 dark:text-gray-300">
+                  {itemData.comment}
+                </blockquote>
+              </div>
+            )}
+
+            {/* LikeReview: liked someone's review */}
+            {itemData?.type === "LikeReview" && (
+              <div class="flex gap-4 items-start">
+                {itemData.bookImgUrl && (
+                  <img 
+                    src={itemData.bookImgUrl} 
+                    alt={`Cover of ${itemData.bookTitle}`} 
+                    class="w-16 h-auto rounded shadow-sm"
+                  />
+                )}
+                <div>
+                  <p class="text-gray-900 dark:text-gray-100">
+                    Liked <a href={itemData.reviewUrl} class="text-blue-600 dark:text-blue-400 hover:underline">{itemData.reviewUser}'s review</a> of{' '}
+                    <a href={itemData.bookUrl} class="text-blue-600 dark:text-blue-400 hover:underline">{itemData.bookTitle}</a>
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* AuthorFollowing: followed an author */}
+            {itemData?.type === "AuthorFollowing" && (
+              <div>
+                <p class="text-gray-900 dark:text-gray-100">
+                  Started following author <a href={`https://www.goodreads.com/author/show/${itemData.authorId}`} class="text-blue-600 dark:text-blue-400 hover:underline">
+                    {update.data.title.replace("is now following", "").trim()}
+                  </a>
+                </p>
+              </div>
+            )}
+
+            {/* CommentStatus: commented on a status */}
+            {itemData?.type === "CommentStatus" && (
+              <div>
+                <p class="text-gray-900 dark:text-gray-100">
+                  Commented on <a href={itemData.statusUrl} class="text-blue-600 dark:text-blue-400 hover:underline">{itemData.statusUser}'s status</a>
+                </p>
+                <blockquote class="mt-2 pl-4 border-l-4 border-gray-300 dark:border-gray-700 italic text-gray-700 dark:text-gray-300">
+                  {itemData.comment}
+                </blockquote>
+              </div>
+            )}
+
+            {/* LikeReadStatus: liked someone's read status */}
+            {itemData?.type === "LikeReadStatus" && (
+              <div class="flex items-start gap-4">
+                {itemData.readStatusUserImgUrl && (
+                  <img 
+                    src={itemData.readStatusUserImgUrl} 
+                    alt={`${itemData.readStatusUser}'s profile`} 
+                    class="w-10 h-10 rounded-full"
+                  />
+                )}
+                <div>
+                  <p class="text-gray-900 dark:text-gray-100">
+                    Liked {itemData.readStatusUser}'s status update: {itemData.readStatus} {' '}
+                    <a href={itemData.bookUrl} class="text-blue-600 dark:text-blue-400 hover:underline">{itemData.bookTitle}</a>
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Fallback for any other types or missing itemData */}
+            {(!itemData || !["ReadStatus", "Review", "UserStatus", "CommentReview", "LikeReview", "AuthorFollowing", "CommentStatus", "LikeReadStatus"].includes(itemData.type)) && (
+              <p class="text-gray-900 dark:text-gray-100">
+                {update.data.title}
+                {update.data.description && (
+                  <span class="block text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {update.data.description.replace(/<[^>]*>/g, '')}
+                  </span>
+                )}
+              </p>
+            )}
+            
+            <div class="mt-3">
+              <a 
+                href={update.data.link || "#"} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-xs text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+              >
+                View on Goodreads →
+              </a>
+            </div>
+          </div>
+        );
+      })
+    )}
+  </div>
+</div>

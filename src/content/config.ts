@@ -9,6 +9,12 @@ const goodreads_read_books = defineCollection({
   })
 });
 
+const goodreads_user_updates = defineCollection({
+  loader: goodreadsLoader({
+    url: "https://www.goodreads.com/user/show/152185079-sadman-hossain"
+  })
+});
+
 const TRAKT_WATCHED_URL = `https://api.trakt.tv/users/sadmanca/watched`
 const TRAKT_RATINGS_URL = `https://api.trakt.tv/users/sadmanca/ratings`
 const TRAKT_CLIENT_ID = import.meta.env.TRAKT_CLIENT_ID
@@ -248,4 +254,5 @@ export const collections = {
   goodreads_read_books, 
   trakt_watched_movies,
   trakt_watched_shows,
+  goodreads_user_updates,
 }
