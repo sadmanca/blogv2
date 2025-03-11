@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
 
 interface Props {
   collection?: string;
@@ -68,7 +69,7 @@ const formatDate = (dateString: string) => {
                 </span>
               </a>
               {itemData?.type && (
-                <span class="text-xs px-2 py-0.5 rounded-full border border-[#723c0c]/25 dark:border-[#5a2d09]/50 bg-[#fcf9e6] dark:bg-[#723c0c] text-[#723c0c] dark:text-[#fcf9e6]">  
+                <span class="text-xs px-2 py-0.5 rounded-full border border-[#723c0c]/25 bg-[#fcf9e6] dark:bg-[#723c0c]/60 text-[#723c0c] dark:text-[#fcf9e6]">  
                   {(() => {
                     let typeAbbreviation = '';
                     let icon = '';
@@ -118,13 +119,22 @@ const formatDate = (dateString: string) => {
             {/* ReadStatus: started reading, wants to read, finished reading */}
             {itemData?.type === "ReadStatus" && (
               <div class="flex gap-4 items-center mt-2">
-                {itemData.bookImgUrl && (
-                  <img 
-                    src={itemData.bookImgUrl} 
-                    alt={`Cover of ${itemData.bookTitle}`} 
-                    class="w-16 h-auto rounded shadow-sm"
-                  />
-                )}
+                <a href={itemData.bookUrl}>
+                  <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
+                    {!itemData.bookImgUrl ? (
+                      <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
+                    ) : (
+                      <Image 
+                        src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")} 
+                        alt={`Cover of ${itemData.bookTitle}`} 
+                        width={78}
+                        height={117}
+                        format="webp"
+                        class="rounded"
+                      />
+                    )}
+                  </div>
+                </a>
                 <div>
                   <p class="text-gray-900 dark:text-gray-200">
                     <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> 
@@ -142,13 +152,22 @@ const formatDate = (dateString: string) => {
             {/* Review: rated a book */}
             {itemData?.type === "Review" && (
               <div class="flex gap-4 items-start">
-                {itemData.bookImgUrl && (
-                  <img 
-                    src={itemData.bookImgUrl} 
-                    alt={`Cover of ${itemData.bookTitle}`} 
-                    class="w-16 h-auto rounded shadow-sm"
-                  />
-                )}
+                <a href={itemData.bookUrl}>
+                  <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
+                    {!itemData.bookImgUrl ? (
+                      <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
+                    ) : (
+                      <Image 
+                        src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")} 
+                        alt={`Cover of ${itemData.bookTitle}`} 
+                        width={78}
+                        height={117}
+                        format="webp"
+                        class="rounded"
+                      />
+                    )}
+                  </div>
+                </a>
                 <div>
                   <p class="text-gray-900 dark:text-gray-200">
                     <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> Rated <span class="font-medium">{itemData.rating} stars</span>
@@ -172,13 +191,22 @@ const formatDate = (dateString: string) => {
             {/* UserStatus: reading progress */}
             {itemData?.type === "UserStatus" && (
               <div class="flex gap-4 items-start">
-                {itemData.bookImgUrl && (
-                  <img 
-                    src={itemData.bookImgUrl} 
-                    alt={`Cover of ${itemData.bookTitle}`} 
-                    class="w-16 h-auto rounded shadow-sm"
-                  />
-                )}
+                <a href={itemData.bookUrl}>
+                  <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
+                    {!itemData.bookImgUrl ? (
+                      <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
+                    ) : (
+                      <Image 
+                        src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")} 
+                        alt={`Cover of ${itemData.bookTitle}`} 
+                        width={78}
+                        height={117}
+                        format="webp"
+                        class="rounded"
+                      />
+                    )}
+                  </div>
+                </a>
                 <div>
                   <p class="text-gray-900 dark:text-gray-200">
                     <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> <span class="font-medium">
@@ -218,13 +246,22 @@ const formatDate = (dateString: string) => {
             {/* LikeReview: liked someone's review */}
             {itemData?.type === "LikeReview" && (
               <div class="flex gap-4 items-start">
-                {itemData.bookImgUrl && (
-                  <img 
-                    src={itemData.bookImgUrl} 
-                    alt={`Cover of ${itemData.bookTitle}`} 
-                    class="w-16 h-auto rounded shadow-sm"
-                  />
-                )}
+                <a href={itemData.bookUrl}>
+                  <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
+                    {!itemData.bookImgUrl ? (
+                      <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
+                    ) : (
+                      <Image 
+                        src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")} 
+                        alt={`Cover of ${itemData.bookTitle}`} 
+                        width={78}
+                        height={117}
+                        format="webp"
+                        class="rounded"
+                      />
+                    )}
+                  </div>
+                </a>
                 <div>
                   <p class="text-gray-900 dark:text-gray-200">
                     <a href={itemData.userUrl} class="font-medium text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.reviewUser}'s review</a> of{' '}
