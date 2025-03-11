@@ -2,6 +2,7 @@
 import Footer from '@/components/Footer.astro'
 import Head from '@/components/Head.astro'
 import Header from '@/components/Header.astro'
+import MediumZoom from '@/components/MediumZoom.astro'
 import { SITE } from '@/consts'
 
 type Props = {
@@ -31,6 +32,7 @@ const { title, description, image } = Astro.props
 
       gtag("config", "G-Q095PB1G6R");
     </script>
+    <MediumZoom />
     <link rel="stylesheet" href="https://unpkg.com/photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css">
     <script>
       import PhotoSwipeLightbox from "photoswipe/lightbox";
