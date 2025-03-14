@@ -367,43 +367,53 @@ const formatDate = (dateString: string) => {
 </div>
 
 <script is:inline>
-  const timeAgo = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const weeks = Math.floor(days / 7);
-    const months = Math.floor(days / 30);
-    const years = Math.floor(days / 365);
+  function updateTimeAgo() {
+    const timeAgo = (dateString) => {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diff = now.getTime() - date.getTime();
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      const weeks = Math.floor(days / 7);
+      const months = Math.floor(days / 30);
+      const years = Math.floor(days / 365);
 
-    if (years > 0) {
-      return `${years} year${years > 1 ? 's' : ''} ago`;
-    } else if (months > 0) {
-      return `${months} month${months > 1 ? 's' : ''} ago`;
-    } else if (weeks > 0) {
-      return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
-    } else if (days > 0) {
-      return `${days} day${days > 1 ? 's' : ''} ago`;
-    } else if (hours > 0) {
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    } else {
-      return 'Just now';
-    }
-  };
+      if (years > 0) {
+        return `${years} year${years > 1 ? 's' : ''} ago`;
+      } else if (months > 0) {
+        return `${months} month${months > 1 ? 's' : ''} ago`;
+      } else if (weeks > 0) {
+        return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+      } else if (days > 0) {
+        return `${days} day${days > 1 ? 's' : ''} ago`;
+      } else if (hours > 0) {
+        return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      } else if (minutes > 0) {
+        return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      } else {
+        return 'Just now';
+      }
+    };
 
-  const updates = document.querySelectorAll('.update-item');
+    const updates = document.querySelectorAll('.update-item');
 
-  updates.forEach(update => {
-    const timeAgoElement = update.querySelector('[id^="time-ago-"]');
-    const pubDateString = update.dataset.pubDate;
+    updates.forEach(update => {
+      const timeAgoElement = update.querySelector('[id^="time-ago-"]');
+      const pubDateString = update.dataset.pubDate;
 
-    if (timeAgoElement && pubDateString) {
-      timeAgoElement.textContent = timeAgo(pubDateString);
-    }
-  });
+      if (timeAgoElement && pubDateString) {
+        timeAgoElement.textContent = timeAgo(pubDateString);
+      }
+    });
+  }
+
+  // Run on initial page load
+  updateTimeAgo();
+
+  // Run after navigation with Astro's view transitions or Swup
+  document.addEventListener('astro:page-load', updateTimeAgo);
+  document.addEventListener('astro:after-swap', updateTimeAgo);
+  document.addEventListener('swup:contentReplaced', updateTimeAgo);
 </script>

@@ -9,7 +9,7 @@
     (function() {
       // Track initialization state
       let isInitialized = false;
-      let currentZoomInstances = [];
+      let currentZoomInstances: any[] = [];
       
       // Main initialization function
       function initZoom() {
@@ -63,7 +63,7 @@
         document.querySelectorAll('.medium-zoom-image').forEach(img => {
           img.classList.remove('medium-zoom-image');
           img.removeAttribute('data-zoom-src');
-          img.style.transform = '';
+          (img as HTMLElement).style.transform = '';
         });
       }
       
