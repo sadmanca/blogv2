@@ -66,7 +66,6 @@ const config: Config = {
   plugins: [
     require('@tailwindcss/typography'), 
     require('tailwindcss-animate'), 
-    require('tailwindcss-intersect'),
     addIconSelectors(["vscode-icons"]),
   ],
   safelist: [

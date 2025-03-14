@@ -85,7 +85,7 @@ const getAuthorsForPost = (post: CollectionEntry<'posts'>): Author[] => {
         <section class="flex flex-col gap-y-4">
           <div>
             <ul class="not-prose flex flex-col gap-4">
-              <li class="translate-y-2/4 intersect:translate-y-0 transition ease-in-out duration-1000 opacity-0 intersect:opacity-100 intersect-once">
+              <li>
                 <BlogCard entry={post} authors={getAuthorsForPost(post)} />
               </li>
             </ul>

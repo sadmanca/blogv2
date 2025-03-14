@@ -50,8 +50,6 @@ const { title, description, image = '/static/twitter-card.png' } = Astro.props
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 
-<script defer src="https://unpkg.com/tailwindcss-intersect@2.x.x/dist/observer.min.js" is:inline data-astro-rerun></script>
-
 <script is:inline>
   function setDarkMode(document) {
     const getThemePreference = () => {
