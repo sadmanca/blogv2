@@ -76,16 +76,16 @@ const formatDate = (dateString: string) => {
 
                     switch (itemData.type) {
                       case 'ReadStatus':
-                        typeAbbreviation = 'Read';
-                        icon = 'book';
+                        typeAbbreviation = 'Updates';
+                        icon = 'book-copy';
                         break;
                       case 'Review':
                         typeAbbreviation = 'Review';
                         icon = 'star';
                         break;
                       case 'UserStatus':
-                        typeAbbreviation = 'Progress';
-                        icon = 'activity';
+                        typeAbbreviation = 'Reading';
+                        icon = 'book-open-text';
                         break;
                       case 'CommentReview':
                       case 'CommentStatus':
@@ -95,7 +95,7 @@ const formatDate = (dateString: string) => {
                       case 'LikeReview':
                       case 'LikeReadStatus':
                         typeAbbreviation = 'Like';
-                        icon = 'thumbs-up';
+                        icon = 'heart';
                         break;
                       case 'AuthorFollowing':
                         typeAbbreviation = 'Follow';
@@ -108,7 +108,7 @@ const formatDate = (dateString: string) => {
 
                     return (
                       <>
-                        <Icon name={`lucide:${icon}`} class="w-4 h-4 inline-block align-middle relative -top-[1.5px]" /> {typeAbbreviation}
+                        <Icon name={`lucide:${icon}`} class="w-4 h-4 inline-block align-middle relative" /> {typeAbbreviation}
                       </>
                     );
                   })()}
@@ -135,7 +135,7 @@ const formatDate = (dateString: string) => {
                     )}
                   </div>
                 </a>
-                <div>
+                <div class="leading-5">
                   <p class="text-gray-900 dark:text-gray-200">
                     <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> 
                     <span class="">{itemData.readingStatus}</span>
@@ -190,7 +190,7 @@ const formatDate = (dateString: string) => {
 
             {/* UserStatus: reading progress */}
             {itemData?.type === "UserStatus" && (
-              <div class="flex gap-4 items-start">
+              <div class="flex gap-4 items-center mt-3">
                 <a href={itemData.bookUrl}>
                   <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
                     {!itemData.bookImgUrl ? (
@@ -207,21 +207,24 @@ const formatDate = (dateString: string) => {
                     )}
                   </div>
                 </a>
-                <div>
+                <div class="leading-5">
                   <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> <span class="font-bold">
-                      {itemData.percentRead ? `${itemData.percentRead}% through` : "Reading"}
+                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">Sadman</a>
+                    is
+                    <span class="font-bold">
+                      {itemData.percentRead ? `${itemData.percentRead}%` : "reading"}
                     </span>
+                    through
                     {' '}
                     <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
                       {itemData.bookTitle}
                     </a>
-                    {' '}by {itemData.bookAuthor}
+                    {' '}by {itemData.bookAuthor}.
                   </p>
                   {itemData.percentRead && (
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-2">
+                    <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5 mt-2">
                       <div 
-                        class="bg-[#723c0c] h-2.5 rounded-full" 
+                        class="bg-[#6854ff] h-2.5 rounded-full" 
                         style={`width: ${itemData.percentRead}%`}>
                       </div>
                     </div>
@@ -363,8 +366,8 @@ const formatDate = (dateString: string) => {
   </div>
 </div>
 
-<script>
-  const timeAgo = (dateString: string) => {
+<script is:inline>
+  const timeAgo = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
     const diff = now.getTime() - date.getTime();
@@ -397,7 +400,7 @@ const formatDate = (dateString: string) => {
 
   updates.forEach(update => {
     const timeAgoElement = update.querySelector('[id^="time-ago-"]');
-    const pubDateString = (update as HTMLElement).dataset.pubDate;
+    const pubDateString = update.dataset.pubDate;
 
     if (timeAgoElement && pubDateString) {
       timeAgoElement.textContent = timeAgo(pubDateString);
