@@ -1,0 +1,20 @@
+---
+title: "How to use astro-loader-goodreads"
+description: "Use the astro-loader-goodreads npm package to easily load data from Goodreads into your Astro project."
+date: 2025-03-15
+slug: "astro-loader-goodreads"
+tags: ['astro', 'goodreads', 'code', 'webdev', 'software-showcase']
+image: './00-thumbnail.png'
+authors: ['sadman']
+---
+
+import { SITE } from '@/consts';
+import { Image } from 'astro:assets';
+
+import Callout from '@/components/mdx/Callout.astro';
+import TraktGrid from '@/components/mdx/TraktGrid.astro';
+import CodeToggle from '@/components/mdx/CodeToggle.astro';
+import GoodreadsGrid from '@/components/mdx/GoodreadsGrid.astro';
+
+
+Previously, I wrote about how to use the Astro Content Loader API to get data from Goodreads and use that data to dynamically build Goodread components in Astro. Since then, I've rewritten the code to a NPM package (including some improvements!), so now it's even easier than before to use Goodreads data in your Astro projects.
