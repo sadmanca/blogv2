@@ -50,40 +50,31 @@ const { title, description, image = '/static/twitter-card.png' } = Astro.props
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 
+<!-- Prevent flash by setting theme immediately before any rendering -->
 <script is:inline>
-  function setDarkMode(document) {
-    const getThemePreference = () => {
-      if (
-        typeof localStorage !== 'undefined' &&
-        localStorage.getItem('theme')
-      ) {
-        return localStorage.getItem('theme');
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'theme-light';
-    };
-
-    const isDark = getThemePreference() === 'dark';
-    document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
-
-    if (typeof localStorage !== 'undefined') {
-      const observer = new MutationObserver(() => {
-        const isDark = document.documentElement.classList.contains('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'theme-light');
-      });
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['class'],
-      });
+  // Add no-transitions class to prevent transition flashes
+  document.documentElement.classList.add('no-transitions');
+  
+  // Check localStorage and system preference immediately
+  const getThemePreference = () => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme');
     }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
+
+  // Apply dark mode class immediately if needed
+  const theme = getThemePreference();
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
   }
 
-  setDarkMode(document);
-
-  document.addEventListener('astro:before-swap', (ev) => {
-    if (ev.newDocument) { // Ensure newDocument is defined
-      setDarkMode(ev.newDocument);
-    }
+  // Remove no-transitions class after a delay
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.documentElement.classList.remove('no-transitions');
+    }, 100);
   });
 </script>
