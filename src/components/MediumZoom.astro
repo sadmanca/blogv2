@@ -30,9 +30,17 @@
         // Create a single new instance for this page
         try {
           const zoom = mediumZoom(images, {
-            margin: window.innerWidth < 768 ? 0 : 200,
-            background: 'rgba(0, 0, 0, 0.9)',
+            margin: window.innerWidth < 768 ? 0 : 30,
+            background: 'none',
             scrollOffset: 40,
+            container: { // Optional: custom container dimensions
+              width: window.innerWidth,
+              height: window.innerHeight,
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            },
           });
           
           // Add to our tracking array
@@ -88,27 +96,3 @@
       }
     })();
   </script>
-  
-  <style is:global>
-    .zoom-image {
-      cursor: zoom-in !important;
-      transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) !important;
-    }
-    
-    .medium-zoom-overlay {
-      z-index: 100;
-      background-color: rgba(0, 0, 0, 0.9) !important;
-      transition: opacity 0.3s ease !important;
-      opacity: 0;
-    }
-    
-    .medium-zoom--opened .medium-zoom-overlay {
-      opacity: 1;
-    }
-    
-    .medium-zoom-image--opened {
-      z-index: 101;
-      transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) !important;
-      cursor: zoom-out !important;
-    }
-  </style>

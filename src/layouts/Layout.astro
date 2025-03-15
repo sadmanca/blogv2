@@ -32,48 +32,6 @@ const { title, description, image } = Astro.props
       gtag("config", "G-Q095PB1G6R");
     </script>
     <MediumZoom />
-    <script>
-      import PhotoSwipeLightbox from "photoswipe/lightbox";
-      import PhotoSwipeDynamicCaption from 'photoswipe-dynamic-caption-plugin';
-  
-      import "photoswipe/style.css";
-    
-      let lightbox: PhotoSwipeLightbox;
-      lightbox = new PhotoSwipeLightbox({
-        gallery: "#gallery",
-        children: "a",
-        padding: { top: 60, bottom: 40, left: 70, right: 70 },
-        initialZoomLevel: 'fit',
-        secondaryZoomLevel: 'fill',
-        imageClickAction: 'close',
-        tapAction: 'close',
-        doubleTapAction: false,
-        pswpModule: () => import("photoswipe"),
-      });
-        
-      function initLightbox() {
-        const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
-          // Plugins options, for example:
-          type: 'auto',
-        });
-        lightbox.init();
-      }
-    
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initLightbox);
-      } else {
-        initLightbox()
-      }
-  
-      document.addEventListener("astro:page-load", () => {
-        initLightbox();
-      });
-    
-      document.addEventListener("astro:before-swap", () => {
-        lightbox.destroy();
-      });
-    </script>
-
     <Head
       title={`${title} – ${SITE.TITLE}`}
       description={description}

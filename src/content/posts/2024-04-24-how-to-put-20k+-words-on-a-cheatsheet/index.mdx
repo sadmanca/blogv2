@@ -11,7 +11,7 @@ authors: ['sadman']
 import ImageGallery from '@/components/ImageGallery.astro';
 import PdfViewer from '@/components/PdfViewer.astro';
 import Callout from '@/components/mdx/Callout.astro';
-import PhotoSwipe from "@/components/PhotoSwipe.astro";
+import { Image } from 'astro:assets';
 
 import { Code } from 'astro-expressive-code/components';
 import latexsheet from './latexsheet.tex?raw';
@@ -31,10 +31,17 @@ The answer is surprisingly simple. But to get there, there's 3 things we need to
 import fullpage from './01-fullpage.jpg'
 import zoomed from './01-zoomed.jpg'
 
-<PhotoSwipe imagePaths={[
-  { src: fullpage, caption: "Full page view of cheatsheet" },
-  { src: zoomed, caption: "Zoomed in view of cheatsheet" },
-]} />
+<div class="flex flex-col md:flex-row gap-4 my-6">
+  <figure class="flex-1 m-0">
+    <Image src={fullpage} alt="Full page view of cheatsheet" class="zoom-image" data-zoom-src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/01-fullpage.jpg"/>
+    <figcaption>Full page view of cheatsheet</figcaption>
+  </figure>
+
+  <figure class="flex-1 m-0">
+    <Image src={zoomed} alt="Zoomed in view of cheatsheet" class="zoom-image" data-zoom-src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/01-zoomed.jpg" />
+    <figcaption>Zoomed in view of cheatsheet</figcaption>
+  </figure>
+</div>
 
 Alas, putting together a behemoth of a cheatsheet like this one takes a while. It's an intricate process that involves making a number of decisions, the first of which is selecting the best tool for the job.
 
@@ -78,11 +85,19 @@ On that last point, I took a quick search on Github[^gh] for any LaTeX cheatshee
 
 import latexsheet0 from './latexsheet-0.jpg'
 import latexsheet1 from './latexsheet-1.jpg'
+import typst2 from './02-typst.jpg'
 
-<PhotoSwipe imagePaths={[
-  { src: latexsheet0, caption: "Front page: sample LaTeX cheatsheet" },
-  { src: latexsheet1, caption: "Back page: sample LaTeX cheatsheet" },
-]} />
+<div class="flex flex-col md:flex-row gap-4 my-6">
+  <figure class="flex-1 m-0">
+    <Image src={latexsheet0} alt="Front page: sample LaTeX cheatsheet" data-zoom-src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/latexsheet-0.png" class="zoom-image" />
+    <figcaption>Front page: sample LaTeX cheatsheet</figcaption>
+  </figure>
+
+  <figure class="flex-1 m-0">
+    <Image src={latexsheet1} alt="Back page: sample LaTeX cheatsheet" data-zoom-src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/latexsheet-1.png" class="zoom-image" />
+    <figcaption>Back page: sample LaTeX cheatsheet</figcaption>
+  </figure>
+</div>
 
 *Source: [https://wch.github.io/latexsheet](https://wch.github.io/latexsheet)*
 
@@ -111,10 +126,17 @@ And what's brilliant about all of this, is that the Typst team have been generou
 import typst from './02-typst.jpg'
 import overleaf from './02-overleaf.jpg'
 
-<PhotoSwipe imagePaths={[
-  { src: typst, caption: "Landing page: Typst" },
-  { src: overleaf, caption: "Landing page: Overleaf" },
-]} />
+<div class="flex flex-col md:flex-row gap-4 my-6">
+  <figure class="flex-1 m-0">
+    <Image src={typst} alt="Landing page: Typst" data-zoom-src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/02-typst.jpg" class="zoom-image" />
+    <figcaption>Landing page: [Typst](https://typst.app)</figcaption>
+  </figure>
+
+  <figure class="flex-1 m-0">
+    <Image src={overleaf} alt="Landing page: Overleaf" data-zoom-src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/02-overleaf.jpg" class="zoom-image" />
+    <figcaption>Landing page: [Overleaf](https://overleaf.com)</figcaption>
+  </figure>
+</div>
 
 It's awe-inspiring to think of just how powerful Typst is given how easy it is to use as well, making it a fantastic option not just for writing cheatsheets but for replacing LaTeX for a ridiculous number of purposes (as for myself, I now exclusively use Typst to typeset pretty much any PDF requiring math notation, which at the time of writing is pretty much just relegated to homework assignments for calculus/algorithms/data structures/database design courses). But we're here to figure out how to write a kickass cheatsheet, so let's get to it.
 
@@ -136,13 +158,20 @@ We've got our tool; now we have to figure out how to use it. And in order to do 
 
 As someone who's been writing cheatsheets over half a decade now, I've made this mistake far too many times in the name of trying to minimize how much white space I leave on my cheatsheets, and almost every time it makes them a complete mess and terribly difficult to parse (which as you can imagine is not ideal in an exam setting where you need to find very specific bits of information in a time constrained environment).
 
-For a good example at what not to do, consider my cheatsheet (below) for an [introductory digital logics course](https://engineering.calendar.utoronto.ca/course/ece241h1) from my second year of university. I can hardly distinguish the different groups of concepts amongst all the differently sized blocks of diagrams mixed in with text, and I was the one who wrote the entire darn thing, I can only imagine how you, dear reader, must feel looking at this spagetthi gobble of a cheatsheet.
-
 import ece241 from './03-ece241.jpg'
 
-<PhotoSwipe imagePaths={[
-  { src: ece241, caption: "My cheatsheet for an introductory digital logics course, which is a complete mess of different sized blocks of diagrams mixed in with text." },
-]} />
+<div class="flex items-center flex-col md:flex-row gap-3 my-6">
+  <div class="flex-1 m-0 md:w-2/3">
+    For a good example at what not to do, consider my cheatsheet for an [introductory digital logics course](https://engineering.calendar.utoronto.ca/course/ece241h1) from my second year of university. I can hardly distinguish the different groups of concepts amongst all the differently sized blocks of diagrams mixed in with text, and I was the one who wrote the entire darn thing, I can only imagine how you, dear reader, must feel looking at this spagetthi gobble of a cheatsheet.
+
+    It's a prime example of what not to do when trying to make a cheatsheet that's both dense and readable. But despite all that, it's still what I walked into the exam with, and it was good enough that I got a decent grade on the exam (which really goes to show that all that matters is that you can read it, not that it's the most readable thing in the world).
+
+  </div>
+  <figure class="flex-1 m-0 md:w-1/3">
+    <Image src={ece241} alt="My cheatsheet for an introductory digital logics course" data-zoom-src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/03-ece241.jpg" class="zoom-image" />
+    <figcaption>My cheatsheet for an introductory digital logics course ([ECE241 Digital Systems](https://engineering.calendar.utoronto.ca/course/ece241h1)).</figcaption>
+  </figure>  
+</div>
 
 How do we maintain uniformity with incredibly tiny text? Well, for starters, stick with a consistent method of structuring your content. The best way of doing this, regardless of whether you're using some typesetting engine or a text editor, is with a table. Ideally, a single table that fills up the entire page (so you don't have to deal with all the spacing headaches trying to properly sandwich together multiple tables of different sizes onto the same 8.5x11 inch sheet of paper) with consistently sized rows and columns. In addition, go with justified or centre-aligned text instead of left/right-aligned (having straight edges for text boxes is a lot easier to read than text boxes with jagged edges that have no easily parseable pattern)
 
@@ -160,7 +189,7 @@ import stint from './04-stint.jpg'
 
 - Highlight terms while leaving their definitions as plain text so that you can look into a sea of text and quickly see whether the term you're looking for is even present at all first.
 - Break up multi-layered content by using multiple levels of formatting for your headings, subheadings, definitions, sub-definitions, and so on.
-  - Also have separate fonts for important terms, plaintext, and special text (e.g. code, math); ensure that all work well at small scales (adjustments to character and word spacing can luckily be made by Typst, which means all you need to do is focus on readability; you can fit more characters of a thin font in the same space of whitespace compared to a wider font, so keep that in mind and maybe don't select something as wide as [Stint Ultra Expanded](https://fonts.google.com/specimen/Stint+Ultra+Expanded)): <div class="mt-4"/><PhotoSwipe imagePaths={[ { src: stint, caption: "Font sample: Stint Ultra Expanded." }]} />
+  - Also have separate fonts for important terms, plaintext, and special text (e.g. code, math); ensure that all work well at small scales (adjustments to character and word spacing can luckily be made by Typst, which means all you need to do is focus on readability; you can fit more characters of a thin font in the same space of whitespace compared to a wider font, so keep that in mind and maybe don't select something as wide as [Stint Ultra Expanded](https://fonts.google.com/specimen/Stint+Ultra+Expanded)): <figure class="relative -translate-y-[20px] -mb-5"> <Image src={stint} alt="Font sample: Stint Ultra Expanded" data-zoom-src="/posts/2024-04-24-how-to-put-20k+-words-on-a-cheatsheet/04-stint.jpg" class="zoom-image" /> </figure>
 - Have some method of clearly separating unrelated content (that minimizes use of whitespace, like a dotted line).
 
 
@@ -185,7 +214,7 @@ To see the whole project in action, take a look at [typst.app/project/rbJ15a29M2
 └── lazy.typ
 ```
 <figcaption>
-The project structure for the cheatsheet, with the main content split into 2 separate files (content.typ and lazy.typ; the latter file is for when I got, as it is written, lazy and simply began copy-pasting text from lecture slides) and the content formatting specified within the aidsheet.typ file.
+The project structure for the cheatsheet, with the main content split into 2 separate files (`content.typ` and `lazy.typ`; the latter file is for when I got, as it is written, lazy and simply began copy-pasting text from lecture slides) and the content formatting specified within the `aidsheet.typ` file.
 </figcaption>
 </figure>
 

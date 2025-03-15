@@ -9,11 +9,13 @@ authors: ['sadman']
 ---
 
 import Callout from '@/components/mdx/Callout.astro';
+import ImageGalleryCaption from '@/components/ImageGalleryCaption.astro';
+import ImageZoom from '@/components/mdx/ImageZoom.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '@/consts'
 
-import d1 from './04-new-work-study-job-dashboard.jpg';
-import d2 from './04-zoom-in.jpg';
+import d1 from './04-new-work-study-job-dashboard.png';
+import d2 from './04-zoom-in.png';
 
 ## A better way to view work study job postings at UofT
 
@@ -21,12 +23,10 @@ import d2 from './04-zoom-in.jpg';
   **There’s an easier to view work study jobs for this year** and you can check it out at **<a href={`${SITE.SITEURL}/uoft-work-study-2024.html`}>sadman.ca/uoft-work-study-2024</a>** (preview below).
 </Callout>
 
-<div class="flex flex-col md:flex-row gap-4 my-6">
-  <figure class="flex-1 m-0">
-    <Image src={d1} alt="Redesigned UofT work study job postings dashboard" class="zoom-image" data-zoom-src="/posts/2024-08-22-work-study-at-uoft/04-new-work-study-job-dashboard.jpg" />
-    <figcaption>Redesigned UofT work study job postings dashboard at <a href="https://sadman.ca/uoft-work-study-2024">sadman.ca/uoft-work-study-2024</a></figcaption>
-  </figure>
-</div>
+<figure>
+  <Image loading="eager" src={d1} alt="Redesigned UofT work study job postings dashboard" class="rounded-xl"/>
+  <figcaption>Redesigned UofT work study job postings dashboard at <a href={`${SITE.SITEURL}/uoft-work-study-2024.html`}>sadman.ca/uoft-work-study-2024</a>.</figcaption>
+</figure>
 
 <Callout type="flag">
   If you're interested in applying to work study jobs right now ~~*(applications are still open!)*~~ or want to explore what jobs are posted so you can better prepare in the future, then try taking a look (and let me know what you think!).
@@ -133,17 +133,10 @@ CLNx is a catch-all hub for cross-university events & workshops, accessing stude
 import landing from './02-clnx-landing-page.jpg';
 import home from './02-clnx-actual-home-page.jpg';
 
-<div class="flex flex-col md:flex-row gap-4 my-6">
-  <figure class="flex-1 m-0">
-    <Image src={landing} alt="CLNx landing page before login" class="zoom-image" data-zoom-src="/posts/2024-08-22-work-study-at-uoft/02-clnx-landing-page.jpg" />
-    <figcaption>CLNx landing page before login</figcaption>
-  </figure>
-
-  <figure class="flex-1 m-0">
-    <Image src={home} alt="CLNx home page after user login" class="zoom-image" data-zoom-src="/posts/2024-08-22-work-study-at-uoft/02-clnx-actual-home-page.jpg" />
-    <figcaption>CLNx home page after user login</figcaption>
-  </figure>
-</div>
+<ImageGalleryCaption images={[
+  { src: landing, caption: "CLNx landing page before login" },
+  { src: home, caption: "CLNx home page after user login" },
+]} columns={2} />
 
 The dashboard for work study jobs is a bit tucked away under the navigational dropdown[^2] under: `Hamburger Menu on the top-left` `>` `Jobs & Recruitment` `>` `Work Study` `>` `Work Study Jobs`.
 
@@ -154,26 +147,17 @@ You can click on the blue `Search` button to view all posted jobs (that aren't p
 import i1 from './03-clnx-home-page.jpg';
 import i2 from './03-clnx-job-page.jpg';
 
-<div class="flex flex-col md:flex-row gap-4 my-6">
-  <figure class="flex-1 m-0">
-    <Image src={i1} alt="CLNx job board landing page with search options" class="zoom-image" data-zoom-src="/posts/2024-08-22-work-study-at-uoft/03-clnx-home-page.jpg" />
-    <figcaption>CLNx job board landing page with search options</figcaption>
-  </figure>
+<ImageGalleryCaption images={[
+  { src: i1, caption: "CLNx job board landing page with search options" },
+  { src: i2, caption: "CLNx job listings page showing various job postings" },
+]} columns={2} />
 
-  <figure class="flex-1 m-0">
-    <Image src={i2} alt="CLNx job listings page showing various job postings" class="zoom-image" data-zoom-src="/posts/2024-08-22-work-study-at-uoft/03-clnx-job-page.jpg" />
-    <figcaption>CLNx job listings page showing various job postings</figcaption>
-  </figure>
-</div>
+import job_description_page from './03-example-job.png';
 
-import job_description_page from './03-example-job.jpg';
-
-<div class="flex flex-col md:flex-row gap-4 my-6">
-  <figure class="flex-1 m-0">
-    <Image src={job_description_page} alt="What a job description page looks like on CLNx" class="zoom-image" data-zoom-src="/posts/2024-08-22-work-study-at-uoft/03-example-job.jpg" />
-    <figcaption>What a job description page looks like on CLNx</figcaption>
-  </figure>
-</div>
+<figure>
+  <ImageZoom src={job_description_page} alt="What a job description page looks like on CLNx" class="rounded-xl"/>
+  <figcaption>What a job description page looks like on CLNx.</figcaption>
+</figure>
 
 The work study job board itself is built on a platform by [Orbis Communications](https://orbiscommunications.com) (which, from a cursory glance at their website, appears to build job boards for quite the number of institutions), and while the platform works fine **it's definitely not as easy to use as it could be**.
 
@@ -214,13 +198,13 @@ I've been procrastinating on doing anything about it for the longest time though
 </Callout>
 
 <figure>
-  <Image src={d1} alt="Redesigned UofT work study job postings dashboard" class="zoom-image" data-zoom-src="/posts/2024-08-22-work-study-at-uoft/04-new-work-study-job-dashboard.jpg" />
-  <figcaption>Redesigned UofT work study job postings dashboard at <a href="https://sadman.ca/uoft-work-study-2024">sadman.ca/uoft-work-study-2024</a></figcaption>
+  <ImageZoom src={d1} alt="Redesigned UofT work study job postings dashboard" class="rounded-xl"/>
+  <figcaption>Redesigned UofT work study job postings dashboard at <a href={`${SITE.SITEURL}/uoft-work-study-2024.html`}>sadman.ca/uoft-work-study-2024</a>.</figcaption>
 </figure>
 
 <figure>
-  <Image src={d2} alt="Zoomed-in view of redesigned UofT work study job postings dashboard" class="zoom-image" data-zoom-src="/posts/2024-08-22-work-study-at-uoft/04-zoom-in.png" />
-  <figcaption>Zoomed-in view of redesigned UofT work study job postings dashboard at <a href="https://sadman.ca/uoft-work-study-2024">sadman.ca/uoft-work-study-2024</a></  figcaption>
+  <ImageZoom src={d2} alt="Zoomed-in view of redesigned UofT work study job postings dashboard" class="rounded-xl"/>
+  <figcaption>**Zoomed-in view.** Redesigned UofT work study job postings dashboard at <a href={`${SITE.SITEURL}/uoft-work-study-2024.html`}>sadman.ca/uoft-work-study-2024</a>.</figcaption>
 </figure>
 
 I'll save the technical details for a future post; the gist of backend behind it is that *the raw data was scraped from the CLNx job board* and is displayed on using the incredibly performant [AG Grid library](https://www.ag-grid.com/) (with some additional customization by myself). And in many ways, **it's a lot easier to use for browsing job postings than CLNx.**

@@ -11,7 +11,6 @@ authors: ['sadman']
 import Callout from '@/components/mdx/Callout.astro';
 import ImageGalleryCaption from '@/components/ImageGalleryCaption.astro';
 import TraktGrid from '@/components/mdx/TraktGrid.astro';
-import PhotoSwipe from "@/components/PhotoSwipe.astro";
 import CodeToggle from '@/components/mdx/CodeToggle.astro';
 import GoodreadsGrid from '@/components/mdx/GoodreadsGrid.astro';
 
@@ -110,9 +109,12 @@ RSS feeds are just urls to raw XML files, so you can open them up in your browse
 
 Of course, Goodreads RSS feeds use no stylesheets whatsoever, so parsing through the unformatted text is unwieldy.
 
-<PhotoSwipe imagePaths={[
-  { src: rssInBrowserFull, caption: "Goodreads RSS Feed formatting in FireFox" },
-]} />
+<div class="flex flex-col md:flex-row gap-4 my-6">
+  <figure class="flex-1 m-0">
+    <Image src={rssInBrowserFull} alt="Goodreads RSS Feed formatting in FireFox" class="zoom-image" />
+    <figcaption>Goodreads RSS Feed formatting in FireFox</figcaption>
+  </figure>
+</div>
 
 Run the XML code through a formatter and now we can get a better look at the data in the feed. In addition to the title and description of the bookshelf (at the very top of the XML file, hidden but revealable in the code snippet below), you can see that there's actually a fair amount of data for each book in the list:
 
@@ -275,9 +277,12 @@ export const markGoodreadsUnstyled = new RegExp("book\\.data\\.\\w+", "gm");
     del="getCollection" ins={markGoodreadsUnstyled} mark={{ range: "5, 10-17" }} wrap={false} 
   />
 
-  <PhotoSwipe imagePaths={[
-    { src: goodreadsUnstyledImg, caption: "Using the Goodreads collection data in a component (unstyled)" },
-  ]} />
+  <div class="flex flex-col md:flex-row gap-4 my-6">
+    <figure class="flex-1 m-0">
+      <Image src={goodreadsUnstyledImg} alt="Using the Goodreads collection data in a component (unstyled)" class="zoom-image"/>
+      <figcaption>Using the Goodreads collection data in a component (unstyled)</figcaption>
+    </figure>
+  </div>
 </div>
 
 
@@ -298,9 +303,12 @@ export const markGoodreadsTailwind = new RegExp('class="[^"]*"', 'gm');
     />
   </div>
 
-  <PhotoSwipe imagePaths={[
-    { src: goodreadsTailwindImg, caption: "Goodreads collection data (styled using Tailwind)" },
-  ]} />
+  <div class="flex flex-col md:flex-row gap-4 my-6">
+    <figure class="flex-1 m-0">
+      <Image src={goodreadsTailwindImg} alt="Goodreads collection data (styled using Tailwind)" class="zoom-image" />
+      <figcaption>Goodreads collection data (styled using Tailwind)</figcaption>
+    </figure>
+  </div>
 </figure>
 
 The Goodreads component I built for my blog is a bit more complex than the one above (it includes filtering and sorting functionality; I explain how that's implemented in the [next section](#filtering--sorting-collection-entries)), but the basic idea is the same: now that the data has been stored in the content collection, you can use it in your Astro components and pages however you want.

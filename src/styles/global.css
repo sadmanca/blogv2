@@ -92,6 +92,15 @@
     @apply !transition-none;
   }
 
+  figcaption:not(.header) {
+    @apply text-sm ml-2 text-gray-400 dark:text-gray-400 !important;
+  }
+
+  /* Remove backticks from inline code */
+  :not(pre) > code::before,
+  :not(pre) > code::after {
+    content: none !important;
+  }
 }
 
 @layer components {
@@ -408,4 +417,25 @@ html.dark .swup-progress-bar {
 
 .pswp-img-link {
   cursor: default !important;
+}
+
+.zoom-image {
+  cursor: zoom-in !important;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-overlay {
+  z-index: 100;
+  transition: opacity 0.3s ease !important;
+  opacity: 0;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  opacity: 1;
+}
+
+.medium-zoom-image--opened {
+  z-index: 101;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) !important;
+  cursor: zoom-out !important;
 }
