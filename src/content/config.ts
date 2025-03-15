@@ -5,13 +5,15 @@ import { goodreadsLoader } from 'astro-loader-goodreads';
 
 const goodreads_read_books = defineCollection({
   loader: goodreadsLoader({
-    url: import.meta.env.GOODREADS_URL
+    url: import.meta.env.GOODREADS_URL,
+    refreshIntervalDays: 1,
   })
 });
 
 const goodreads_user_updates = defineCollection({
   loader: goodreadsLoader({
-    url: "https://www.goodreads.com/user/show/152185079-sadman-hossain"
+    url: "https://www.goodreads.com/user/show/152185079-sadman-hossain",
+    refreshIntervalDays: 1,
   })
 });
 
