@@ -40,14 +40,15 @@ const { title, description, image } = Astro.props
   </head>
   <body>
     <div
-      class="box-border flex h-fit min-h-screen flex-col gap-y-6 font-sans antialiased"
+    class="box-border flex h-fit min-h-screen flex-col gap-y-6 font-sans antialiased"
     >
-      <Header />
-      <main class="flex-grow">
+    <Header />
+    <main class="flex-grow">
         <slot />
       </main>
       <Footer />
     </div>
+    <div aria-hidden="true" class="pointer-events-none fixed inset-x-0 bottom-0 z-10 h-16 bg-gradient-to-b from-transparent to-[hsl(var(--background))] dark:bg-gradient-to-b dark:from-transparent dark:to-[hsl(var(--background))]"></div>
     <script is:inline>
       function rerunObserver() {
         const script = document.querySelector('script[data-astro-rerun]');

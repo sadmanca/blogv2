@@ -439,3 +439,7 @@ html.dark .swup-progress-bar {
   transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) !important;
   cursor: zoom-out !important;
 }
+
+.expressive-code figure.frame {
+  z-index: 20;
+}
