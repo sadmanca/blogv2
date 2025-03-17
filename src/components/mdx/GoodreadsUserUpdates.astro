@@ -62,7 +62,7 @@ const formatDate = (dateString: string) => {
             <div class="flex justify-between items-start mb-1">
               <a href={goodreadsLink} class="text-sm text-gray-500 dark:text-gray-400 relative group cursor-hover hover:text-[#723c0c] dark:hover:text-[#e39a59]/80">
                 <span class="flex items-center justify-center">
-                  <span id={`time-ago-${update.id}`}>... days ago</span>
+                  <span id={`time-ago-${update.id}`}>Some days ago</span>
                 </span>
                 <span class="hidden group-hover:block absolute z-10 w-max bg-gray-100 dark:bg-gray-900 border border-gray-500 text-gray-700 dark:text-gray-200 py-1 px-2 rounded shadow-md text-xs whitespace-nowrap left-1/2 -translate-x-1/2 bottom-full">
                   {date}
@@ -151,7 +151,7 @@ const formatDate = (dateString: string) => {
 
             {/* Review: rated a book */}
             {itemData?.type === "Review" && (
-              <div class="flex gap-4 items-start">
+              <div class="flex gap-4 items-center">
                 <a href={itemData.bookUrl}>
                   <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
                     {!itemData.bookImgUrl ? (
@@ -168,20 +168,25 @@ const formatDate = (dateString: string) => {
                     )}
                   </div>
                 </a>
-                <div>
+                <div class="leading-5">
                   <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> Rated <span class="font-bold">{itemData.rating} stars</span>
-                    {' '}for{' '}
+                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> rated 
+                    {' '}
                     <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
                       {itemData.bookTitle}
                     </a>
                     {' '}by {itemData.bookAuthor}
+                    {' '}<span class="font-bold">{itemData.rating}/5 stars.</span>
                   </p>
                   <div class="flex mt-1">
                     {Array.from({ length: 5 }, (_, i) => (
-                      <span class={`text-lg ${i < itemData.rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}>
-                        ★
-                      </span>
+                      <svg
+                        class={`h-4 w-4 ${i < itemData.rating ? 'text-black-500 dark:text-white' : 'text-gray-200 dark:text-gray-700'}`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
+                      </svg>
                     ))}
                   </div>
                 </div>
