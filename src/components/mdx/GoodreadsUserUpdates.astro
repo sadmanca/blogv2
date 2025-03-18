@@ -69,7 +69,7 @@ const formatDate = (dateString: string) => {
                 </span>
               </a>
               {itemData?.type && (
-                <span class="text-xs px-2 py-0.5 rounded-full border border-[#723c0c]/25 bg-[#fcf9e6] dark:bg-[#723c0c]/60 text-[#723c0c] dark:text-[#fcf9e6]">  
+                <span class="text-xs px-2 py-0.5 rounded-full border dark:border-[#723c0c]/25 border-[#fcf9e6]/25 dark:bg-[#fcf9e6] bg-[#723c0c] dark:text-[#723c0c] text-[#fcf9e6]">  
                   {(() => {
                     let typeAbbreviation = '';
                     let icon = '';
@@ -108,7 +108,7 @@ const formatDate = (dateString: string) => {
 
                     return (
                       <>
-                        <Icon name={`lucide:${icon}`} class="w-4 h-4 inline-block align-middle relative" /> {typeAbbreviation}
+                        <Icon name={`lucide:${icon}`} class={`w-4 h-4 inline-block align-middle relative ${itemData.type === 'Review' ? '-translate-y-[1.5px]' : ''}`} /> {typeAbbreviation}
                       </>
                     );
                   })()}
@@ -135,16 +135,38 @@ const formatDate = (dateString: string) => {
                     )}
                   </div>
                 </a>
-                <div class="leading-5">
-                  <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> 
-                    <span class="">{itemData.readingStatus}</span>
-                    {' '}
-                    <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
-                      {itemData.bookTitle}
-                    </a>
-                    {' '}by {itemData.bookAuthor}.
+                <div>
+                  <p class="text-gray-900 dark:text-gray-200 leading-5">
+                    <a href={itemData.userUrl} class="font-bold goodreads-button">
+                      <Icon name="lucide:user" class="goodreads-button-icon" />
+                      {update.data.title.split(" ")[0]}</a>
+                    <span>{itemData.readingStatus}</span>
+                    <br class="hidden lg:block"/>
+                    <a href={itemData.bookUrl} class="goodreads-button">
+                      <Icon name="tabler:book" class="goodreads-button-icon" />
+                      <span class="inline">{itemData.bookTitle}</span></a>
                   </p>
+                  {itemData.readingStatus === "finished reading" ? (
+                    <div class="flex items-center mt-2 max-w-[200px]">
+                      <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5">
+                        <div 
+                          class="bg-[#723c0c] dark:bg-[#fcf9e6] h-2.5 rounded-full" 
+                          style={`width: 100%`}>
+                        </div>
+                      </div>
+                      <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">100%</span>
+                    </div>
+                  ) : (
+                    <div class="flex items-center mt-2 max-w-[200px]">
+                      <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5">
+                        <div 
+                          class="bg-[#723c0c] dark:bg-[#fcf9e6] h-2.5 rounded-full" 
+                          style={`width: 0%`}>
+                        </div>
+                      </div>
+                      <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">0%</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -152,7 +174,7 @@ const formatDate = (dateString: string) => {
             {/* Review: rated a book */}
             {itemData?.type === "Review" && (
               <div class="flex gap-4 items-center">
-                <a href={itemData.bookUrl}>
+                <a href={itemData.bookUrl} class="font-mono">
                   <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
                     {!itemData.bookImgUrl ? (
                       <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
@@ -168,27 +190,22 @@ const formatDate = (dateString: string) => {
                     )}
                   </div>
                 </a>
-                <div class="leading-5">
-                  <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> rated 
-                    {' '}
-                    <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
-                      {itemData.bookTitle}
+                <div>
+                  <p class="text-gray-900 dark:text-gray-200 leading-5">
+                    <a href={itemData.userUrl} class="goodreads-button">
+                      <Icon name="lucide:user" class="goodreads-button-icon" />
+                      <span class="font-bold">{update.data.title.split(" ")[0]}</span></a>
+                    rated 
+                    <a href={itemData.bookUrl} class="goodreads-button">
+                      <Icon name="tabler:book" class="goodreads-button-icon" />
+                      {itemData.bookTitle}</a>
+                    by {itemData.bookAuthor}
+                    <br class="hidden lg:block"/>
+                    <a href={goodreadsLink} class="goodreads-button">
+                      <Icon name="lucide:star" class="goodreads-button-icon" />
+                      <span class="font-bold">{itemData.rating}/5 stars</span>
                     </a>
-                    {' '}by {itemData.bookAuthor}
-                    {' '}<span class="font-bold">{itemData.rating}/5 stars.</span>
                   </p>
-                  <div class="flex mt-1">
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <svg
-                        class={`h-4 w-4 ${i < itemData.rating ? 'text-black-500 dark:text-white' : 'text-gray-200 dark:text-gray-700'}`}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.163c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.84-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.174 9.384c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.957z" />
-                      </svg>
-                    ))}
-                  </div>
                 </div>
               </div>
             )}
@@ -212,26 +229,31 @@ const formatDate = (dateString: string) => {
                     )}
                   </div>
                 </a>
-                <div class="leading-5">
-                  <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">Sadman</a>
+                <div>
+                  <p class="text-gray-900 dark:text-gray-200 leading-5">
+                    <a href={itemData.userUrl} class="goodreads-button">
+                      <Icon name="lucide:user" class="goodreads-button-icon" />
+                      <span class="font-bold">Sadman</span></a>
                     is
                     <span class="font-bold">
                       {itemData.percentRead ? `${itemData.percentRead}%` : "reading"}
                     </span>
                     through
-                    {' '}
-                    <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
-                      {itemData.bookTitle}
-                    </a>
-                    {' '}by {itemData.bookAuthor}.
+                    <br class="hidden lg:block"/>
+                    <a href={itemData.bookUrl} class="goodreads-button">
+                      <Icon name="tabler:book" class="goodreads-button-icon" />
+                      {itemData.bookTitle}</a>
+                    by {itemData.bookAuthor}
                   </p>
                   {itemData.percentRead && (
-                    <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5 mt-2">
-                      <div 
-                        class="bg-[#6854ff] h-2.5 rounded-full" 
-                        style={`width: ${itemData.percentRead}%`}>
+                    <div class="flex items-center mt-2 max-w-[200px]">
+                      <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5">
+                        <div 
+                          class="bg-[#723c0c] dark:bg-[#fcf9e6] h-2.5 rounded-full" 
+                          style={`width: ${itemData.percentRead}%`}>
+                        </div>
                       </div>
+                      <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">{itemData.percentRead}%</span>
                     </div>
                   )}
                 </div>
@@ -241,9 +263,19 @@ const formatDate = (dateString: string) => {
             {/* CommentReview: commented on a review */}
             {itemData?.type === "CommentReview" && (
               <div>
-                <p class="text-gray-900 dark:text-gray-200">
-                  <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> commented on <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.reviewUser}'s review</a> of{' '}
-                  <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.bookTitle}</a>
+                <p class="text-gray-900 dark:text-gray-200 leading-5">
+                  <a href={itemData.userUrl} class="font-bold goodreads-button">
+                    <Icon name="lucide:user" class="goodreads-button-icon" />
+                    <span class="inline">{update.data.title.split(" ")[0]}</span></a>
+                  commented on
+                  <br class="hidden lg:block"/>
+                  <a href={itemData.reviewUrl} class="goodreads-button"> 
+                    <Icon name="lucide:book-check" class="goodreads-button-icon" />
+                    <span class="inline">{itemData.reviewUser}</span>'s review</a> of{' '}
+                  <br class="hidden lg:block"/>
+                  <a href={itemData.bookUrl} class="goodreads-button">
+                    <Icon name="tabler:book" class="goodreads-button-icon" />
+                    <span class="inline">{itemData.bookTitle}</span></a>
                 </p>
                 <div class="flex items-start gap-2 mt-2">
                   {itemData.userUrl && (
@@ -253,7 +285,7 @@ const formatDate = (dateString: string) => {
                       class="w-8 h-8 rounded-full"
                     />
                   )}
-                  <div class="mt-7 relative bg-[#6854ff] text-gray-100 rounded-r-lg rounded-bl-lg p-3">
+                  <div class="mt-7 relative -translate-x-[5px] bg-[#6854ff] text-gray-100 rounded-r-xl rounded-bl-xl p-3">
                     {itemData.comment}
                   </div>
                 </div>
@@ -280,9 +312,13 @@ const formatDate = (dateString: string) => {
                   </div>
                 </a>
                 <div>
-                  <p class="text-gray-900 dark:text-gray-200">
-                    <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.reviewUser}'s review</a> of{' '}
-                    <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.bookTitle}</a>
+                  <p class="text-gray-900 dark:text-gray-200 leading-5">
+                    <a href={itemData.userUrl} class="font-bold goodreads-button">
+                      <Icon name="lucide:user" class="goodreads-button-icon" />
+                      {update.data.title.split(" ")[0]}</a>
+                    liked
+                     <a href={itemData.reviewUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline font-mono">{itemData.reviewUser}'s review</a> of{' '}
+                    <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline font-mono">{itemData.bookTitle}</a>
                   </p>
                 </div>
               </div>
@@ -291,10 +327,14 @@ const formatDate = (dateString: string) => {
             {/* AuthorFollowing: followed an author */}
             {itemData?.type === "AuthorFollowing" && (
               <div>
-                <p class="text-gray-900 dark:text-gray-200">
-                  <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> started following author <a href={`https://www.goodreads.com/author/show/${itemData.authorId}`} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">
-                    {update.data.title.replace("is now following", "").trim()}
-                  </a>
+                <p class="text-gray-900 dark:text-gray-200 leading-5">
+                  <a href={itemData.userUrl} class="font-bold goodreads-button">
+                      <Icon name="lucide:user" class="goodreads-button-icon" />
+                      {update.data.title.split(" ")[0]}</a>
+                    started following author
+                    <a href={`https://www.goodreads.com/author/show/${itemData.authorId}`} class="goodreads-button">
+                      <Icon name="tabler:book" class="goodreads-button-icon" />
+                      <span class="inline">{update.data.title.replace("is now following", "").trim()}</span></a> 
                 </p>
               </div>
             )}
@@ -302,8 +342,14 @@ const formatDate = (dateString: string) => {
             {/* CommentStatus: commented on a status */}
             {itemData?.type === "CommentStatus" && (
               <div>
-                <p class="text-gray-900 dark:text-gray-200">
-                  <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> commented on <a href={itemData.statusUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.statusUser}'s status</a>:
+                <p class="text-gray-900 dark:text-gray-200 leading-5">
+                  <a href={itemData.userUrl} class="font-bold goodreads-button">
+                    <Icon name="lucide:user" class="goodreads-button-icon" />
+                    {update.data.title.split(" ")[0]}</a>
+                  commented on 
+                  <a href={itemData.statusUrl} class="goodreads-button">
+                    <Icon name="lucide:bell" class="goodreads-button-icon" />
+                    {itemData.statusUser}'s status</a>
                 </p>
                 <div class="flex items-start gap-2 mt-2">
                   {itemData.userUrl && (
@@ -313,7 +359,7 @@ const formatDate = (dateString: string) => {
                       class="w-8 h-8 rounded-full"
                     />
                   )}
-                  <div class="mt-7 relative bg-[#6854ff] text-gray-100 rounded-r-lg rounded-bl-lg p-3">
+                  <div class="mt-7 relative -translate-x-[5px] bg-[#6854ff] text-gray-100 rounded-r-xl rounded-bl-xl p-3">
                     {itemData.comment}
                   </div>
                 </div>
@@ -323,8 +369,12 @@ const formatDate = (dateString: string) => {
             {/* LikeReadStatus: liked someone's read status */}
             {itemData?.type === "LikeReadStatus" && (
             <div>
-              <p class="text-gray-900 dark:text-gray-200">
-                <a href={itemData.userUrl} class="font-bold text-[#723c0c] dark:text-[#e39a59] hover:underline">{update.data.title.split(" ")[0]}</a> liked {itemData.readStatusUser}'s status update:
+              <p class="text-gray-900 dark:text-gray-200 leading-5">
+                <a href={itemData.userUrl} class="font-bold goodreads-button">
+                  <Icon name="lucide:user" class="goodreads-button-icon" />
+                  {update.data.title.split(" ")[0]}</a>
+                liked
+                {itemData.readStatusUser}'s status update:
               </p>
               <div class="flex items-start gap-2 mt-2">
                 {itemData.readStatusUserImgUrl && (
@@ -334,9 +384,13 @@ const formatDate = (dateString: string) => {
                     class="w-8 h-8 rounded-full object-cover aspect-square"
                   />
                 )}
-                <div class="mt-7 relative bg-gray-300/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-r-lg rounded-bl-lg p-3 italic">
-                  {itemData.readStatusUser} {itemData.readStatus} 
-                  <a href={itemData.bookUrl} class="text-[#723c0c] dark:text-[#e39a59] hover:underline">{itemData.bookTitle}</a>
+                <div class="mt-7 relative -translate-x-[5px] bg-gray-300/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-r-xl rounded-bl-xl p-3 italic">
+                  {itemData.readStatusUser} {itemData.readStatus}
+                  <br class="hidden lg:block"/>
+                  <a href={itemData.bookUrl} class="goodreads-button">
+                    <Icon name="tabler:book" class="goodreads-button-icon" />
+                    <span class="inline">{itemData.bookTitle}</span>
+                  </a> 
                 </div>
               </div>
             </div>
@@ -344,7 +398,7 @@ const formatDate = (dateString: string) => {
 
             {/* Fallback for any other types or missing itemData */}
             {(!itemData || !["ReadStatus", "Review", "UserStatus", "CommentReview", "LikeReview", "AuthorFollowing", "CommentStatus", "LikeReadStatus"].includes(itemData.type)) && (
-              <p class="text-gray-900 dark:text-gray-200">
+              <p class="text-gray-900 dark:text-gray-200 leading-5">
                 {update.data.title}
                 {update.data.description && (
                   <span class="block text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -353,17 +407,7 @@ const formatDate = (dateString: string) => {
                 )}
               </p>
             )}
-            
-            <div class="mt-3">
-              <a 
-                href={goodreadsLink} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="text-xs text-gray-500 hover:text-[#723c0c] dark:text-gray-400 dark:hover:text-[#e39a59]/80"
-              >
-                View on Goodreads →
-              </a>
-            </div>
+
           </div>
         );
       })
