@@ -18,19 +18,47 @@ const { title, description, image } = Astro.props
 <html lang="en">
   <head>
     <!-- Google tag (gtag.js) -->
-    <script
-      is:inline
-      src="https://www.googletagmanager.com/gtag/js?id=G-Q095PB1G6R"
-    ></script>
     <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
+      // Function to load Google Analytics
+      function loadGoogleAnalytics() {
+        if (document.querySelector('script[data-ga-loaded="true"]')) return;
+        
+        // Create the GTM script
+        const gtmScript = document.createElement('script');
+        gtmScript.src = "https://www.googletagmanager.com/gtag/js?id=G-Q095PB1G6R";
+        gtmScript.async = true;
+        gtmScript.dataset.gaLoaded = "true";
+        
+        // Create the initialization script
+        const inlineScript = document.createElement('script');
+        inlineScript.textContent = `
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", "G-Q095PB1G6R");
+        `;
+        
+        // Append scripts to the document
+        document.head.appendChild(gtmScript);
+        document.head.appendChild(inlineScript);
       }
-      gtag("js", new Date());
 
-      gtag("config", "G-Q095PB1G6R");
+      // Load GA after the page becomes interactive
+      document.addEventListener('DOMContentLoaded', function() {
+        // Use requestIdleCallback for modern browsers, or setTimeout as fallback
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => loadGoogleAnalytics());
+        } else {
+          setTimeout(loadGoogleAnalytics, 1000);
+        }
+      });
+      
+      // Ensure GA loads with Astro view transitions
+      document.addEventListener('astro:page-load', loadGoogleAnalytics);
     </script>
+    <!-- End Google tag (gtag.js) -->
     <MediumZoom />
     <Head
       title={`${title} – ${SITE.TITLE}`}
