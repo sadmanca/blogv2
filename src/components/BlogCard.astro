@@ -6,6 +6,7 @@ import { formatDate, readingTime } from '@/lib/utils';
 import { Image } from 'astro:assets';
 import { type CollectionEntry } from 'astro:content';
 import Link from './Link.astro';
+import { Icon } from 'astro-icon/components'
 
 type Props = {
   entry: CollectionEntry<'posts'>;
@@ -24,6 +25,29 @@ const formattedDate = formatDate(entry.data.date);
 const readTime = readingTime(entry.body);
 ---
 
+<style>
+  .placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    position: relative;
+    z-index: 1;
+  }
+  .zoomable-image {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+  .zoomable-image.loaded {
+    opacity: 1;
+  }
+</style>
+
 <div
   class="hover-card not-prose rounded-xl border p-3"
 >
@@ -31,17 +55,27 @@ const readTime = readingTime(entry.body);
     href={`/${entry.collection}/${entry.slug}`}
     class="flex flex-col gap-4 sm:flex-row"
   >
-    {entry.data.image && (
-      <div class="max-w-[200px] sm:flex-shrink-0">
-        <Image 
-          src={entry.data.image}
-          alt={entry.data.title}
-          width={1200}
-          height={630}
-          class="object-cover rounded-xl"
-        />
+  {entry.data.image && (
+    <div class="relative max-w-[200px] sm:flex-shrink-0 relative">
+      <div
+        class="placeholder rounded-xl bg-gray-200 dark:bg-gray-900"
+        id={`placeholder-${entry.slug}`}
+      >
+        <div class="h-[105px] w-[200px] rounded-xl bg-gray-200 dark:bg-gray-900 flex items-center justify-center ">
+          <Icon name="lucide:image" class="h-10 w-10 text-gray-400 dark:text-gray-700" />
+        </div>
       </div>
-    )}
+      <Image 
+        src={entry.data.image}
+        alt=""
+        width={1200}
+        height={630}
+        class="zoomable-image object-cover rounded-xl absolute top-0 left-0"
+        loading="lazy"
+        onload={`this.classList.add('loaded');`}
+      />
+    </div>
+  )}
     <div class="flex-grow">
       <h3 class="mb-1 text-xl font-extrabold leading-extra-tight">
         {entry.data.title}

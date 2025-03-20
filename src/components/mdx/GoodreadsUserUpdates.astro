@@ -45,6 +45,29 @@ const formatDate = (dateString: string) => {
 };
 ---
 
+<style>
+  .placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    position: relative;
+    z-index: 1;
+  }
+  .zoomable-image {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+  .zoomable-image.loaded {
+    opacity: 1;
+  }
+</style>
+
 <div class={`goodreads-updates ${className}`}>
   <div class="updates-container space-y-4">
     {updates.length === 0 ? (
@@ -120,19 +143,24 @@ const formatDate = (dateString: string) => {
             {itemData?.type === "ReadStatus" && (
               <div class="flex gap-4 items-center mt-2">
                 <a href={itemData.bookUrl}>
-                  <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
-                    {!itemData.bookImgUrl ? (
-                      <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
-                    ) : (
-                      <Image 
-                        src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")} 
-                        alt={`Cover of ${itemData.bookTitle}`} 
-                        width={78}
-                        height={117}
-                        format="webp"
-                        class="rounded"
-                      />
-                    )}
+                  <div class="relative">
+                    <div
+                      class="w-[78px] h-[117px] placeholder rounded-lg bg-gray-200 dark:bg-gray-900"
+                      id={`placeholder-${itemData.bookTitle}`}
+                    >
+                      <div class="w-full h-full rounded-lg bg-gray-200 dark:bg-gray-900 flex items-center justify-center">
+                        <Icon name="lucide:image" class="h-8 w-8 text-gray-400 dark:text-gray-700" />
+                      </div>
+                    </div>
+                    <Image
+                      src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")}
+                      alt={`Cover of ${itemData.bookTitle}`} 
+                      class="zoomable-image h-full w-full rounded-md object-cover absolute top-0 left-0"
+                      title={`${itemData.bookTitle}`}
+                      width={78}
+                      height={117}
+                      onload={`document.getElementById('placeholder-${itemData.bookTitle}').classList.add('hidden'); this.classList.add('loaded');`}
+                    />
                   </div>
                 </a>
                 <div>
@@ -174,20 +202,25 @@ const formatDate = (dateString: string) => {
             {/* Review: rated a book */}
             {itemData?.type === "Review" && (
               <div class="flex gap-4 items-center">
-                <a href={itemData.bookUrl} class="font-mono">
-                  <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
-                    {!itemData.bookImgUrl ? (
-                      <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
-                    ) : (
-                      <Image 
-                        src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")} 
-                        alt={`Cover of ${itemData.bookTitle}`} 
-                        width={78}
-                        height={117}
-                        format="webp"
-                        class="rounded"
-                      />
-                    )}
+                <a href={itemData.bookUrl}>
+                  <div class="relative">
+                    <div
+                      class="w-[78px] h-[117px] placeholder rounded-lg bg-gray-200 dark:bg-gray-900"
+                      id={`placeholder-${itemData.bookTitle}`}
+                    >
+                      <div class="w-full h-full rounded-lg bg-gray-200 dark:bg-gray-900 flex items-center justify-center">
+                        <Icon name="lucide:image" class="h-8 w-8 text-gray-400 dark:text-gray-700" />
+                      </div>
+                    </div>
+                    <Image
+                      src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")}
+                      alt={`Cover of ${itemData.bookTitle}`} 
+                      class="zoomable-image h-full w-full rounded-md object-cover absolute top-0 left-0"
+                      title={`${itemData.bookTitle}`}
+                      width={78}
+                      height={117}
+                      onload={`document.getElementById('placeholder-${itemData.bookTitle}').classList.add('hidden'); this.classList.add('loaded');`}
+                    />
                   </div>
                 </a>
                 <div>
@@ -214,19 +247,24 @@ const formatDate = (dateString: string) => {
             {itemData?.type === "UserStatus" && (
               <div class="flex gap-4 items-center mt-3">
                 <a href={itemData.bookUrl}>
-                  <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
-                    {!itemData.bookImgUrl ? (
-                      <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
-                    ) : (
-                      <Image 
-                        src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")} 
-                        alt={`Cover of ${itemData.bookTitle}`} 
-                        width={78}
-                        height={117}
-                        format="webp"
-                        class="rounded"
-                      />
-                    )}
+                  <div class="relative">
+                    <div
+                      class="w-[78px] h-[117px] placeholder rounded-lg bg-gray-200 dark:bg-gray-900"
+                      id={`placeholder-${itemData.bookTitle}`}
+                    >
+                      <div class="w-full h-full rounded-lg bg-gray-200 dark:bg-gray-900 flex items-center justify-center">
+                        <Icon name="lucide:image" class="h-8 w-8 text-gray-400 dark:text-gray-700" />
+                      </div>
+                    </div>
+                    <Image
+                      src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")}
+                      alt={`Cover of ${itemData.bookTitle}`} 
+                      class="zoomable-image h-full w-full rounded-md object-cover absolute top-0 left-0"
+                      title={`${itemData.bookTitle}`}
+                      width={78}
+                      height={117}
+                      onload={`document.getElementById('placeholder-${itemData.bookTitle}').classList.add('hidden'); this.classList.add('loaded');`}
+                    />
                   </div>
                 </a>
                 <div>
@@ -296,19 +334,25 @@ const formatDate = (dateString: string) => {
             {itemData?.type === "LikeReview" && (
               <div class="flex gap-4 items-start">
                 <a href={itemData.bookUrl}>
-                  <div class="w-[78px] h-[117px] bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center relative">
-                    {!itemData.bookImgUrl ? (
-                      <Icon name="lucide:book" class="w-8 h-8 text-gray-500 dark:text-gray-400 absolute" />
-                    ) : (
-                      <Image 
-                        src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")} 
-                        alt={`Cover of ${itemData.bookTitle}`} 
-                        width={78}
-                        height={117}
-                        format="webp"
-                        class="rounded"
-                      />
-                    )}
+                  <div class="relative">
+                    <div
+                      class="w-[78px] h-[117px] placeholder rounded-lg bg-gray-200 dark:bg-gray-900"
+                      id={`placeholder-${itemData.bookTitle}`}
+                    >
+                      <div class="w-full h-full rounded-lg bg-gray-200 dark:bg-gray-900 flex items-center justify-center">
+                        <Icon name="lucide:image" class="h-8 w-8 text-gray-400 dark:text-gray-700" />
+                      </div>
+                    </div>
+                    <Image
+                      src={itemData.bookImgUrl.replace("_SY75_", "_SY175_")}
+                      alt={`Cover of ${itemData.bookTitle}`} 
+                      class="zoomable-image h-full w-full rounded-md object-cover absolute top-0 left-0"
+                      title={`${itemData.bookTitle}`}
+                      width={78}
+                      height={117}
+                      onload={`document.getElementById('placeholder-${itemData.bookTitle}').classList.add('hidden'); this.classList.add('loaded');`}
+                    />
+                  </div>
                   </div>
                 </a>
                 <div>

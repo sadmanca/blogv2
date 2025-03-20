@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 import { getCollection } from 'astro:content'
+import { Icon } from 'astro-icon/components'
 
 type TraktItem = {
   data: {
@@ -123,10 +124,12 @@ function formatDate(dateString: any) {
           >
             <div class="relative h-full w-full transform transition-transform duration-300 group-hover:-translate-y-2">
               <div
-                class="placeholder rounded-lg bg-gray-300 dark:bg-gray-800"
+                class="placeholder rounded-lg bg-gray-200 dark:bg-gray-900"
                 id={`placeholder-${item.data.imdb}`}
               >
-                <div class="h-12 w-12 rounded-3xl bg-gray-200 dark:bg-gray-700" />
+                <div class="h-12 w-12 rounded-xl flex items-center justify-center ">
+                  <Icon name="lucide:image" class="h-10 w-10 text-gray-400 dark:text-gray-700" />
+                </div>
               </div>
               <Image
                 src={item.data.poster}
