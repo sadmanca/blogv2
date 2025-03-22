@@ -10,6 +10,7 @@ import remarkEmoji from 'remark-emoji'
 import remarkMath from 'remark-math'
 import remarkToc from 'remark-toc'
 import sectionize from '@hbsnow/rehype-sectionize'
+import { FontaineTransform } from 'fontaine';
 
 import icon from 'astro-icon'
 
@@ -20,6 +21,14 @@ import expressiveCode from 'astro-expressive-code';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://sadman.ca',
+  vite: {
+    plugins: [
+      FontaineTransform.vite({
+        fallbacks: ['Arial'],
+        resolvePath: (id) => new URL(`./public${id}`, import.meta.url), // id is the font src value in the CSS
+      }),
+    ],
+  },
   integrations: [tailwind({
     applyBaseStyles: false,
   }), sitemap(), expressiveCode(), mdx(), react(), icon(), swup({
