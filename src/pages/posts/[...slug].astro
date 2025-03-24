@@ -113,7 +113,7 @@ const prevPost = getPrevPost(currentPostSlug);
       ]}
       class="col-start-2"
     />
-    {post.data.image && (
+    {post.data.thumbnail && (
     <div class="relative col-span-full mx-auto w-full max-w-[300px]" style="padding-left: 0 !important; padding-right: 0!important;">
       <div
         class="aspect-[300/157.5] placeholder rounded-xl bg-gray-200 dark:bg-gray-900 absolute top-0 left-0 w-full h-full"
@@ -124,7 +124,7 @@ const prevPost = getPrevPost(currentPostSlug);
         </div>
       </div>
       <Image 
-        src={post.data.image}
+        src={post.data.thumbnail}
         alt={post.data.title}
         width={300}
         height={157.5}

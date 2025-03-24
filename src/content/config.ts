@@ -203,6 +203,12 @@ const posts = defineCollection({
             'The image must be exactly 1200px × 630px for Open Graph requirements.',
         })
         .optional(),
+      thumbnail: image()
+        .refine((img) => img.width === 1200 && img.height === 630, {
+          message:
+            'The image must be exactly 1200px × 630px for Open Graph requirements.',
+        })
+        .optional(),
       tags: z.array(z.string()).optional(),
       authors: z.array(z.string()).optional(),
       draft: z.boolean().optional(),
