@@ -61,9 +61,15 @@ const readTime = readingTime(entry.body);
         class="placeholder rounded-xl bg-gray-200 dark:bg-gray-900"
         id={`placeholder-${entry.slug}`}
       >
-        <div class="h-[105px] w-[200px] rounded-xl bg-gray-200 dark:bg-gray-900 flex items-center justify-center ">
-          <Icon name="lucide:image" class="h-10 w-10 text-gray-400 dark:text-gray-700" />
-        </div>
+          {entry.data.thumbnail_icon ? (
+            <div class="h-[105px] w-[200px] rounded-xl bg-blue-600 dark:bg-blue-300 flex items-center justify-center ">
+              <Icon name={`${entry.data.thumbnail_icon}`} class="h-16 w-16 text-gray-900 dark:text-gray-100" />
+            </div>
+          ) : (
+            <div class="h-[105px] w-[200px] rounded-xl bg-gray-200 dark:bg-gray-900 flex items-center justify-center ">
+              <Icon name="lucide:image" class="h-10 w-10 text-gray-400 dark:text-gray-700" />
+            </div>
+          )}
       </div>
       <Image 
         src={entry.data.image}
@@ -76,6 +82,23 @@ const readTime = readingTime(entry.body);
       />
     </div>
   )}
+  {!entry.data.image && entry.data.thumbnail_icon && (
+    <div class="relative max-w-[200px] sm:flex-shrink-0 relative">
+      <div
+        class="rounded-xl bg-gray-200 dark:bg-gray-900"
+      >
+        {entry.data.thumbnail_icon ? (
+          <div class={`h-[105px] w-[200px] rounded-xl ${entry.data.thumbnail_bg} flex items-center justify-center`}>
+            <Icon name={`${entry.data.thumbnail_icon}`} class={`h-20 w-20 ${entry.data.thumbnail_color}`} />
+          </div>
+        ) : (
+          <div class="h-[105px] w-[200px] rounded-xl bg-gray-200 dark:bg-gray-900 flex items-center justify-center ">
+            <Icon name="lucide:image" class="h-10 w-10 text-gray-400 dark:text-gray-700" />
+          </div>
+        )}
+      </div>
+    </div>
+  )}  
     <div class="flex-grow">
       <h3 class="mb-1 text-xl font-extrabold leading-extra-tight">
         {entry.data.title}

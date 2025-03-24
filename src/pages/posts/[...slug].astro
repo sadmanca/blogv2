@@ -128,13 +128,26 @@ const prevPost = getPrevPost(currentPostSlug);
         alt={post.data.title}
         width={300}
         height={157.5}
-        class="zoomable-image w-full h-full object-cover rounded-xl absolute top-0 left-0"
+        class="w-full h-full object-cover rounded-xl absolute top-0 left-0"
         loading="lazy"
         style="border-radius: 0.75rem !important;"
         onload={`document.getElementById('placeholder-${post.data.title}').classList.add('hidden'); this.classList.add('loaded');`}
       />
     </div>
     )}
+    {!post.data.image && post.data.thumbnail_icon && (
+      <div class="relative col-span-full mx-auto w-full flex items-center justify-center" style="padding-left: 0 !important; padding-right: 0!important;">
+          {post.data.thumbnail_icon ? (
+            <div class={`h-[105px] w-[200px] rounded-xl ${post.data.thumbnail_bg} flex items-center justify-center`}>
+              <Icon name={`${post.data.thumbnail_icon}`} class={`h-20 w-20 ${post.data.thumbnail_color}`} />
+            </div>
+          ) : (
+            <div class="h-[105px] w-[200px] rounded-xl bg-gray-200 dark:bg-gray-900 flex items-center justify-center ">
+              <Icon name="lucide:image" class="h-10 w-10 text-gray-400 dark:text-gray-700" />
+            </div>
+          )}
+      </div>
+    )}      
     <section class="col-start-2 flex flex-col gap-y-6 text-center">
       <div class="flex flex-col gap-y-4">
         <h1 class="text-5xl font-black leading-none sm:text-6xl sm:leading-[0.9] -mx-8">
