@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components';
 
 export interface Props {
   date: string;
+  lastEntry?: boolean;
   subtitle?: string;
   status?: 'complete' | 'in-progress' | 'planned';
   icon?: string;
@@ -11,7 +12,7 @@ export interface Props {
   textColor?: string;
 }
   
-const { date, subtitle, status = 'complete', icon, iconColor, dotColor, textColor } = Astro.props;
+const { date, lastEntry = false, subtitle, status = 'complete', icon, iconColor, dotColor, textColor } = Astro.props;
 
 // Default colors based on status
 let defaultDotColor;
@@ -19,10 +20,10 @@ let defaultTextColor;
 
 if (status === 'complete') {
   defaultDotColor = 'bg-green-500 dark:bg-green-400';
-  defaultTextColor = 'text-green-500 dark:text-green-400';
+  defaultTextColor = 'text-green-600 dark:text-green-500';
 } else if (status === 'in-progress') {
   defaultDotColor = 'bg-yellow-500 dark:bg-yellow-400';
-  defaultTextColor = 'text-yellow-500 dark:text-yellow-400';
+  defaultTextColor = 'text-yellow-600 dark:text-yellow-500';
 } else if (status === 'planned') {
   defaultDotColor = 'bg-gray-300 dark:bg-gray-500';
   defaultTextColor = 'text-gray-400 dark:text-gray-500';
@@ -45,7 +46,15 @@ const dotSizeClasses = icon ? 'w-8 h-8 -left-2 -top-1' : 'w-4 h-4 left-0 top-1';
   <div class={`absolute ${dotSizeClasses} rounded-full ${finalDotColor} z-10 flex items-center justify-center`}>
     {icon && <Icon name={icon} class={`w-5 h-5 ${iconColor}`} />}
   </div>
-  <div class="absolute left-2 top-5 h-full w-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-1/2"></div>
+  {lastEntry === false && (
+    status === 'complete' ? (
+      <div class="absolute left-2 top-5 h-full w-0.5 bg-gray-700 dark:bg-gray-200 -translate-x-1/2"></div>
+    ) : (
+      status === 'in-progress' || status === 'planned' ? (
+        <div class="absolute left-2 top-5 h-full w-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-1/2"></div>
+      ) : null
+    )
+  )}
 
   <!-- Content -->
   <div class="timeline-content">
