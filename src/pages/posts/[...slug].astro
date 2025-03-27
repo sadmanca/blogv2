@@ -235,7 +235,7 @@ const prevPost = getPrevPost(currentPostSlug);
   </Button>
 
   <script>
-    document.addEventListener('astro:page-load', () => {
+    function scrollToTopButton() {
       const scrollToTopButton = document.getElementById('scroll-to-top')
       const footer = document.querySelector('footer')
 
@@ -250,10 +250,81 @@ const prevPost = getPrevPost(currentPostSlug);
 
           scrollToTopButton.classList.toggle(
             'hidden',
-            window.scrollY <= 300 || isFooterVisible,
+            window.scrollY <= 300, // || isFooterVisible,
           )
         })
       }
-    })
+    }
+
+    document.addEventListener('astro:page-load', scrollToTopButton);
+    document.addEventListener('astro:after-swap', scrollToTopButton);
+    document.addEventListener('swup:enable', scrollToTopButton);    
   </script>
 </Layout>
+
+<script is:inline data-astro-rerun>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Ensure this script runs only on post/... pages
+    if (!window.location.pathname.startsWith('/posts/')) {
+      return;
+    }
+
+    // Remove any existing progress bar to avoid duplicates
+    const existingProgressContainer = document.querySelector('.progress-container');
+    if (existingProgressContainer) {
+      existingProgressContainer.remove();
+    }
+
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-50 h-1 w-full";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-[5px] w-0 bg-tertiary";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    // Ensure this script runs only on post/... pages
+    if (!window.location.pathname.startsWith('/posts/')) {
+      return;
+    }
+
+    document.addEventListener("scroll", () => {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (document) {
+        const myBar = document.getElementById("myBar");
+        if (myBar) {
+          myBar.style.width = scrolled + "%";
+        }
+      }
+    });
+  }
+
+  // Initialize progress bar on page load
+  createProgressBar();
+  updateScrollProgress();
+
+  // Recreate progress bar on astro:after-swap navigation
+  document.addEventListener('astro:after-swap', () => {
+    createProgressBar();
+    updateScrollProgress();
+  });
+</script>
