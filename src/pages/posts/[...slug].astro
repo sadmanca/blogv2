@@ -223,7 +223,7 @@ const prevPost = getPrevPost(currentPostSlug);
   <Button
     variant="outline"
     size="icon"
-    className="group fixed bottom-8 right-8 z-50 hidden"
+    className="group fixed bottom-8 right-8 z-50"
     id="scroll-to-top"
     title="Scroll to top"
     aria-label="Scroll to top"
@@ -235,7 +235,7 @@ const prevPost = getPrevPost(currentPostSlug);
   </Button>
 
   <script>
-    document.addEventListener('astro:page-load', () => {
+    function scrollToTopButton() {
       const scrollToTopButton = document.getElementById('scroll-to-top')
       const footer = document.querySelector('footer')
 
@@ -243,17 +243,76 @@ const prevPost = getPrevPost(currentPostSlug);
         scrollToTopButton.addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' })
         })
-
-        window.addEventListener('scroll', () => {
-          const footerRect = footer.getBoundingClientRect()
-          const isFooterVisible = footerRect.top <= window.innerHeight
-
-          scrollToTopButton.classList.toggle(
-            'hidden',
-            window.scrollY <= 300 || isFooterVisible,
-          )
-        })
       }
-    })
+    }
+    
+    document.addEventListener('astro:page-load', scrollToTopButton);
+    document.addEventListener('astro:after-swap', scrollToTopButton);
+    document.addEventListener('swup:enable', scrollToTopButton);    
   </script>
 </Layout>
+
+<script>
+  function createProgressBar() {
+    const existingProgressContainer = document.querySelector('.progress-container');
+    if (existingProgressContainer) {
+      existingProgressContainer.remove();
+    }
+
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-50 h-1 w-full";
+
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-[5px] w-0 bg-tertiary";
+    progressBar.id = "myBar";
+
+    progressContainer.appendChild(progressBar);
+    document.body.appendChild(progressContainer);
+  }
+
+  function updateScrollProgress() {
+    const scrollHandler = () => {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    };
+
+    document.addEventListener("scroll", scrollHandler);
+
+    // Return a cleanup function to remove the event listener
+    return () => {
+      document.removeEventListener("scroll", scrollHandler);
+    };
+  }
+
+  let cleanupScrollProgress: (() => void) | null = null;
+
+  function initializeProgressBar() {
+    if (window.location.pathname.startsWith('/posts/')) {
+      createProgressBar();
+      cleanupScrollProgress = updateScrollProgress();
+    } else {
+      const existingProgressContainer = document.querySelector('.progress-container');
+      if (existingProgressContainer) {
+        existingProgressContainer.remove();
+      }
+
+      if (cleanupScrollProgress) {
+        cleanupScrollProgress();
+        cleanupScrollProgress = null;
+      }
+    }
+  }
+
+  initializeProgressBar();
+
+  document.addEventListener('astro:after-swap', initializeProgressBar);
+</script>
