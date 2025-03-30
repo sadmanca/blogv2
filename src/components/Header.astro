@@ -6,26 +6,40 @@ import { ModeToggle } from '@/components/ui/mode-toggle'
 import { MoreDropdown } from '@/components/ui/more-dropdown'
 import Banner from '@/components/ui/banner.tsx'
 import { NAV_LINKS, SITE } from '@/consts'
+import { type CollectionEntry, getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+
+// Sort posts by date (assuming each post has a `frontmatter.date` field)
+const sortedPosts = posts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+// Get the latest post
+const latestPost = sortedPosts[0];
 ---
 
 <header
   class="sticky top-0 left-0 w-full z-50 bg-background/50 backdrop-blur-lg"
   transition:persist
   >
-  <Banner client:idle
-      text="Latest post: A timeline for ECE496 at UofT"
-      link="/posts/ece496-timeline"
-  />
+  {latestPost && (
+    <Banner
+      client:idle
+      text={`Latest post: ${latestPost.data.title}`}
+      link={`/posts/${latestPost.slug}`}
+    />
+  )}
   <Container class="max-w-full px-5">
-    <div class="flex flex-wrap items-center justify-between gap-4 py-5">
+    <div class="flex flex-wrap items-center justify-between gap-2 py-2">
       <Link
         href="/"
         class="flex flex-shrink-0 items-center gap-2 text-xl font-semibold transition-colors duration-300 hover:text-primary"
       >
-        <svg width="34" height="34" viewBox="0 0 34 34" class="size-9">
+        <svg width="34" height="34" viewBox="0 0 34 34" class="size-7">
           <circle cx="17" cy="17" r="17" fill="#6854ff" />
         </svg>
-        <h1 class="font-extrabold">
+        <h1 class="font-bold">
           {SITE.TITLE}
         </h1>
       </Link>

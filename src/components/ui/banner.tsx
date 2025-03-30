@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { ArrowRightIcon, Bell, XIcon } from "lucide-react";
-import { Button } from "@/components/ui/banner-button";
+import { Button } from "@/components/ui/button";
 
 interface BannerProps {
   text: string; // The text to display in the banner
@@ -34,7 +34,7 @@ export default function Banner({ text, link }: BannerProps) {
   if (!isVisible || !isViewportWideEnough) return null;
 
   return (
-    <div className="bg-foreground/80 text-background px-2 py-2 relative">
+    <div className="bg-foreground/80 text-background px-2 py-1 relative">
       <div className="flex items-center justify-center text-sm">
         <a 
           href={link} 
@@ -47,7 +47,7 @@ export default function Banner({ text, link }: BannerProps) {
           />
           <span>{text}</span>
           <ArrowRightIcon
-            className="ml-2 -mt-0.5 inline-flex opacity-60 transition-transform group-hover:translate-x-0.5"
+            className="ml-2 inline-flex opacity-60 transition-transform group-hover:translate-x-0.5"
             size={16}
             aria-hidden="true"
           />
@@ -55,13 +55,13 @@ export default function Banner({ text, link }: BannerProps) {
       </div>
       <Button
         variant="ghost"
-        className="absolute top-1/2 right-6 -translate-y-1/2 group size-8 shrink-0 p-0 hover:bg-transparent"
+        className="absolute top-1/2 right-6 -translate-y-1/2 group size-8 shrink-0 p-0 hover:bg-transparent hover:text-white hover:dark:text-black"
         onClick={() => setIsVisible(false)}
         aria-label="Close banner"
       >
         <XIcon
           size={16}
-          className="opacity-60 transition-opacity group-hover:opacity-100"
+          className="opacity-60"
           aria-hidden="true"
         />
       </Button>
