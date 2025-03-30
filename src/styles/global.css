@@ -315,9 +315,7 @@ table td, table th {
 
 .swup-progress-bar {
   height: 5px;
-}
-
-html.dark .swup-progress-bar {
+  mix-blend-mode: difference;
   background-color: white;
 }
 

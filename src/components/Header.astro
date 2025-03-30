@@ -4,13 +4,18 @@ import Link from '@/components/Link.astro'
 import MobileMenu from '@/components/ui/mobile-menu'
 import { ModeToggle } from '@/components/ui/mode-toggle'
 import { MoreDropdown } from '@/components/ui/more-dropdown'
+import Banner from '@/components/ui/banner.tsx'
 import { NAV_LINKS, SITE } from '@/consts'
 ---
 
 <header
   class="sticky top-0 left-0 w-full z-50 bg-background/50 backdrop-blur-lg"
   transition:persist
->
+  >
+  <Banner client:idle
+      text="Latest post: A timeline for ECE496 at UofT"
+      link="/posts/ece496-timeline"
+  />
   <Container class="max-w-full px-5">
     <div class="flex flex-wrap items-center justify-between gap-4 py-5">
       <Link
