@@ -36,16 +36,25 @@ async function fetchWithRetry(url: string, type: string, options = {}) {
       await limiter_tmdb.removeTokens(1);
     }
     response = await fetch(url, options);
+    
+    // Check if response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      console.error(`Received HTML instead of JSON from ${url}`);
+      retries -= 1;
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      continue;
+    }
 
     if (response.status !== 429) {
       return response;
     }
 
     retries -= 1;
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retrying
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  throw new Error('Too many requests, please try again later.');
+  throw new Error('Too many requests or invalid response format');
 }
 
 const trakt_watched_movies = defineCollection({
