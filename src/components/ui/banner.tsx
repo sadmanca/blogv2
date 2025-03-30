@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import type { ReactNode } from "react";
 import { ArrowRightIcon, Bell, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -9,10 +8,18 @@ interface BannerProps {
 }
 
 export default function Banner({ text, link }: BannerProps) {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false); // Default to false to avoid pop-in
+  const [shouldRender, setShouldRender] = useState(false); // Controls rendering for animation
   const [isViewportWideEnough, setIsViewportWideEnough] = useState(true);
 
   useEffect(() => {
+    // Check if the banner has been closed previously
+    const bannerClosed = localStorage.getItem("bannerClosed");
+    if (bannerClosed !== "true") {
+      setShouldRender(true); // Render the banner
+      setTimeout(() => setIsVisible(true), 50); // Delay visibility to trigger animation
+    }
+
     const handleResize = () => {
       // Check if the viewport width is greater than 768px (or any threshold you choose)
       setIsViewportWideEnough(window.innerWidth > 768);
@@ -30,11 +37,21 @@ export default function Banner({ text, link }: BannerProps) {
     };
   }, []);
 
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(() => setShouldRender(false), 500); // Wait for animation to finish before unmounting
+    localStorage.setItem("bannerClosed", "true"); // Save the closed state
+  };
+
   // Hide the banner if it's not visible or if the viewport is too small
-  if (!isVisible || !isViewportWideEnough) return null;
+  if (!shouldRender || !isViewportWideEnough) return null;
 
   return (
-    <div className="bg-foreground/80 text-background px-2 py-1 relative">
+    <div
+      className={`bg-foreground/80 text-background px-2 py-1 relative transform transition-transform duration-500 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div className="flex items-center justify-center text-sm">
         <a 
           href={link} 
@@ -60,7 +77,7 @@ export default function Banner({ text, link }: BannerProps) {
       <Button
         variant="ghost"
         className="absolute top-1/2 right-6 -translate-y-1/2 group size-8 shrink-0 p-0 hover:bg-transparent hover:text-white hover:dark:text-black"
-        onClick={() => setIsVisible(false)}
+        onClick={handleClose}
         aria-label="Close banner"
       >
         <XIcon
