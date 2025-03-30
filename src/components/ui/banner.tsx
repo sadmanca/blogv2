@@ -40,8 +40,12 @@ export default function Banner({ text, link }: BannerProps) {
           href={link} 
           className="flex items-center group"
         >
+          <span className="relative flex items-center">
+            <span className="h-1 w-1 bg-red-500 rounded-full animate-ping duration-2000"></span>
+            <span className="h-1 w-1 bg-red-500 rounded-full absolute"></span>
+          </span>
           <Bell
-            className="mr-2 shrink-0 opacity-60"
+            className="ml-1 mr-1 shrink-0 opacity-60"
             size={16}
             aria-hidden="true"
           />
