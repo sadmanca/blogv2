@@ -68,6 +68,7 @@ const trakt_watched_movies = defineCollection({
     imdb: z.string(),
   }),
   loader: async () => {
+    return {};
     const type = 'movie'
     const alt_type = 'movies'
     const alt_type2 = 'movie'
@@ -134,6 +135,7 @@ const trakt_watched_shows = defineCollection({
     imdb: z.string(),
   }),
   loader: async () => {
+    return {};
     const type = 'show'
     const alt_type = 'shows'
     const alt_type2 = 'tv'

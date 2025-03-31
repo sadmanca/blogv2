@@ -16,9 +16,9 @@ const ReviewCard = ({
       className={cn(
         "relative w-64 cursor-pointer overflow-hidden rounded-xl border p-4 -mb-8",
         // light styles
-        "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
+        "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05] active:bg-gray-950/[.1]",
         // dark styles
-        "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]"
+        "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15] dark:active:bg-gray-50/[.2]"
       )}
     >
       <div className="flex items-center gap-2 -mt-4 -mb-2">
@@ -27,7 +27,7 @@ const ReviewCard = ({
           className="rounded-full w-10 h-10 flex items-center justify-center"
           style={{ backgroundColor: randomColor }}
         >
-          <span className="text-black font-bold text-sm">
+          <span className="text-black font-bold text-md">
             {name.charAt(0)}
           </span>
         </div>
@@ -53,7 +53,7 @@ export default function MarqueeWrapper({
   const fourthRow = reviews.slice(3 * reviews.length / 4, 4 * reviews.length / 4);
 
   return (
-    <div className="relative flex h-96 w-full flex-row items-center justify-center gap-4 overflow-hidden [perspective:300px]">
+    <div className="relative z-0 flex h-96 w-full flex-row items-center justify-center gap-4 overflow-hidden [perspective:300px]">
       <div
         className="flex flex-row items-center gap-4"
         style={{
@@ -61,22 +61,22 @@ export default function MarqueeWrapper({
             "translateX(-100px) translateY(0px) translateZ(-100px) rotateX(15deg) rotateY(-7deg) rotateZ(15deg)",
         }}
       >
-        <Marquee pauseOnHover vertical className="[--duration:40s]">
+        <Marquee pauseOnHover vertical className="[--duration:80s]">
           {firstRow.map((review) => (
             <ReviewCard key={review.name} {...review} />
           ))}
         </Marquee>
-        <Marquee reverse pauseOnHover className="[--duration:40s]" vertical>
+        <Marquee reverse pauseOnHover className="[--duration:80s]" vertical>
           {secondRow.map((review) => (
             <ReviewCard key={review.name} {...review} />
           ))}
         </Marquee>
-        <Marquee reverse pauseOnHover className="[--duration:40s]" vertical>
+        <Marquee reverse pauseOnHover className="[--duration:80s]" vertical>
           {thirdRow.map((review) => (
             <ReviewCard key={review.name} {...review} />
           ))}
         </Marquee>
-        <Marquee pauseOnHover className="[--duration:40s]" vertical>
+        <Marquee pauseOnHover className="[--duration:80s]" vertical>
           {fourthRow.map((review) => (
             <ReviewCard key={review.name} {...review} />
           ))}
