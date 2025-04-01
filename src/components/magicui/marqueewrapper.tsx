@@ -31,7 +31,7 @@ const ReviewCard = ({
             {name.charAt(0)}
           </span>
         </div>
-        {/* Name and name */}
+        {/* Name */}
         <div className="flex flex-row justify-center">
           <p className="text-xs font-semibold text-gray-400 dark:text-gray-500">@{name}</p>
         </div>
@@ -42,23 +42,36 @@ const ReviewCard = ({
   );
 };
 
+// Function to shuffle an array in place using Fisher-Yates algorithm
+function shuffleArray<T>(array: T[]): T[] {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 export default function MarqueeWrapper({
   reviews,
+  transform = "translateX(-100px) translateY(0px) translateZ(-100px) rotateX(15deg) rotateY(-7deg) rotateZ(15deg)",
 }: {
   reviews: { name: string; body: string }[];
+  transform?: string; // Added transform prop
 }) {
-  const firstRow = reviews.slice(0, reviews.length / 4);
-  const secondRow = reviews.slice(reviews.length / 4, 2 * reviews.length / 4);
-  const thirdRow = reviews.slice(2 * reviews.length / 4, 3 * reviews.length / 4);
-  const fourthRow = reviews.slice(3 * reviews.length / 4, 4 * reviews.length / 4);
+  // Shuffle the reviews array
+  const shuffledReviews = shuffleArray([...reviews]);
+
+  const firstRow = shuffledReviews.slice(0, shuffledReviews.length / 4);
+  const secondRow = shuffledReviews.slice(shuffledReviews.length / 4, 2 * shuffledReviews.length / 4);
+  const thirdRow = shuffledReviews.slice(2 * shuffledReviews.length / 4, 3 * shuffledReviews.length / 4);
+  const fourthRow = shuffledReviews.slice(3 * shuffledReviews.length / 4, 4 * shuffledReviews.length / 4);
 
   return (
     <div className="relative z-0 flex h-96 w-full flex-row items-center justify-center gap-4 overflow-hidden [perspective:300px]">
       <div
         className="flex flex-row items-center gap-4"
         style={{
-          transform:
-            "translateX(-100px) translateY(0px) translateZ(-100px) rotateX(15deg) rotateY(-7deg) rotateZ(15deg)",
+          transform, // Use the customizable transform prop
         }}
       >
         <Marquee pauseOnHover vertical className="[--duration:80s]">
