@@ -5,19 +5,33 @@ import { Button } from "@/components/ui/button";
 interface BannerProps {
   text: string; // The text to display in the banner
   link: string; // The URL the banner should link to
+  postId?: string; // Identifier for the latest post (slug or other unique identifier)
 }
 
-export default function Banner({ text, link }: BannerProps) {
+export default function Banner({ text, link, postId }: BannerProps) {
   const [isVisible, setIsVisible] = useState(false); // Default to false to avoid pop-in
   const [shouldRender, setShouldRender] = useState(false); // Controls rendering for animation
   const [isViewportWideEnough, setIsViewportWideEnough] = useState(true);
 
   useEffect(() => {
-    // Check if the banner has been closed previously
-    const bannerClosed = localStorage.getItem("bannerClosed");
-    if (bannerClosed !== "true") {
+    // Get the stored banner state
+    const bannerState = localStorage.getItem("bannerState");
+    let shouldShowBanner = true;
+    
+    if (bannerState) {
+      try {
+        const state = JSON.parse(bannerState);
+        // Only keep the banner closed if the postId matches the current post
+        shouldShowBanner = !(state.closed === true && state.postId === postId);
+      } catch (e) {
+        // If there's an error parsing JSON, reset the state
+        localStorage.removeItem("bannerState");
+      }
+    }
+
+    if (shouldShowBanner) {
       setShouldRender(true); // Render the banner
-      setTimeout(() => setIsVisible(true), 50); // Delay visibility to trigger animation
+      setTimeout(() => setIsVisible(true), 500); // Delay visibility to trigger animation
     }
 
     const handleResize = () => {
@@ -35,12 +49,17 @@ export default function Banner({ text, link }: BannerProps) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [postId]);
 
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => setShouldRender(false), 500); // Wait for animation to finish before unmounting
-    localStorage.setItem("bannerClosed", "true"); // Save the closed state
+    
+    // Save the closed state along with the current post ID
+    localStorage.setItem("bannerState", JSON.stringify({
+      closed: true,
+      postId: postId
+    }));
   };
 
   // Hide the banner if it's not visible or if the viewport is too small

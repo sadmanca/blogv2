@@ -26,8 +26,9 @@ const latestPost = sortedPosts[0];
   {latestPost && (
     <Banner
       client:only="react"
-      text={`Latest post: ${latestPost.data.title}`}
+      text={`${latestPost.data.title}`}
       link={`/posts/${latestPost.slug}`}
+      postId={latestPost.slug}
     />
   )}
   <Container class="max-w-full px-5">
