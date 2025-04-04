@@ -27,7 +27,7 @@ const limiter_tmdb = new RateLimiter({ tokensPerInterval: 50, interval: 'second'
 
 async function fetchWithRetry(url: string, type: string, options = {}) {
   let response;
-  let retries = 5;
+  let retries = 15;
 
   while (retries > 0) {
     if (type == 'trakt') {
@@ -36,17 +36,7 @@ async function fetchWithRetry(url: string, type: string, options = {}) {
       await limiter_tmdb.removeTokens(1);
     }
     response = await fetch(url, options);
-    
-    // Check if response is HTML instead of JSON
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('text/html')) {
-      console.error(`Received HTML instead of JSON from ${url}`);
-      retries -= 1;
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      continue;
-    }
-
-    if (response.status !== 429) {
+    if (response.status === 200) {
       return response;
     }
 
@@ -68,7 +58,6 @@ const trakt_watched_movies = defineCollection({
     imdb: z.string(),
   }),
   loader: async () => {
-    return {};
     const type = 'movie'
     const alt_type = 'movies'
     const alt_type2 = 'movie'
@@ -135,7 +124,7 @@ const trakt_watched_shows = defineCollection({
     imdb: z.string(),
   }),
   loader: async () => {
-    return {};
+    
     const type = 'show'
     const alt_type = 'shows'
     const alt_type2 = 'tv'
