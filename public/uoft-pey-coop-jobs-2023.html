@@ -257,9 +257,9 @@
           <!-- <button id="showExpiringJobsButton" class="btn btn-sm" style="background-color: #525200; border-color: #525200; color: #fff;">
             <i class="fas fa-clock"></i> Jobs Expiring Soon
           </button> -->
-          <span style="margin: 0 2px;">|</span>
+          <!-- <span style="margin: 0 2px;">|</span>
           <button id="toggleThemeButton" class="btn btn-outline-dark btn-sm" onclick="toggleTheme()">
-            <i class="fas fa-moon"></i> Dark Mode
+            <i class="fas fa-moon"></i> Dark Mode -->
           </button>
         </div>
       </div>
@@ -678,7 +678,7 @@
 
   function exportSelectedRowsToCSV() {
     if (gridApi) {
-      const filename = generateFilename('SELECTED-uoft-work-study-jobs', 'csv');
+      const filename = generateFilename('SELECTED-uoft-pey-coop-jobs', 'csv');
       gridApi.exportDataAsCsv({
         onlySelected: true,
         fileName: filename
@@ -690,7 +690,7 @@
 
   function exportSelectedRowsToExcel() {
     if (gridApi) {
-      const filename = generateFilename('SELECTED-uoft-work-study-jobs', 'xlsx');
+      const filename = generateFilename('SELECTED-uoft-pey-coop-jobs', 'xlsx');
       gridApi.exportDataAsExcel({
         onlySelected: true,
         fileName: filename
@@ -701,7 +701,7 @@
   }
 
   function exportAllRowsToCSV() {
-    const filename = generateFilename('ALL-uoft-work-study-jobs', 'csv');
+    const filename = generateFilename('ALL-uoft-pey-coop-jobs', 'csv');
     if (gridApi) {
       gridApi.exportDataAsCsv({
         onlySelected: false,
@@ -713,7 +713,7 @@
   }
 
   function exportAllRowsToExcel() {
-    const filename = generateFilename('ALL-uoft-work-study-jobs', 'xlsx');
+    const filename = generateFilename('ALL-uoft-pey-coop-jobs', 'xlsx');
     if (gridApi) {
       gridApi.exportDataAsExcel({
         onlySelected: false,

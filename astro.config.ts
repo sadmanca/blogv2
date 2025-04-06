@@ -55,8 +55,12 @@ export default defineConfig({
   })],
   redirects: {
     '/uoft-pey-coop-jobs-2023': '/uoft-pey-coop-jobs-2023.html',
+    '/uoft-work-study-2025': '/uoft-work-study-2025-summer.html',
+    '/uoft-work-study-jobs-2025': '/uoft-work-study-2025-summer.html',
     '/uoft-work-study-2024': '/uoft-work-study-2024.html',
     '/uoft-work-study-jobs-2024': '/uoft-work-study-2024.html',
+    '/work-study': '/uoft-work-study-2024.html',
+    '/uoft-work-study': '/uoft-work-study-2024.html',
 
     '/blog/on-keeping-a-journal': '/posts/on-keeping-a-journal',
     '/blog/coming-up-with-good-ideas': '/posts/coming-up-with-good-ideas',

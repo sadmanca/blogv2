@@ -3,18 +3,18 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UofT Work Study Jobs (2024-2025 Fall/Winter)</title>
+  <title>UofT Work Study Jobs (2025 Summer)</title>
 
-  <meta property="og:title" content="UofT Work Study Jobs (2024-2025 Fall/Winter)" />
-  <meta property="og:description" content="Explore all Work Study job postings for the 2024-2025 Fall/Winter term at the University of Toronto." />
+  <meta property="og:title" content="UofT Work Study Jobs (2025 Summer)" />
+  <meta property="og:description" content="Explore all Work Study job postings for the 2025 Summer term at the University of Toronto." />
   <meta property="og:image" content="public/static/twitter-card.png" />
-  <meta property="og:url" content="https://sadman.ca/uoft-work-study-2024" />
+  <meta property="og:url" content="https://sadman.ca/uoft-work-study-2025-summer" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Sadman's Blog" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="UofT Work Study Jobs (2024-2025 Fall/Winter)" />
-  <meta name="twitter:description" content="Explore all Work Study job postings for the 2024-2025 Fall/Winter term at the University of Toronto." />
+  <meta name="twitter:title" content="UofT Work Study Jobs (2025 Summer)" />
+  <meta name="twitter:description" content="Explore all Work Study job postings for the 2025 Summer term at the University of Toronto." />
   <meta name="twitter:image" content="public/static/twitter-card.png" />
   <meta name="twitter:site" content="@your_twitter_handle" />
 
@@ -205,7 +205,7 @@
   <body>
     <div id="buttonContainer" style="padding: 4px" class="d-flex justify-content-between align-items-center flex-wrap">
       <div class="d-flex justify-content-between align-items-center flex-wrap" style="padding: 4px;">
-        <h5 id='workStudyTitle' class="mb-0"><b>UofT Work Study Jobs</b> (2024-2025 Fall/Winter)</h5>
+        <h5 id='workStudyTitle' class="mb-0"><b>UofT Work Study Jobs</b> (2025 Summer)</h5>
         <div class="d-flex justify-content-end">
           <span style="margin: 0 5px;"> </span> <!-- Spacer -->
           <button class="btn blog-btn btn-sm right-buttons" onclick="window.open('/', '_blank')">
@@ -245,8 +245,7 @@
           <button class="btn btn-success btn-sm" onclick="exportAllRowsToExcel()">
             <i class="fas fa-file-excel"></i> Download Excel
           </button>
-          <!--
-            <span style="margin: 0 3px;">|</span>
+          <!-- 
           <button id="hideExpiredJobsButton" class="btn btn-sm" style="background-color: #520000; border-color: #520000; color: #fff;">
             <i class="fas fa-xmark"></i> Hide Expired Jobs
           </button>
@@ -254,10 +253,6 @@
             <i class="fas fa-clock"></i> Jobs Expiring Soon
           </button> 
           -->
-          <!-- <span style="margin: 0 3px;">|</span> 
-          <button id="toggleThemeButton" class="btn btn-outline-dark btn-sm" onclick="toggleTheme()">
-            <i class="fas fa-moon"></i> Dark Mode
-          </button> -->
         </div>
       </div>
     </div>
@@ -443,11 +438,6 @@
         tooltipValueGetter: function(params) {
           return `${params.data.title}`;
         },
-      },
-      {
-        field: "degreeLevel",
-        headerName: "Degree",
-        width: 108,
       },
       {
         field: "positionType",
@@ -850,7 +840,7 @@
     var gridDiv = document.querySelector("#myGrid");
     gridApi = agGrid.createGrid(gridDiv, gridOptions);
 
-    fetch("/data/WorkStudyPosting.json")
+    fetch("/data/WorkStudyPosting2025Summer.json")
       .then((response) => response.json())
       .then((data) => gridApi.setGridOption("rowData", data));
 
