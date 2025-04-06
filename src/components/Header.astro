@@ -26,7 +26,8 @@ const latestPost = sortedPosts[0];
   {latestPost && (
     <Banner
       client:only="react"
-      text={`Latest post: ${latestPost.data.title}`}
+      type={`Latest post: `}
+      text={`${latestPost.data.title}`}
       link={`/posts/${latestPost.slug}`}
     />
   )}

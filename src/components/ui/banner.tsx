@@ -3,11 +3,12 @@ import { ArrowRightIcon, Bell, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface BannerProps {
+  type: string; // The text to display in the banner
   text: string; // The text to display in the banner
   link: string; // The URL the banner should link to
 }
 
-export default function Banner({ text, link }: BannerProps) {
+export default function Banner({ type, text, link }: BannerProps) {
   const [isVisible, setIsVisible] = useState(false); // Default to false to avoid pop-in
   const [shouldRender, setShouldRender] = useState(false); // Controls rendering for animation
   const [isViewportWideEnough, setIsViewportWideEnough] = useState(true);
@@ -66,7 +67,8 @@ export default function Banner({ text, link }: BannerProps) {
             size={16}
             aria-hidden="true"
           />
-          <span>{text}</span>
+          <span>{type}</span>
+          <span className="underline ml-1">{text}</span>
           <ArrowRightIcon
             className="ml-2 inline-flex opacity-60 transition-transform group-hover:translate-x-0.5"
             size={16}
